@@ -65,7 +65,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 ['class'=>UrlRule::class,
-                    'controller' => 'shops',
+                    'controller' => 'posts',
 //                    'pluralize' => false
                 ],
                 ['class'=>UrlRule::class,
@@ -104,7 +104,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        'allowedIPs' => ['194.88.204.51'],
+        'allowedIPs' => ['*'],
     ];
 }
 

@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\lib\ibuypro\Graph;
 use app\lib\ibuypro\IbuyproAlgorithm;
-use Yii;
+// use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
 use yii\web\Controller;
@@ -13,6 +13,9 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\components\RbacComponent;
+use app\models\Post;
+use app\models\Users;
+use yii\base\Component;
 
 class SiteController extends Controller
 {
@@ -168,4 +171,37 @@ class SiteController extends Controller
         var_dump(\Yii::$app->user->getIdentity());
 //        var_dump(\Yii::$app->rbac->canAdmin());
     }
+	public function actionAddadmin(){
+		$admin = new Users();
+		$admin->username = 'admin';
+		$admin->email = 'fake@mail.ru';
+		$admin->password = 'domodel_4ever';
+		$admin->password_hash = \Yii::$app->getSecurity()->generatePasswordHash($admin->password);
+        $admin->auth_key = \Yii::$app->getSecurity()->generateRandomString();
+        $admin->token = \Yii::$app->getSecurity()->generateRandomString();
+
+        if($admin->save()){
+            // $role = \Yii::$app->authManager->getRole('admin');
+            // \Yii::$app->authManager->assign($role, $admin->getId());
+            return true;
+        }else{
+			print_r($admin->errors);
+		}
+	}
+	public function actionAddposts(){
+		for($i=1;$i<10;$i++){
+			$post = new Post();
+			$post->title = 'Заголовок '.$i;
+			$post->preview = 'Какой-то текст '.$i;
+			$post->body = 'Какой-то текст '.$i.' и его более длинное продолжение';
+			$post->id_users = 1;
+			$post->img = 'https://via.placeholder.com/400x200';
+			$post->postedAt = (new \DateTime('01/07/2020'))->add(new \DateInterval( "P".$i."D" ))->format('Y-m-d H:i:s');
+			
+			if(!$post->save()){
+				print_r($post->errors);
+			}
+			
+		}
+	}
 }

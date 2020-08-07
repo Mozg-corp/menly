@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Shop from '../components/Shop.vue'
+import Post from '../components/Post.vue'
 import Shops from '../components/Shops.vue'
 import ShopAdd from '../components/ShopAdd.vue'
 import Map from "../views/Map";
@@ -35,9 +35,9 @@ const routes = [
         component: Home
     },
     {
-        path: '/shop',
-        name:'shop',
-        component: Shop,
+        path: '/post',
+        name:'post',
+        component: Post,
         props: true
     },
     {

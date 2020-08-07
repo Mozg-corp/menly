@@ -1,6 +1,6 @@
 <?php
 
-use app\rules\OwnerGoodsListRule;
+use app\rules\MeterOwnerRule;
 use yii\db\Migration;
 
 /**
@@ -22,30 +22,29 @@ class m191203_075908_rbac_init_base extends Migration
         $user = $authManager->createRole('user');
         $user->description = 'Роль пользователя';
         $authManager->add($user);
-        $createGoodsList = $authManager->createPermission('createGoodsList');
-        $createGoodsList->description = 'Создание списков покупки';
-        $authManager->add($createGoodsList);
+        $SendMeter = $authManager->createPermission('SendMeter');
+        $SendMeter->description = 'Отправка показания счётчика';
+        $authManager->add($SendMeter);
 
-        $viewOwnerGoodsList = $authManager->createPermission('viewOwnerGoodsList');
-        $viewOwnerGoodsList->description = 'Просмотр и редактирование своих списков покупки';
+        $viewOwnerMeterValue = $authManager->createPermission('viewOwnerMeterValue');
+        $viewOwnerMeterValue->description = 'Просмотр своих переданных показаний счётчиков';
 
-        $rule = new OwnerGoodsListRule();
-        $viewOwnerGoodsList->ruleName = $rule->name;
+        $rule = new MeterOwnerRule();
+        $viewOwnerMeterValue->ruleName = $rule->name;
 
         $authManager->add($rule);
-        $authManager->add($viewOwnerGoodsList);
+        $authManager->add($viewOwnerMeterValue);
 
         $createAllItems = $authManager->createPermission('createAllItems');
         $createAllItems->description = 'Создание любых видов суущностей';
         $authManager->add($createAllItems);
 
-        $authManager->addChild($user, $createGoodsList);
-        $authManager->addChild($user, $viewOwnerGoodsList);
+        $authManager->addChild($user, $SendMeter);
         $authManager->addChild($admin,$user);
         $authManager->addChild($admin, $createAllItems);
 
-        $authManager->assign($admin, 3);
-        $authManager->assign($user, 2);
+        $authManager->assign($admin, 1);
+        // $authManager->assign($user, 2);
     }
 
     /**

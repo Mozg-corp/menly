@@ -12,6 +12,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
 VueAssets::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
