@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # phpstorm project files
 .idea
 
@@ -34,3 +35,11 @@ tests/_support/_generated
 
 #db settings
 /config/db_local.php
+=======
+assets/*
+!assets/.gitignore
+protected/runtime/*
+!protected/runtime/.gitignore
+protected/data/*.db
+themes/classic/views/
+>>>>>>> 3ad6713604e7e61a9107c786bdbb5a5be5e01a8b
