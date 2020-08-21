@@ -1,0 +1,158 @@
+{
+    "cars": [
+        {
+            "amenities": [
+                "conditioner",
+                "ski",
+                "vip_event",
+                "wifi",
+                "booster",
+                "child_seat",
+                "charge",
+                "lightbox",
+                "rug",
+                "sticker",
+                "cargo_clean"
+            ],
+            "brand": "Kia",
+            "category": [
+                "econom",
+                "comfort",
+                "comfort_plus",
+                "express",
+                "courier"
+            ],
+            "id": "660a0219fd1d1356463abdef98c26791",
+            "model": "Optima",
+            "status": "working"
+        },
+        {
+            "amenities": [],
+            "brand": "Mercedes-Benz",
+            "category": [
+                "econom",
+                "comfort",
+                "comfort_plus",
+                "business",
+                "express",
+                "courier"
+            ],
+            "id": "0f3642f318d01ce46410fe1ec88b663d",
+            "model": "E-klasse",
+            "status": "working"
+        },
+        {
+            "amenities": [],
+            "brand": "BMW",
+            "category": [
+                "comfort",
+                "comfort_plus",
+                "business",
+                "personal_driver",
+                "express",
+                "courier"
+            ],
+            "id": "95c15bb425d671bc265dcfd5fce9a100",
+            "model": "5er",
+            "status": "working"
+        },
+        {
+            "amenities": [],
+            "brand": "Mercedes-Benz",
+            "category": [
+                "econom",
+                "comfort",
+                "comfort_plus",
+                "business",
+                "express",
+                "courier"
+            ],
+            "id": "aa0e419d992cf06f5b17c59461415292",
+            "model": "E-klasse",
+            "status": "working"
+        },
+        {
+            "amenities": [],
+            "brand": "BMW",
+            "category": [
+                "comfort",
+                "comfort_plus",
+                "business",
+                "express",
+                "courier"
+            ],
+            "id": "4fbb25f38e48c3268a132d1757060e45",
+            "model": "5er",
+            "status": "working"
+        },
+        {
+            "amenities": [],
+            "brand": "Nissan",
+            "category": [
+                "express",
+                "courier"
+            ],
+            "id": "43d54c42db07c040994123dfe8807b66",
+            "model": "Juke",
+            "status": "working"
+        },
+        {
+            "amenities": [],
+            "brand": "Chevrolet",
+            "category": [
+                "express",
+                "courier"
+            ],
+            "id": "875aa3b2413f5f38914472873d7d884c",
+            "model": "Lacetti",
+            "status": "working"
+        },
+        {
+            "amenities": [],
+            "brand": "Opel",
+            "category": [
+                "express",
+                "courier"
+            ],
+            "id": "0e2edfc9fd14e1852e4f61a597228d80",
+            "model": "Astra",
+            "status": "working"
+        },
+        {
+            "amenities": [],
+            "brand": "Ford",
+            "category": [
+                "econom",
+                "express",
+                "courier"
+            ],
+            "id": "a53119ae54e83f5989f02c2a04219a98",
+            "model": "Focus",
+            "status": "working"
+        },
+        {
+            "amenities": [
+                "sticker"
+            ],
+            "brand": "Kia",
+            "category": [
+                "econom",
+                "comfort",
+                "comfort_plus",
+                "business",
+                "ultimate",
+                "maybach",
+                "premium_suv",
+                "personal_driver",
+                "express",
+                "courier"
+            ],
+            "id": "24c40c6af7ea4ce6f24a078a91861cbe",
+            "model": "Optima",
+            "status": "working"
+        }
+    ],
+    "limit": 10,
+    "offset": 0,
+    "total": 202
+}

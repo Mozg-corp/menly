@@ -32,9 +32,9 @@
 <script>
     import {getData} from '../lib/utils/rest-api/api-request'
     export default {
-        // name: "Shops",
+        name: "Cars",
         data: () => ({
-            posts: [],
+            cars: [],
         }),
 
         created() {
@@ -45,7 +45,7 @@
             getImgUrl(pic) {
                 return require('../assets/home/' + pic);
             },
-            getAllPosts() {
+            getAllCars() {
 
                 getData('/posts').then(res=>{
                     console.log(res.data);
