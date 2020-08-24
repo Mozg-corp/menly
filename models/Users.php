@@ -9,12 +9,12 @@ use yii\web\IdentityInterface;
  * This is the model class for table "users".
  *
  * @property int $id
- * @property string $username
- * @property string $email
+ * @property string $phone
  * @property string $password_hash
  * @property string|null $token
  * @property string|null $auth_key
  * @property string $create_at
+ * @property string $updated_at
  */
 
 class Users extends UsersBase implements IdentityInterface
@@ -39,7 +39,7 @@ class Users extends UsersBase implements IdentityInterface
     public function scenarios()
     {
         return array_merge([
-           self::SCENARIO_SIGNUP => ['username','email', 'password'],
+           self::SCENARIO_SIGNUP => ['username','password'],
            self::SCENARIO_SIGNIN => ['username', 'password']
         ],parent::scenarios());
     }
@@ -47,13 +47,10 @@ class Users extends UsersBase implements IdentityInterface
     public function rules()
     {
         return array_merge([
-            ['password', 'required'],
+            [['password', 'phone'], 'required'],
             ['password', 'string', 'min' => 8],
-            ['email', 'required', 'on' => self::SCENARIO_SIGNUP],
-            [['username'], 'unique', 'on'=>self::SCENARIO_SIGNUP],
-            [['username'], 'exist', 'on' => self::SCENARIO_SIGNIN],
-            [['email'], 'unique', 'on'=>self::SCENARIO_SIGNUP],
-            [['email'], 'exist', 'on' => self::SCENARIO_SIGNIN],
+            [['phone'], 'unique', 'on'=>self::SCENARIO_SIGNUP],
+            [['phone'], 'exist', 'on' => self::SCENARIO_SIGNIN]
         ],parent::rules());
     }
 

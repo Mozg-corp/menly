@@ -14,7 +14,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\components\RbacComponent;
 use app\models\Post;
-use app\models\Users;
+use app\models\User;
 use yii\base\Component;
 
 class SiteController extends Controller
@@ -172,10 +172,9 @@ class SiteController extends Controller
 //        var_dump(\Yii::$app->rbac->canAdmin());
     }
 	public function actionAddadmin(){
-		$admin = new Users();
-		$admin->username = 'admin';
-		$admin->email = 'fake@mail.ru';
-		$admin->password = 'domodel_4ever';
+		$admin = new User();
+		$admin->phone = 79251234567;
+		$admin->password = 'menly_4ever';
 		$admin->password_hash = \Yii::$app->getSecurity()->generatePasswordHash($admin->password);
         $admin->auth_key = \Yii::$app->getSecurity()->generateRandomString();
         $admin->token = \Yii::$app->getSecurity()->generateRandomString();

@@ -3,7 +3,7 @@
 
 namespace app\components;
 
-use app\models\Users;
+use app\models\User;
 use yii\base\Component;
 use yii\web\IdentityInterface;
 
@@ -15,19 +15,20 @@ class AuthComponent extends Component
      */
     public function signIn(IdentityInterface &$model)
     {
-        if(!$model->validate(['username', 'password'])){
+        if(!$model->validate(['phone', 'password'])){
             return false;
         }
-        $user = $this->getUserByName($model->username);
+        $user = $this->getUserByName($model->phone);
         if (!$this->validatePassword($model->password, $user->password_hash)){
-            $model->addError('password', 'Неправильный логин или пароль');
+            $model->addError('password', 'Wronge password');
             return false;
         }
+		
         return \Yii::$app->user->login($user, 3600);
     }
-    public function signUp(Users &$model):bool
+    public function signUp(User &$model):bool
     {
-        if(!$model->validate(['username', 'email','password'])){
+        if(!$model->validate(['phone', 'password', 'password_repeat'])){
             return false;
         }
 
@@ -36,7 +37,7 @@ class AuthComponent extends Component
         $model->token = $this->generateToken();
 
         if($model->save()){
-            $role = \Yii::$app->authManager->getRole('user');
+            $role = \Yii::$app->authManager->getRole('candidate');
             \Yii::$app->authManager->assign($role, $model->getId());
             return true;
         }
@@ -46,9 +47,9 @@ class AuthComponent extends Component
     {
         return \Yii::$app->security->validatePassword($password,$passwordHash);
     }
-    public function getUserByName($name):Users
+    public function getUserByName($phone):User
     {
-        return Users::find()->andWhere(['username' => $name])->one();
+		return User::find()->andWhere(['phone' => $phone])->one();
     }
 
     private function generateToken():string

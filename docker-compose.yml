@@ -15,6 +15,6 @@ services:
       - 3306:3306
     environment:
       # Пароль к БД
-      MYSQL_ROOT_PASSWORD: Passw0rd_domodel
+      MYSQL_ROOT_PASSWORD: Passw0rd_menly
       # Создаваемая по умолчанию бд
-      MYSQL_DATABASE: domodel_db
+      MYSQL_DATABASE: menly_db

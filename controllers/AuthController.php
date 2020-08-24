@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\Users;
+use app\models\User;
 use yii\helpers\Json;
 use yii\web\Response;
 use app\components\RbacComponent;
@@ -14,7 +14,7 @@ class AuthController extends \yii\web\Controller
     public function actionSignIn()
     {
 //        $this->enableCsrfValidation = false;
-        $model = new Users();
+        $model = new User();
 
         if (\Yii::$app->request->isPost){
 //            var_dump(\Yii::$app->request->isAjax);
@@ -22,9 +22,10 @@ class AuthController extends \yii\web\Controller
             $model->load(\Yii::$app->request->post());
 //            $model->attributes = \Yii::$app->request->post()['LoginForm'];
             $model->scenarioSignIn();
+			// var_dump($model->scenario);
             \Yii::$app->response->format = Response::FORMAT_JSON;
             if (\Yii::$app->auth->signIn($model)){
-                $user = \Yii::$app->auth->getUserByName($model->username);
+                $user = \Yii::$app->auth->getUserByName($model->phone);
 //                var_dump($user);
 //                return $this->redirect(['/']);
 //                return \Yii::$app->rbac->canAdmin();
@@ -40,8 +41,7 @@ class AuthController extends \yii\web\Controller
                 ([
                     'status' => 'deny',
                     'token' => '',
-                    'msg' => 'Неверный пароль или имя пользователя',
-                    'admin' => false
+                    'msg' => $model->errors
                 ],JSON_FORCE_OBJECT);
             }
         }
@@ -51,7 +51,7 @@ class AuthController extends \yii\web\Controller
     }
     public function actionSignUp(){
 
-        $model = new Users();
+        $model = new User();
         \Yii::$app->response->format = Response::FORMAT_JSON;
         if (\Yii::$app->request->isPost){
             $model->load(\Yii::$app->request->post());
@@ -66,14 +66,10 @@ class AuthController extends \yii\web\Controller
                 ],JSON_FORCE_OBJECT);
             }else{
 //                var_dump($model->errors);exit();
-                $emailError = $model->errors['email'][0] ?? '';
-                $usernameError = $model->errors['username'][0] ?? '';
+                $phoneError = $model->errors['phone'][0] ?? '';
                 return Json::encode([
                     'status' => 'rejected',
-                    'error' => [
-                        'email' => $emailError,
-                        'username' => $usernameError,
-                    ]
+                    'error' =>  $model->errors
                 ]);
             }
         }

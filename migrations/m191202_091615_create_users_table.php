@@ -14,12 +14,12 @@ class m191202_091615_create_users_table extends Migration
     {
         $this->createTable('{{%users}}', [
             'id' => $this->primaryKey(),
-            'username' => $this->string(50)->notNull()->unique(),
-            'email' => $this->string()->notNull()->unique(),
+            'phone' => $this->string(50)->notNull()->unique(),
             'password_hash' => $this->string(300)->notNull(),
             'token' => $this->string(150),
             'auth_key' => $this->string(150),
             'create_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
         ]);
     }
 

@@ -22,24 +22,15 @@ class m191203_075908_rbac_init_base extends Migration
         $user = $authManager->createRole('user');
         $user->description = 'Роль пользователя';
         $authManager->add($user);
-        $SendMeter = $authManager->createPermission('SendMeter');
-        $SendMeter->description = 'Отправка показания счётчика';
-        $authManager->add($SendMeter);
-
-        $viewOwnerMeterValue = $authManager->createPermission('viewOwnerMeterValue');
-        $viewOwnerMeterValue->description = 'Просмотр своих переданных показаний счётчиков';
-
-        $rule = new MeterOwnerRule();
-        $viewOwnerMeterValue->ruleName = $rule->name;
-
-        $authManager->add($rule);
-        $authManager->add($viewOwnerMeterValue);
+		
+		$candidate = $authManager->createRole('candidate');
+        $candidate->description = 'Роль кандидата';
+		$authManager->add($candidate);
 
         $createAllItems = $authManager->createPermission('createAllItems');
-        $createAllItems->description = 'Создание любых видов суущностей';
+        $createAllItems->description = 'Создание любых видов сущностей';
         $authManager->add($createAllItems);
 
-        $authManager->addChild($user, $SendMeter);
         $authManager->addChild($admin,$user);
         $authManager->addChild($admin, $createAllItems);
 
