@@ -27,6 +27,7 @@ use Yii;
  * @property string|null $foto_passport_registrationpage
  * @property string|null $foto_licens_frontview
  * @property string|null $foto_licens_backview
+ * @property string|null $uuid
  */
 class ProfileBase extends \yii\db\ActiveRecord
 {
@@ -51,6 +52,7 @@ class ProfileBase extends \yii\db\ActiveRecord
             [['passport_series', 'license_series'], 'string', 'max' => 4],
             [['passport_number', 'license_number'], 'string', 'max' => 6],
             [['passport_giver', 'registration_address', 'foto_selfie', 'foto_passport_fotopage', 'foto_passport_registrationpage', 'foto_licens_frontview', 'foto_licens_backview'], 'string', 'max' => 255],
+            [['uuid'], 'string', 'max' => 36],
         ];
     }
 
@@ -80,6 +82,7 @@ class ProfileBase extends \yii\db\ActiveRecord
             'foto_passport_registrationpage' => 'Foto Passport Registrationpage',
             'foto_licens_frontview' => 'Foto Licens Frontview',
             'foto_licens_backview' => 'Foto Licens Backview',
+            'uuid' => 'Uuid',
         ];
     }
 

@@ -25,7 +25,12 @@ use Yii;
  */
 class Profile extends ProfileBase
 {
-         /**
+    /**
+     * @var UploadedFile file attribute
+     */
+    public $file_foto_selfie;
+	
+	/**
      * {@inheritdoc}
      */
     public function rules()

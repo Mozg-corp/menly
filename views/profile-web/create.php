@@ -4,12 +4,12 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\ProfileBase */
+/* @var $model app\models\Profile */
 /* @var $form ActiveForm */
 ?>
 <div class="profile-web-create">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
         <?= $form->field($model, 'firstname') ?>
         <?= $form->field($model, 'lastname') ?>
@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'license_number') ?>
         <?= $form->field($model, 'passport_giver') ?>
         <?= $form->field($model, 'registration_address') ?>
-        <?= $form->field($model, 'foto_selfie') ?>
+        <?= $form->field($model, 'foto_selfie')->fileInput([]) ?>
         <?= $form->field($model, 'foto_passport_fotopage') ?>
         <?= $form->field($model, 'foto_passport_registrationpage') ?>
         <?= $form->field($model, 'foto_licens_frontview') ?>
