@@ -30,7 +30,6 @@ class ProfileWebController extends \yii\web\Controller
 				$model->foto_selfie = $directory . '/'. $filename;
 				if ($model->save()){
 					return \Yii::$app->db->getLastInsertID();
-;
 				}else{
 					return $model->errors.toString();
 				}

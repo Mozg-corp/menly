@@ -25,9 +25,12 @@ use Yii;
  * @property string|null $foto_selfie
  * @property string|null $foto_passport_fotopage
  * @property string|null $foto_passport_registrationpage
- * @property string|null $foto_licens_frontview
- * @property string|null $foto_licens_backview
+ * @property string|null $foto_license_frontview
+ * @property string|null $foto_license_backview
  * @property string|null $uuid
+ * @property string|null $createdAt
+ * @property string|null $updatedAt
+ * @property int $user_id
  */
 class ProfileBase extends \yii\db\ActiveRecord
 {
@@ -45,13 +48,14 @@ class ProfileBase extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['firstname', 'lastname'], 'required'],
-            [['birthdate', 'passport_date', 'license_date', 'license_expire'], 'safe'],
+            [['firstname', 'lastname', 'user_id'], 'required'],
+            [['birthdate', 'passport_date', 'license_date', 'license_expire', 'createdAt', 'updatedAt'], 'safe'],
+            [['user_id'], 'integer'],
             [['firstname', 'secondname', 'lastname'], 'string', 'max' => 50],
             [['phone'], 'string', 'max' => 20],
             [['passport_series', 'license_series'], 'string', 'max' => 4],
             [['passport_number', 'license_number'], 'string', 'max' => 6],
-            [['passport_giver', 'registration_address', 'foto_selfie', 'foto_passport_fotopage', 'foto_passport_registrationpage', 'foto_licens_frontview', 'foto_licens_backview'], 'string', 'max' => 255],
+            [['passport_giver', 'registration_address', 'foto_selfie', 'foto_passport_fotopage', 'foto_passport_registrationpage', 'foto_license_frontview', 'foto_license_backview'], 'string', 'max' => 255],
             [['uuid'], 'string', 'max' => 36],
         ];
     }
@@ -80,9 +84,12 @@ class ProfileBase extends \yii\db\ActiveRecord
             'foto_selfie' => 'Foto Selfie',
             'foto_passport_fotopage' => 'Foto Passport Fotopage',
             'foto_passport_registrationpage' => 'Foto Passport Registrationpage',
-            'foto_licens_frontview' => 'Foto Licens Frontview',
-            'foto_licens_backview' => 'Foto Licens Backview',
+            'foto_license_frontview' => 'Foto License Frontview',
+            'foto_license_backview' => 'Foto License Backview',
             'uuid' => 'Uuid',
+            'createdAt' => 'Created At',
+            'updatedAt' => 'Updated At',
+            'user_id' => 'User ID',
         ];
     }
 
