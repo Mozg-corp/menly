@@ -31,6 +31,8 @@ use Yii;
  * @property string|null $createdAt
  * @property string|null $updatedAt
  * @property int $user_id
+ *
+ * @property User $user
  */
 class ProfileBase extends \yii\db\ActiveRecord
 {
@@ -57,6 +59,7 @@ class ProfileBase extends \yii\db\ActiveRecord
             [['passport_number', 'license_number'], 'string', 'max' => 6],
             [['passport_giver', 'registration_address', 'foto_selfie', 'foto_passport_fotopage', 'foto_passport_registrationpage', 'foto_license_frontview', 'foto_license_backview'], 'string', 'max' => 255],
             [['uuid'], 'string', 'max' => 36],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -91,6 +94,16 @@ class ProfileBase extends \yii\db\ActiveRecord
             'updatedAt' => 'Updated At',
             'user_id' => 'User ID',
         ];
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery|UserQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
     /**

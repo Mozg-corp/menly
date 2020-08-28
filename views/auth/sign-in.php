@@ -8,7 +8,7 @@ use yii\bootstrap\ActiveForm;
     <div class="col-md-6">
         <h2>Авторизация</h2>
         <?php $form = ActiveForm::begin()?>
-        <?= $form->field($model, 'username')?>
+        <?= $form->field($model, 'phone')?>
         <?= $form->field($model, 'password')->passwordInput()?>
 
         <div class="form-group">

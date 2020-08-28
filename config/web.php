@@ -4,6 +4,8 @@ use app\components\AuthComponent;
 use yii\rbac\DbManager;
 use yii\rest\UrlRule;
 use yii\web\JsonParser;
+use app\interfaces\UpLoaderInterface;
+use app\services\ProfileUpLoader;
 
 $params = require __DIR__ . '/params.php';
 $db = file_exists(__DIR__ . '/db_local.php')?
@@ -19,12 +21,18 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'defaultRoute' => 'index/vue',
+	'container' => [
+		'singletons' => [
+			UpLoaderInterface::class => ['class' => ProfileUpLoader::class]
+		]
+	],
     'components' => [
         'authManager' => [
             'class' => DbManager::class
         ],
         'auth' => ['class' => app\components\AuthComponent::class],
         'rbac' => ['class' => app\components\RbacComponent::class],
+		'logger' => ['class' => app\components\LoggerComponent::class],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '_n6lQGZDNHlJgmT4zrXP0znB4iuVaUYL',

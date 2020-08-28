@@ -65,7 +65,7 @@ class User extends UserBase implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-       return Users::find()->andWhere(['id' => $id])->one();
+       return User::find()->andWhere(['id' => $id])->one();
     }
 
     /**

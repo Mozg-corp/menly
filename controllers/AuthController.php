@@ -46,7 +46,7 @@ class AuthController extends \yii\web\Controller
             }
         }
 
-//        return $this->render('sign-in', ['model' => $model]);
+       return $this->render('sign-in', ['model' => $model]);
 
     }
     public function actionSignUp(){
@@ -66,7 +66,7 @@ class AuthController extends \yii\web\Controller
                 ],JSON_FORCE_OBJECT);
             }else{
 //                var_dump($model->errors);exit();
-                $phoneError = $model->errors['phone'][0] ?? '';
+                // $phoneError = $model->errors['phone'][0] ?? '';
                 return Json::encode([
                     'status' => 'rejected',
                     'error' =>  $model->errors
