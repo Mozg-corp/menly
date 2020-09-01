@@ -19,7 +19,9 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "ramsey/uuid": "^4.1",
-        "monolog/monolog": "^2.1"
+        "monolog/monolog": "^2.1",
+        "yiisoft/yii2-httpclient": "*",
+		"vova07/yii2-console-runner-extension": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

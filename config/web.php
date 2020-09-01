@@ -33,6 +33,10 @@ $config = [
         'auth' => ['class' => app\components\AuthComponent::class],
         'rbac' => ['class' => app\components\RbacComponent::class],
 		'logger' => ['class' => app\components\LoggerComponent::class],
+		'consoleRunner' => [
+			'class' => 'vova07\console\ConsoleRunner',
+			'file' => '../vendor/yiisoft/yii2/yii' // or an absolute path to console file
+		],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '_n6lQGZDNHlJgmT4zrXP0znB4iuVaUYL',
