@@ -4,18 +4,18 @@ use app\components\AuthComponent;
 use yii\rbac\DbManager;
 use yii\rest\UrlRule;
 use yii\web\JsonParser;
-use app\interfaces\UpLoaderInterface;
-use app\services\ProfileUpLoader;
 
 $params = require __DIR__ . '/params.php';
 $db = file_exists(__DIR__ . '/db_local.php')?
     (require __DIR__ . '/db_local.php')
     :(require __DIR__ . '/db.php');
-
+$transport = file_exists(__DIR__.'/mail_local.php')
+			? (require __DIR__.'/mail_local.php')
+			: [];
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', \app\bootstrap\EventsSubscriber::class],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -23,7 +23,7 @@ $config = [
     'defaultRoute' => 'index/vue',
 	'container' => [
 		'singletons' => [
-			UpLoaderInterface::class => ['class' => ProfileUpLoader::class]
+			\Symfony\Contracts\EventDispatcher\EventDispatcherInterface::class => ['class' => \Symfony\Component\EventDispatcher\EventDispatcher::class]
 		]
 	],
     'components' => [
@@ -56,10 +56,9 @@ $config = [
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
+			'enableSwiftMailerLogging' => true,
+			'transport' => $transport
         ],
 
         'log' => [

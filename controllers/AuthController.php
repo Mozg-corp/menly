@@ -17,32 +17,26 @@ class AuthController extends \yii\web\Controller
         $model = new User();
 
         if (\Yii::$app->request->isPost){
-//            var_dump(\Yii::$app->request->isAjax);
-//            var_dump(\Yii::$app->request->post());
             $model->load(\Yii::$app->request->post());
-//            $model->attributes = \Yii::$app->request->post()['LoginForm'];
+			
             $model->scenarioSignIn();
-			// var_dump($model->scenario);
-            \Yii::$app->response->format = Response::FORMAT_JSON;
+            // \Yii::$app->response->format = Response::FORMAT_JSON;
             if (\Yii::$app->auth->signIn($model)){
                 $user = \Yii::$app->auth->getUserByName($model->phone);
-//                var_dump($user);
-//                return $this->redirect(['/']);
-//                return \Yii::$app->rbac->canAdmin();
-                return JSON::encode
-                ([
-                    'status' => 'OK',
-                    'token' => $user->token,
-                    'msg' => 'Вы удачно вошли в систему',
-                    'admin' => \Yii::$app->rbac->canAdmin(),
-                ],JSON_FORCE_OBJECT);
+                // return JSON::encode
+                // ([
+                    // 'status' => 'OK',
+                    // 'token' => $user->token,
+                    // 'msg' => 'Вы удачно вошли в систему',
+                    // 'admin' => \Yii::$app->rbac->canAdmin(),
+                // ],JSON_FORCE_OBJECT);
             }else{
-                return JSON::encode
-                ([
-                    'status' => 'deny',
-                    'token' => '',
-                    'msg' => $model->errors
-                ],JSON_FORCE_OBJECT);
+                // return JSON::encode
+                // ([
+                    // 'status' => 'deny',
+                    // 'token' => '',
+                    // 'msg' => $model->errors
+                // ],JSON_FORCE_OBJECT);
             }
         }
 

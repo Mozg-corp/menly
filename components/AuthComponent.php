@@ -10,12 +10,12 @@ use yii\web\IdentityInterface;
 class AuthComponent extends Component
 {
     /**
-     * @param Users $model
+     * @param User $model
      * @return bool
      */
     public function signIn(IdentityInterface &$model)
     {
-        if(!$model->validate(['phone', 'password'])){
+		if(!$model->validate(['phone', 'password'])){
             return false;
         }
         $user = $this->getUserByName($model->phone);

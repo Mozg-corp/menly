@@ -20,6 +20,10 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'license_expire') ?>
         <?= $form->field($model, 'updatedAt')->hiddenInput() ?>
         <?= $form->field($model, 'phone') ?>
+        <?= $form->field($model, 'yandex')->checkbox([]) ?>
+        <?= $form->field($model, 'gett')->checkbox([]) ?>
+        <?= $form->field($model, 'citymobile')->checkbox([]) ?>
+        <?= $form->field($model, 'uber')->checkbox([]) ?>
         <?= $form->field($model, 'passport_series') ?>
         <?= $form->field($model, 'license_series') ?>
         <?= $form->field($model, 'passport_number') ?>

@@ -14,6 +14,10 @@ use Yii;
  * @property string|null $auth_key
  * @property string|null $create_at
  * @property string|null $updated_at
+ *
+ * @property Car[] $cars
+ * @property Profile[] $profiles
+ * @property UsersAgregator[] $usersAgregators
  */
 class UserBase extends \yii\db\ActiveRecord
 {
@@ -53,5 +57,44 @@ class UserBase extends \yii\db\ActiveRecord
             'create_at' => 'Create At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * Gets query for [[Cars]].
+     *
+     * @return \yii\db\ActiveQuery|CarQuery
+     */
+    public function getCars()
+    {
+        return $this->hasMany(Car::className(), ['id_users' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Profiles]].
+     *
+     * @return \yii\db\ActiveQuery|ProfileQuery
+     */
+    public function getProfiles()
+    {
+        return $this->hasMany(Profile::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[UsersAgregators]].
+     *
+     * @return \yii\db\ActiveQuery|UsersAgregatorQuery
+     */
+    public function getUsersAgregators()
+    {
+        return $this->hasMany(UsersAgregator::className(), ['users_id' => 'id']);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return UserBaseQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new UserBaseQuery(get_called_class());
     }
 }

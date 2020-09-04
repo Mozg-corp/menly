@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # phpstorm project files
 .idea
 
@@ -35,7 +35,9 @@ tests/_support/_generated
 
 #db settings
 /config/db_local.php
-=======
+/config/mail_local.php
+#uploded files
+web/profiles
 assets/*
 !assets/.gitignore
 protected/runtime/*

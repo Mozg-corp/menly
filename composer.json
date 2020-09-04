@@ -21,7 +21,9 @@
         "ramsey/uuid": "^4.1",
         "monolog/monolog": "^2.1",
         "yiisoft/yii2-httpclient": "*",
-		"vova07/yii2-console-runner-extension": "*"
+		"vova07/yii2-console-runner-extension": "*",
+        "cebe/php-openapi": "^1.4",
+        "zircote/swagger-php": "^3.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

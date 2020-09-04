@@ -1,0 +1,50 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "menly.ru API",
+        "version": "1.0"
+    },
+    "paths": {
+        "/profile-web/create": {
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Create/Edit profile data.",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "multypart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Profile"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Profile successfuly created/edited"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Profile": {
+                "properties": {
+                    "firstname": {
+                        "type": "string"
+                    },
+                    "lastname": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

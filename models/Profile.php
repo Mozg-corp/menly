@@ -7,7 +7,14 @@ use yii\helpers\FileHelper;
 use yii\helpers\BaseFileHelper;
 use Ramsey\Uuid\Uuid;
 
-
+/**
+ * @OA\Component((required={"firstname", "lastname"}),
+ * @OA\Schema(
+ * @OA\Property(property="firstname", type="string"),
+ * @OA\Property(property="lastname", type="string"),
+ * @OA\Property(property="phone", type="string"),
+ )
+ */
 class Profile extends ProfileBase
 {
 	public $fotos = [
@@ -45,13 +52,35 @@ class Profile extends ProfileBase
      */
 	public $file_foto_license_backview;
 	
+	public $yandex;
+	public $gett;
+	public $citymobile;
+	public $uber;
+	
+	public function beforeValidate(){
+		$dates = [
+			'license_date',
+			'license_expire',
+			'birthdate',
+			'passport_date'
+		];
+		foreach($dates as $date){
+			$newDate= \Datetime::CreateFromFormat('d.m.Y',$this->{$date});
+			if($newDate){
+				$this->{$date} = $newDate->format('Y-m-d');
+			}
+			
+		}
+		return parent::beforeValidate();
+	}
 	/**
      * {@inheritdoc}
      */
     public function rules()
     {
         return array_merge([
-		
+			[['firstname','lastname','secondname', 'license_series', 'license_number', ], 'trim'],
+			[['license_date', 'license_expire', 'birthdate', 'passport_date'], 'date', 'format'=>'php:Y-m-d']
          ],parent::rules());
     }
 	private function loadFiles():void{
@@ -69,25 +98,26 @@ class Profile extends ProfileBase
 	}
 	public function fill($form){
 		$this->loadFiles();
-		if($this->validate()){
-			$uuid = $this->uuid ? $this->uuid : Uuid::uuid4()->toString();
-			$directory= 'profiles/' . $uuid;
-			FileHelper::createDirectory($directory);
-			for($i=0; $i<count($this->fotos); $i++){
-				try{
-					if($this->{$this->fotos[$i]}){
-						$filename = $this->{$this->fotos[$i]}->baseName . '.' . $this->{$this->fotos[$i]}->extension;
-						$path = $directory . '/'. $filename;
-						if($this->{$this->forms[$i]}){
-							BaseFileHelper::unlink($directory . '/' . $this->{$this->forms[$i]});
-						}
-						$this->{$this->fotos[$i]}->saveAs($path);
-						$this->{$this->forms[$i]} = $filename;
+		$uuid = $this->uuid ? $this->uuid : Uuid::uuid4()->toString();
+		$directory= 'profiles/' . $uuid;
+		FileHelper::createDirectory($directory);
+		for($i=0; $i<count($this->fotos); $i++){
+			try{
+				if($this->{$this->fotos[$i]}){
+					$filename = $this->{$this->fotos[$i]}->baseName . '.' . $this->{$this->fotos[$i]}->extension;
+					$path = $directory . '/'. $filename;
+					if($this->{$this->forms[$i]}){
+						file_exists($directory . '/' . $this->{$this->forms[$i]})
+						? BaseFileHelper::unlink($directory . '/' . $this->{$this->forms[$i]})
+						: null;
 					}
-				}catch(Exeption $e){
-					continue;
+					$this->{$this->fotos[$i]}->saveAs($path);
+					$this->{$this->forms[$i]} = $filename;
 				}
+			}catch(Exeption $e){
+				continue;
 			}
+		}
 			$this->uuid = $uuid;
 			$this->firstname = $form->firstname;
 			$this->secondname = $form->secondname;
@@ -102,6 +132,5 @@ class Profile extends ProfileBase
 			$this->license_series = $form->license_series;
 			$this->license_date = $form->license_date;
 			$this->license_expire = $form->license_expire;
-		}
 	}
 }
