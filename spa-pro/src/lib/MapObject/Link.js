@@ -1,6 +1,0 @@
-export default class Link{
-    constructor(from, to){
-        this.from = from;
-        this.to = to;
-    }
-}

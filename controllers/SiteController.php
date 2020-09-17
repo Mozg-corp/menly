@@ -16,16 +16,28 @@ use app\components\RbacComponent;
 use app\models\Post;
 use app\models\User;
 use yii\base\Component;
+use OpenApi as OA;
 
+// define("API_HOST", (YII_ENV_DEV === "production") ? "example.com" : "localhost");
 /**
-*
-			basepath="/"
+			basepath="/",
  *     @OA\Info(
 			version="1.0", 
 			title="menly.ru API",
-),
+		),
+
+			
+		 * @OA\SecurityScheme(
+		 *   securityScheme="api_key",
+		 *   type="apiKey",
+		 *   in="header",
+		 *   name="api_key"
+		 * )
+		 @OA\Security(
+			 ApiKeyAuth= [] 
+		 )
+
  */
- 
 class SiteController extends Controller
 {
     /**
@@ -122,7 +134,7 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
-
+	
 	public function actionAddadmin(){
 		$admin = new User();
 		$admin->phone = 79251234567;
@@ -159,5 +171,37 @@ class SiteController extends Controller
 		$openapi = \OpenApi\scan('../');
 		header('Content-Type: application/x-yaml');
 		echo $openapi->toYaml();
+	}
+	public function actionTest($id){
+		//print_r(\Yii::$app->authManager->getPermissionsByUser(\Yii::$app->user->getId()));
+		//\Yii::$app->user->loginByAccessToken('k2CPENB9Jv7NcvhvVC00Wp4SuvN0N7Lb');\app\models\Profile::findOne($id)]
+		$profile = new \app\models\Profile();
+		$profile->id =90;
+        if(\Yii::$app->user->can('viewOwnProfile', [ 'profile' => $profile])){
+			return 'ok';
+		}else{
+			return 'bad';
+		}
+	}
+	public function actionAddPermission(){
+		$am = \Yii::$app->authManager;
+		
+		$admin= $am->getRole('admin');
+		
+		$viewAllCars= $am->createPermission('updateAnyCar');
+        $viewAllCars->description = 'Изменение любой машины';
+
+        $am->add($viewAllCars);
+		$am->addChild($admin, $viewAllCars);
+	}
+	public function actionSee(){
+
+		$auth = file_exists('/'.@app.'/config/citymobile_auth_local.php')
+			? (require '/'.@app.'/config/citymobile_auth_local.php')
+			: [];
+		$registerer = new \app\services\CitymobileProfileRegister(new \app\models\Profile(), $auth);
+		$response = $registerer->register();
+		// print_r(require '/'.@app.'/config/citymobile_auth_local.php');
+		print_r($response);
 	}
 }

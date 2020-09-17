@@ -21,7 +21,7 @@ class RbacComponent
     // }
     public function canAdmin(){
 
-        foreach (\Yii::$app->authManager->getAssignments(\Yii::$app->user->getIdentity()->id) as $index => $assignment) {
+        foreach (\Yii::$app->authManager->getAssignments(\Yii::$app->user->identity->id) as $index => $assignment) {
 
 //            var_dump($assignment);
             if ($assignment->roleName === 'admin') {

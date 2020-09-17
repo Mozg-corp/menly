@@ -8,7 +8,21 @@ use yii\helpers\BaseFileHelper;
 use Ramsey\Uuid\Uuid;
 
 /**
- * @OA\Component((required={"firstname", "lastname"}),
+ * @OA\Component((required={'firstname', 
+					'secondname',
+					'lastname',
+					'birthdate',
+					'phone',
+					'passport_series',
+					'passport_number', 
+					'passport_giver', 
+					'passport_date', 
+					'registration_address', 
+					'license_series',
+					'license_number',
+					'license_date',
+					'license_expire'
+					}),
  * @OA\Schema(
  * @OA\Property(property="firstname", type="string"),
  * @OA\Property(property="lastname", type="string"),
@@ -17,45 +31,8 @@ use Ramsey\Uuid\Uuid;
  */
 class Profile extends ProfileBase
 {
-	public $fotos = [
-		'file_foto_selfie',
-		'file_foto_passport_fotopage',
-		'file_foto_passport_registrationpage',
-		'file_foto_license_frontview',
-		'file_foto_license_backview'
-	];
-	public $forms = [
-		'foto_selfie',
-		'foto_passport_fotopage',
-		'foto_passport_registrationpage',
-		'foto_license_frontview',
-		'foto_license_backview'
-	];
-    /**
-     * @var UploadedFile file attribute
-     */
-    public $file_foto_selfie;
-    /**
-     * @var UploadedFile file attribute
-     */
-	public $file_foto_passport_fotopage;
-    /**
-     * @var UploadedFile file attribute
-     */
-	public $file_foto_passport_registrationpage;
-    /**
-     * @var UploadedFile file attribute
-     */
-	public $file_foto_license_frontview;
-    /**
-     * @var UploadedFile file attribute
-     */
-	public $file_foto_license_backview;
-	
-	public $yandex;
-	public $gett;
-	public $citymobile;
-	public $uber;
+	const SCENARIO_CREATE = 'create profile';
+	const SCENARIO_UPDATE = 'update profile';
 	
 	public function beforeValidate(){
 		$dates = [
@@ -79,58 +56,58 @@ class Profile extends ProfileBase
     public function rules()
     {
         return array_merge([
+			[
+				[
+					'firstname', 
+					'secondname',
+					'lastname',
+					'birthdate',
+					'phone',
+					'passport_series',
+					'passport_number', 
+					'passport_giver', 
+					'passport_date', 
+					'registration_address', 
+					'license_series',
+					'license_number',
+					'license_date',
+					'license_expire'
+				], 'required', 'on' => self::SCENARIO_CREATE
+			],
 			[['firstname','lastname','secondname', 'license_series', 'license_number', ], 'trim'],
-			[['license_date', 'license_expire', 'birthdate', 'passport_date'], 'date', 'format'=>'php:Y-m-d']
+			[['license_date', 'license_expire', 'birthdate', 'passport_date'], 'date', 'format'=>'php:Y-m-d'],
+			[['user_id'], 'unique', 'on' => self::SCENARIO_CREATE],
+			[['user_id'], 'exist', 'on' => self::SCENARIO_UPDATE]
          ],parent::rules());
     }
-	private function loadFiles():void{
-		for($i=0; $i<count($this->fotos); $i++){
-			try{
-				if(property_exists($this, $this->fotos[$i])){
-					$file = UploadedFile::getInstance($this, $this->forms[$i]);
-					$this->{$this->fotos[$i]} = $file ? $file : null;
-				}
-			}catch(Exeption $e){
-				\Yii::debug($e);
-				continue;
+	public function fields(){
+		return [
+			'id',
+			'firstname',
+			'lastname',
+			'fio' => function(){
+				return $this->lastname . ' ' . $this->firstname . ' ' . $this->secondname;
+			},
+			'birthdate',
+			'phone',
+			'passport' => function(){
+				return [
+					'series' => $this->passport_series,
+					'number' => $this->passport_number,
+					'giver' => $this->passport_giver,
+					'date' => $this->passport_date,
+					'registration' => $this->registration_address
+				];
+			},
+			'license' => function(){
+				return [
+					'series' => $this->license_series,
+					'number' => $this->license_number,
+					'date' => $this->license_date,
+					'expire' => $this->license_expire
+				];
 			}
-		}
-	}
-	public function fill($form){
-		$this->loadFiles();
-		$uuid = $this->uuid ? $this->uuid : Uuid::uuid4()->toString();
-		$directory= 'profiles/' . $uuid;
-		FileHelper::createDirectory($directory);
-		for($i=0; $i<count($this->fotos); $i++){
-			try{
-				if($this->{$this->fotos[$i]}){
-					$filename = $this->{$this->fotos[$i]}->baseName . '.' . $this->{$this->fotos[$i]}->extension;
-					$path = $directory . '/'. $filename;
-					if($this->{$this->forms[$i]}){
-						file_exists($directory . '/' . $this->{$this->forms[$i]})
-						? BaseFileHelper::unlink($directory . '/' . $this->{$this->forms[$i]})
-						: null;
-					}
-					$this->{$this->fotos[$i]}->saveAs($path);
-					$this->{$this->forms[$i]} = $filename;
-				}
-			}catch(Exeption $e){
-				continue;
-			}
-		}
-			$this->uuid = $uuid;
-			$this->firstname = $form->firstname;
-			$this->secondname = $form->secondname;
-			$this->lastname = $form->lastname;
-			$this->phone = $form->phone;
-			$this->birthdate = $form->birthdate;
-			$this->passport_series = $form->passport_series;
-			$this->passport_number = $form->passport_number;
-			$this->passport_giver = $form->passport_giver;
-			$this->passport_date = $form->passport_date;
-			$this->registration_address = $form->registration_address;
-			$this->license_series = $form->license_series;
-			$this->license_date = $form->license_date;
-			$this->license_expire = $form->license_expire;
+			
+		];
 	}
 }

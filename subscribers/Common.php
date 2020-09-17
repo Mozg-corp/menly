@@ -10,4 +10,14 @@ class Common implements \Symfony\Component\EventDispatcher\EventSubscriberInterf
 		$notifier = \Yii::CreateObject(['class'=>\app\components\NotificationComponent::class, 'mailer' => \Yii::$app->mailer]);
 		$notifier->sendProfileCreatedNotification($event);
 	}
+
+	public static function newProfileEmailNotifier($event){
+		// $notifier = \Yii::CreateObject(['class'=>\app\components\NotificationComponent::class, 'mailer' => \Yii::$app->mailer]);
+		\Yii::$app->mailer->sendProfileCreatedNotification($event->sender);
+	}
+
+	public static function newCarEmailNotifier($event){
+		// $notifier = \Yii::CreateObject(['class'=>\app\components\NotificationComponent::class, 'mailer' => \Yii::$app->mailer]);
+		\Yii::$app->mailer->sendCarCreatedNotification($event->sender);
+	}
 }

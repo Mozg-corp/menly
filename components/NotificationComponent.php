@@ -11,4 +11,18 @@ class NotificationComponent extends Component{
 					->setTo('voiptek@yandex.ru')
 					->send();
 	}
+	public function sendProfileCreatedNotification($event){
+		$respond = $this->mailer->compose('profile_created', ['profile' => $event])
+					->setSubject('New profile created')
+					->setFrom('menly@iluka.ru')
+					->setTo('voiptek@yandex.ru')
+					->send();
+	}
+	public function sendCarCreatedNotification($event){
+		$respond = $this->mailer->compose('car_created', ['car' => $event])
+					->setSubject('New car created')
+					->setFrom('menly@iluka.ru')
+					->setTo('voiptek@yandex.ru')
+					->send();
+	}
 }

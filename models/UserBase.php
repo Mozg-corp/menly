@@ -14,6 +14,7 @@ use Yii;
  * @property string|null $auth_key
  * @property string|null $create_at
  * @property string|null $updated_at
+ * @property int|null $status
  *
  * @property Car[] $cars
  * @property Profile[] $profiles
@@ -37,9 +38,11 @@ class UserBase extends \yii\db\ActiveRecord
         return [
             [['phone', 'password_hash'], 'required'],
             [['create_at', 'updated_at'], 'safe'],
+            [['status'], 'integer'],
             [['phone'], 'string', 'max' => 20],
             [['password_hash'], 'string', 'max' => 300],
             [['token', 'auth_key'], 'string', 'max' => 150],
+            [['phone'], 'unique'],
         ];
     }
 
@@ -56,37 +59,8 @@ class UserBase extends \yii\db\ActiveRecord
             'auth_key' => 'Auth Key',
             'create_at' => 'Create At',
             'updated_at' => 'Updated At',
+            'status' => 'Status',
         ];
-    }
-
-    /**
-     * Gets query for [[Cars]].
-     *
-     * @return \yii\db\ActiveQuery|CarQuery
-     */
-    public function getCars()
-    {
-        return $this->hasMany(Car::className(), ['id_users' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Profiles]].
-     *
-     * @return \yii\db\ActiveQuery|ProfileQuery
-     */
-    public function getProfiles()
-    {
-        return $this->hasMany(Profile::className(), ['user_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[UsersAgregators]].
-     *
-     * @return \yii\db\ActiveQuery|UsersAgregatorQuery
-     */
-    public function getUsersAgregators()
-    {
-        return $this->hasMany(UsersAgregator::className(), ['users_id' => 'id']);
     }
 
     /**

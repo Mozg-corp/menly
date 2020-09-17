@@ -22,11 +22,6 @@ use Yii;
  * @property string|null $license_number
  * @property string|null $license_date
  * @property string|null $license_expire
- * @property string|null $foto_selfie
- * @property string|null $foto_passport_fotopage
- * @property string|null $foto_passport_registrationpage
- * @property string|null $foto_license_frontview
- * @property string|null $foto_license_backview
  * @property string|null $uuid
  * @property string|null $createdAt
  * @property string|null $updatedAt
@@ -57,7 +52,7 @@ class ProfileBase extends \yii\db\ActiveRecord
             [['phone'], 'string', 'max' => 20],
             [['passport_series', 'license_series'], 'string', 'max' => 4],
             [['passport_number', 'license_number'], 'string', 'max' => 6],
-            [['passport_giver', 'registration_address', 'foto_selfie', 'foto_passport_fotopage', 'foto_passport_registrationpage', 'foto_license_frontview', 'foto_license_backview'], 'string', 'max' => 255],
+            [['passport_giver', 'registration_address'], 'string', 'max' => 255],
             [['uuid'], 'string', 'max' => 36],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -84,11 +79,6 @@ class ProfileBase extends \yii\db\ActiveRecord
             'license_number' => 'License Number',
             'license_date' => 'License Date',
             'license_expire' => 'License Expire',
-            'foto_selfie' => 'Foto Selfie',
-            'foto_passport_fotopage' => 'Foto Passport Fotopage',
-            'foto_passport_registrationpage' => 'Foto Passport Registrationpage',
-            'foto_license_frontview' => 'Foto License Frontview',
-            'foto_license_backview' => 'Foto License Backview',
             'uuid' => 'Uuid',
             'createdAt' => 'Created At',
             'updatedAt' => 'Updated At',
@@ -99,7 +89,7 @@ class ProfileBase extends \yii\db\ActiveRecord
     /**
      * Gets query for [[User]].
      *
-     * @return \yii\db\ActiveQuery|UserQuery
+     * @return \yii\db\ActiveQuery|UserBaseQuery
      */
     public function getUser()
     {

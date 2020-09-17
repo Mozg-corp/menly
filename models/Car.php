@@ -22,13 +22,28 @@ use Yii;
  */
 class Car extends CarBase
 {
+	const SCENARIO_UPDATE = 'update car';
+	const SCENARIO_CREATE = 'create car';
      /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return array_merge([
-		
+			[['id_users'], 'unique', 'on' => self::SCENARIO_CREATE],
+			[['id_users'], 'exist', 'on' => self::SCENARIO_UPDATE],
+			[['year'], 'date', 'format'=>'php:Y'],
+			[
+				[
+					'brand', 
+					'model',
+					'vin',
+					'sts',
+					'registration',
+					'year',
+					'color'
+				], 'required', 'on' => self::SCENARIO_CREATE,
+			],
          ],parent::rules());
     }
 }

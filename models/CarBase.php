@@ -43,7 +43,7 @@ class CarBase extends \yii\db\ActiveRecord
             [['registration'], 'string', 'max' => 9],
             [['vin'], 'string', 'max' => 17],
             [['sts', 'license'], 'string', 'max' => 10],
-            [['id_users'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['id_users' => 'id']],
+            [['id_users'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['id_users' => 'id']],
         ];
     }
 

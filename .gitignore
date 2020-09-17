@@ -34,8 +34,7 @@ tests/_support/_generated
 /.vagrant
 
 #db settings
-/config/db_local.php
-/config/mail_local.php
+*_local.php
 #uploded files
 web/profiles
 assets/*

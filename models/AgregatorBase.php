@@ -12,7 +12,7 @@ use Yii;
  * @property string|null $apiv1
  * @property string|null $apiv2
  *
- * @property UsersAgregators[] $usersAgregators
+ * @property UsersAgregator[] $usersAgregators
  */
 class AgregatorBase extends \yii\db\ActiveRecord
 {
@@ -53,19 +53,19 @@ class AgregatorBase extends \yii\db\ActiveRecord
     /**
      * Gets query for [[UsersAgregators]].
      *
-     * @return \yii\db\ActiveQuery|UsersAgregatorsQuery
+     * @return \yii\db\ActiveQuery|UsersAgregatorQuery
      */
     public function getUsersAgregators()
     {
-        return $this->hasMany(UsersAgregators::className(), ['agregators_id' => 'id']);
+        return $this->hasMany(UsersAgregator::className(), ['agregators_id' => 'id']);
     }
 
     /**
      * {@inheritdoc}
-     * @return AgregatorQuery the active query used by this AR class.
+     * @return AgregatorBaseQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new AgregatorQuery(get_called_class());
+        return new AgregatorBaseQuery(get_called_class());
     }
 }
