@@ -37,7 +37,7 @@ tests/_support/_generated
 *_local.php
 #uploded files
 web/profiles
-assets/*
+web/assets/*
 !assets/.gitignore
 protected/runtime/*
 !protected/runtime/.gitignore
