@@ -9,7 +9,9 @@ define("API_HOST", (YII_ENV_DEV === "production") ? "example.com" : "localhost")
 *	 path="/api/v1/profiles",
 *    tags={"Profile"},
 *    summary="Get all profiles.",
-
+	 
+		security = {{"bearerAuth":{}}},
+	 
 *     @OA\Response(
 *         response = 200,
 *         description = "Profile successfuly created/edited",
