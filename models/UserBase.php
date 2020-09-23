@@ -14,11 +14,6 @@ use Yii;
  * @property string|null $auth_key
  * @property string|null $create_at
  * @property string|null $updated_at
- * @property int|null $status
- *
- * @property Car[] $cars
- * @property Profile[] $profiles
- * @property UsersAgregator[] $usersAgregators
  */
 class UserBase extends \yii\db\ActiveRecord
 {
@@ -38,8 +33,7 @@ class UserBase extends \yii\db\ActiveRecord
         return [
             [['phone', 'password_hash'], 'required'],
             [['create_at', 'updated_at'], 'safe'],
-            [['status'], 'integer'],
-            [['phone'], 'string', 'max' => 20],
+            [['phone'], 'string', 'max' => 50],
             [['password_hash'], 'string', 'max' => 300],
             [['token', 'auth_key'], 'string', 'max' => 150],
             [['phone'], 'unique'],
@@ -59,16 +53,6 @@ class UserBase extends \yii\db\ActiveRecord
             'auth_key' => 'Auth Key',
             'create_at' => 'Create At',
             'updated_at' => 'Updated At',
-            'status' => 'Status',
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return UserBaseQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new UserBaseQuery(get_called_class());
     }
 }

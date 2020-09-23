@@ -16,28 +16,8 @@ use app\components\RbacComponent;
 use app\models\Post;
 use app\models\User;
 use yii\base\Component;
-use OpenApi as OA;
 
-// define("API_HOST", (YII_ENV_DEV === "production") ? "example.com" : "localhost");
-/**
-			basepath="/",
- *     @OA\Info(
-			version="1.0", 
-			title="menly.ru API",
-		),
 
-			
-		 * @OA\SecurityScheme(
-		 *   securityScheme="api_key",
-		 *   type="apiKey",
-		 *   in="header",
-		 *   name="api_key"
-		 * )
-		 @OA\Security(
-			 ApiKeyAuth= [] 
-		 )
-
- */
 class SiteController extends Controller
 {
     /**
@@ -137,7 +117,7 @@ class SiteController extends Controller
 	
 	public function actionAddadmin(){
 		$admin = new User();
-		$admin->phone = 79251234567;
+		$admin->phone = "79251234567";
 		$admin->password = 'menly_4ever';
 		$admin->password_hash = \Yii::$app->getSecurity()->generatePasswordHash($admin->password);
         $admin->auth_key = \Yii::$app->getSecurity()->generateRandomString();
