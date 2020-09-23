@@ -43,4 +43,3 @@ protected/runtime/*
 !protected/runtime/.gitignore
 protected/data/*.db
 themes/classic/views/
->>>>>>> 3ad6713604e7e61a9107c786bdbb5a5be5e01a8b

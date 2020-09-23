@@ -199,7 +199,10 @@ class SiteController extends Controller
 		$auth = file_exists('/'.@app.'/config/citymobile_auth_local.php')
 			? (require '/'.@app.'/config/citymobile_auth_local.php')
 			: [];
-		$registerer = new \app\services\CitymobileProfileRegister(new \app\models\Profile(), $auth);
+		$citymobile = \app\models\Agregator::find()->where(['name' => 'Ситимобиль'])->one();
+		$client = new \yii\httpclient\Client(['baseUrl'=> $citymobile->apiv1]);
+		$profile = \app\models\Profile::findOne(37);
+		$registerer = new \app\services\CitymobileProfileRegister($profile, $auth, $client);
 		$response = $registerer->register();
 		// print_r(require '/'.@app.'/config/citymobile_auth_local.php');
 		print_r($response);
