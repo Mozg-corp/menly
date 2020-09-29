@@ -14,7 +14,7 @@ class m200928_123526_viewAllCarsPermission extends Migration
     {
 		$am = \Yii::$app->authManager;
 		
-		$role= $am->getRole('admin')
+		$role= $am->getRole('admin');
 		
 		$viewAllCars= $am->createPermission('viewAllCars');
         $viewAllCars->description = 'Просмотр любых машин';
@@ -29,9 +29,9 @@ class m200928_123526_viewAllCarsPermission extends Migration
      */
     public function safeDown()
     {
-        echo "m200928_123526_viewAllCarsPermission cannot be reverted.\n";
-
-        return false;
+		$am = \Yii::$app->authManager;
+		$p = $am->getPermission('viewAllCars');
+		$am->remove($p);
     }
 
     /*

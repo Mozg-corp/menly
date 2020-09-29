@@ -14,7 +14,7 @@ class m200928_123150_viewOwnCarPermission extends Migration
     {
 		$am = \Yii::$app->authManager;
 		
-		$role= $am->getRole('candidate')
+		$role= $am->getRole('candidate');
 		
 		$viewOwnCar= $am->createPermission('viewOwnCar');
         $viewOwnCar->description = 'Просмотр своей машины';
@@ -33,9 +33,11 @@ class m200928_123150_viewOwnCarPermission extends Migration
      */
     public function safeDown()
     {
-        echo "m200928_123150_viewOwnCarPermission cannot be reverted.\n";
-
-        return false;
+        $am = \Yii::$app->authManager;
+		$p = $am->getPermission('viewOwnCar');
+		$r = $am->getRule('carOwnerRule');
+		$am->remove($r);
+		$am->remove($p);
     }
 
     /*

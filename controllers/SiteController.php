@@ -174,6 +174,20 @@ class SiteController extends Controller
         $am->add($viewAllCars);
 		$am->addChild($admin, $viewAllCars);
 	}
+	public function actionDeletePermission(){
+		$am = \Yii::$app->authManager;
+		$p = $am->getPermission('createProfile');
+		$am->remove($p);
+		// $r = $am->getRule('carOwnerRule');
+		// $am->remove($r);
+		// $admin= $am->getRole('admin');
+		
+		// $viewAllCars= $am->createPermission('updateAnyCar');
+        // $viewAllCars->description = 'Изменение любой машины';
+
+        // $am->add($viewAllCars);
+		// $am->addChild($admin, $viewAllCars);
+	}
 	public function actionSee(){
 
 		$auth = file_exists('/'.@app.'/config/citymobile_auth_local.php')
@@ -198,9 +212,9 @@ class SiteController extends Controller
 			: [];
 		$gett = new \app\services\GettService($authGett);
 		$client = new \app\services\HttpClientService(['citymobile' => $citymobile, 'gett' => $gett], ['headers' => [
-																		'Content-Type' => 'application/json'
-																		]
-																	]);
+																										'Content-Type' => 'application/json'
+																									  ]
+													  ]);
 		// $client = new \app\services\HttpClientService($citymobile);
 		// $client = new \GuzzleHttp\Client();
 		$responses = $client->loginAll();

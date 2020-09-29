@@ -28,9 +28,9 @@ class m200919_174433_updateAnyCarPermission extends Migration
      */
     public function safeDown()
     {
-		        echo "m200919_174725_viewAllProfilesPermission cannot be reverted.\n";
-
-        return false;
+		$am = \Yii::$app->authManager;
+		$p = $am->getPermission('updateAnyCar');
+		$am->remove($p);
     }
 
     /*

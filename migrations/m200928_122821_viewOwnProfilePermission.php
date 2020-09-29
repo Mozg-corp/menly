@@ -14,7 +14,7 @@ class m200928_122821_viewOwnProfilePermission extends Migration
     {
 		$am = \Yii::$app->authManager;
 		
-		$role= $am->getRole('candidate')
+		$role= $am->getRole('candidate');
 		
 		$viewOwnProfile= $am->createPermission('viewOwnProfile');
         $viewOwnProfile->description = 'Просмотр своего Профиля';
@@ -33,9 +33,11 @@ class m200928_122821_viewOwnProfilePermission extends Migration
      */
     public function safeDown()
     {
-        echo "m200928_122821_viewOwnProfilePermission cannot be reverted.\n";
-
-        return false;
+        $am = \Yii::$app->authManager;
+		$p = $am->getPermission('viewOwnProfile');
+		$r = $am->getRule('profileOwnerRule');
+		$am->remove($r);
+		$am->remove($p);
     }
 
     /*

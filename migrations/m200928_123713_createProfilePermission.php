@@ -14,7 +14,7 @@ class m200928_123713_createProfilePermission extends Migration
     {
 		$am = \Yii::$app->authManager;
 		
-		$role= $am->getRole('candidate')
+		$role= $am->getRole('candidate');
 		
 		$createProfile= $am->createPermission('createProfile');
         $createProfile->description = 'Просмотр любых машин';
@@ -29,9 +29,9 @@ class m200928_123713_createProfilePermission extends Migration
      */
     public function safeDown()
     {
-        echo "m200928_123713_createProfilePermission cannot be reverted.\n";
-
-        return false;
+        $am = \Yii::$app->authManager;
+		$p = $am->getPermission('createProfile');
+		$am->remove($p);
     }
 
     /*

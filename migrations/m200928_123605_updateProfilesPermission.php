@@ -14,7 +14,7 @@ class m200928_123605_updateProfilesPermission extends Migration
     {
 		$am = \Yii::$app->authManager;
 		
-		$role= $am->getRole('admin')
+		$role= $am->getRole('admin');
 		
 		$updateProfiles= $am->createPermission('updateProfiles');
         $updateProfiles->description = 'Просмотр любых машин';
@@ -29,9 +29,9 @@ class m200928_123605_updateProfilesPermission extends Migration
      */
     public function safeDown()
     {
-        echo "m200928_123605_updateProfilesPermission cannot be reverted.\n";
-
-        return false;
+        $am = \Yii::$app->authManager;
+		$p = $am->getPermission('updateProfiles');
+		$am->remove($p);
     }
 
     /*
