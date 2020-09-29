@@ -187,4 +187,24 @@ class SiteController extends Controller
 		// print_r(require '/'.@app.'/config/citymobile_auth_local.php');
 		print_r($response);
 	}
+	public function actionGuzzle(){
+		// $client = new \app\services\HttpClientService(['base_uri' => 'https://randomuser.me/api/']);
+		$authCitymobile = file_exists('/'.@app.'/config/citymobile_auth_local.php')
+			? (require '/'.@app.'/config/citymobile_auth_local.php')
+			: [];
+		$citymobile = new \app\services\CitymobileService($authCitymobile);
+		$authGett = file_exists('/'.@app.'/config/gett_auth_local.php')
+			? (require '/'.@app.'/config/gett_auth_local.php')
+			: [];
+		$gett = new \app\services\GettService($authGett);
+		$client = new \app\services\HttpClientService(['citymobile' => $citymobile, 'gett' => $gett], ['headers' => [
+																		'Content-Type' => 'application/json'
+																		]
+																	]);
+		// $client = new \app\services\HttpClientService($citymobile);
+		// $client = new \GuzzleHttp\Client();
+		$responses = $client->loginAll();
+		// return json_encode((new \app\services\CitymobileService())->loginRequest());
+		return json_encode($responses);
+	}
 }

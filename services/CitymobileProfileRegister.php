@@ -37,17 +37,7 @@ class CitymobileProfileRegister implements RegisterInterface{
 							->send();
 		return $response->data;		
 		return $response->isOk? $response->data : $response;
-		// $request = $client->createRequest()
-							// ->setMethod('post')
-							// ->addHeaders(['content-type' => 'application/json'])
-							// ->addHeaders(['Authorization' => 'ZmrOTXOvioph+fEQLPyNRiMEDKQXXz+adlcIpo'])
-							// ->addHeaders(['X-Client-ID' => 'taxi/park/8e974b78dc284add96cf02515098d1e2'])
-							// ->setUrl('v1/parks/driver-profiles/list')
-							// ->setFormat(Client::FORMAT_JSON)
-							// ->setContent(
-								// '{"fields": {"driver_profile": []}, "limit": 10, "query": {"park": {"car": {  }, "id": "8e974b78dc284add96cf02515098d1e2"}}}'
-							// )
-							// ->send();
+		
 	}
 	public function register(){
 		$token = $this->login()['token'];

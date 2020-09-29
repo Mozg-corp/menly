@@ -1,3 +1,4 @@
+Создать файл db_local.php с данными для подключения к БД
 В папке проекта:
 	Docker-compose up
 В docker машине menly_php_1
