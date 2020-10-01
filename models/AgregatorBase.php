@@ -11,6 +11,9 @@ use Yii;
  * @property string $name
  * @property string|null $apiv1
  * @property string|null $apiv2
+ * @property string|null $token
+ * @property int|null $expire
+ * @property string|null $refresh_token
  *
  * @property UsersAgregator[] $usersAgregators
  */
@@ -31,8 +34,10 @@ class AgregatorBase extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
+            [['token'], 'string'],
+            [['expire'], 'integer'],
             [['name'], 'string', 'max' => 50],
-            [['apiv1', 'apiv2'], 'string', 'max' => 255],
+            [['apiv1', 'apiv2', 'refresh_token'], 'string', 'max' => 255],
             [['name'], 'unique'],
         ];
     }
@@ -47,6 +52,9 @@ class AgregatorBase extends \yii\db\ActiveRecord
             'name' => 'Name',
             'apiv1' => 'Apiv1',
             'apiv2' => 'Apiv2',
+            'token' => 'Token',
+            'expire' => 'Expire',
+            'refresh_token' => 'Refresh Token',
         ];
     }
 

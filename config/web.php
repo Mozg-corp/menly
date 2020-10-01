@@ -5,13 +5,17 @@ use yii\rbac\DbManager;
 use yii\rest\UrlRule;
 use yii\web\JsonParser;
 
-$params = require __DIR__ . '/params.php';
+$params = file_exists(__DIR__ . '/params_local.php')
+			?
+			(require __DIR__ . '/params_local.php')
+			:
+			(require __DIR__ . '/params.php');
 $db = file_exists(__DIR__ . '/db_local.php')?
     (require __DIR__ . '/db_local.php')
     :(require __DIR__ . '/db.php');
-$transport = file_exists(__DIR__.'/mail_local.php')
-			? (require __DIR__.'/mail_local.php')
-			: [];
+// $transport = file_exists(__DIR__.'/mail_local.php')
+			// ? (require __DIR__.'/mail_local.php')
+			// : [];
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
@@ -33,7 +37,11 @@ $config = [
         ],
         'auth' => ['class' => app\components\AuthComponent::class],
         'rbac' => ['class' => app\components\RbacComponent::class],
-		'mailer' => ['class' => app\components\NotificationComponent::class],
+		'notifier' => ['class' => app\components\NotificationComponent::class],
+		'async' => [
+            'class' => 'vxm\async\Async',
+            'appConfigFile' => '@app/config/async.php' // optional when you need to use yii feature in async process.
+        ],
 		'consoleRunner' => [
 			'class' => 'vova07\console\ConsoleRunner',
 			'file' => '../vendor/yiisoft/yii2/yii' // or an absolute path to console file
@@ -47,6 +55,16 @@ $config = [
 			'enableCookieValidation' => false,
         	'enableCsrfValidation'   => false
         ],
+		'response' => [
+			'formatters' => [
+				\yii\web\Response::FORMAT_JSON => [
+					'class' => 'yii\web\JsonResponseFormatter',
+					'prettyPrint' => YII_DEBUG, // use "pretty" output in debug mode
+					'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+					// ...
+				],
+			],
+		],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -62,7 +80,7 @@ $config = [
             'class' => 'yii\swiftmailer\Mailer',
             'useFileTransport' => false,
 			'enableSwiftMailerLogging' => true,
-			'transport' => $transport
+			'transport' => $params['transport']
         ],
 
         'log' => [
@@ -94,13 +112,15 @@ $config = [
                 [
 					'class'=>UrlRule::class,
                     'controller' => 'agregator',
-					'prefix' => 'api/v1'
+					'prefix' => 'api/v1',
+					'except' => ['delete']
                 ],
                 [
 					'class'=>UrlRule::class,
                     'controller' => 'user-agregator',
 					'prefix' => 'api/v1',
-					'pluralize' =>false
+					'pluralize' =>false,
+					'except' => ['delete']
                 ],
                 [
 					'class'=>UrlRule::class,

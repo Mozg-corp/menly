@@ -7,29 +7,8 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use app\models\Profile;
-/**
-* @OA\Post(
-*	 path="/profile-web/create",
-*    tags={"Profile"},
-*    summary="Create/Edit profile data.",
-	@OA\RequestBody(
-*	    required=false,
-		@OA\MediaType(
-			mediaType="multypart/form-data",
-			@OA\Schema(
-				schema="Profile",
-				type="object",
-				ref="#/components/schemas/Profile"
-			)
-		)
-),
-*     @OA\Response(
-*         response = 200,
-*         description = "Profile successfuly created/edited",
-*         @OA\Schema(ref = "#components/schemas/Profile"),
-*     ),
-)
-*/
+
+
 class ProfileWebController extends \yii\web\Controller
 {
 	public $enableCsrfValidation = false;

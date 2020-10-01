@@ -6,16 +6,16 @@ use Yii;
 use yii\web\IdentityInterface;
 
 /**
- * This is the model class for table "users".
- *
- * @property int $id
- * @property string $phone
- * @property string $password_hash
- * @property string|null $token
- * @property string|null $auth_key
- * @property string|null $create_at
- * @property string|null $updated_at
+
+ * @OA\Component(),
+ * @OA\Schema(
+	required={"phone", "password"},
+ * @OA\Property(property="phone", type="string", example="7991234567"),
+ * @OA\Property(property="password", type="string"),
+ * @OA\Property(property="password_repeat", type="string"),
+ * )
  */
+
 class User extends UserBase implements IdentityInterface
 {
      public $password;
@@ -66,6 +66,7 @@ class User extends UserBase implements IdentityInterface
 			}
 		}
         return array_merge([
+            ['password', 'required'],
             ['password', 'string', 'min' => 8],
 			['password_repeat', 'compare', 'compareAttribute' => 'password'],
 			['phone', 'match', 'pattern' => '/^[8,7]\d{3}\d{3}\d{2}\d{2}/', 'message' => 'Телефон, должен быть в формате 8XXXXXXXXXX или 7XXXXXXXXXX'],

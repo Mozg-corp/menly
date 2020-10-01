@@ -16,11 +16,11 @@ class m200919_174433_updateAnyCarPermission extends Migration
 		
 		$admin= $am->getRole('admin');
 		
-		$viewAllCars= $am->createPermission('updateAnyCar');
-        $viewAllCars->description = 'Изменение любой машины';
+		$updateAnyCar= $am->createPermission('updateAnyCar');
+        $updateAnyCar->description = 'Изменение любой машины';
 
-        $am->add($viewAllCars);
-		$am->addChild($admin, $viewAllCars);
+        $am->add($updateAnyCar);
+		$am->addChild($admin, $updateAnyCar);
     }
 
     /**

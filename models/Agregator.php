@@ -1,18 +1,22 @@
 <?php
 
 namespace app\models;
-
+use 
 use Yii;
 
 /**
- * This is the model class for table "agregators".
- *
- * @property int $id
- * @property string $name
- * @property string|null $apiv1
- * @property string|null $apiv2
- *
- * @property UsersAgregators[] $usersAgregators
+*@OA\Schema(
+	required={"name"},
+ * @OA\Property(property="id", type="integer"),
+ 	 @OA\Property(property="name", type="string"),
+	 @OA\Property(property="apiv1", type="string"),
+	 @OA\Property(property="apiv2", type="string"),
+	 @OA\Property(property="token", type="string"),
+	 @OA\Property(property="expire", type="integer"),
+	 @OA\Property(property="refresh_token", type="string")
+)
+ */
+)
  */
 class Agregator extends AgregatorBase
 {
@@ -29,4 +33,20 @@ class Agregator extends AgregatorBase
 			[['name'], 'exist', 'on' => self::SCENARIO_UPDATE],
          ],parent::rules());
     }
+	 /**
+     * {@inheritdoc}
+     * @return AgregatorBaseQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new AgregatorQuery(get_called_class());
+    }
+	public function fields(){
+		return [
+			'id',
+			'name',
+			'apiv1',
+			'apiv2'
+		];
+	}
 }

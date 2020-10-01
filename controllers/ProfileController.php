@@ -14,8 +14,50 @@ define("API_HOST", (YII_ENV_DEV === "production") ? "example.com" : "localhost")
 	 
 *     @OA\Response(
 *         response = 200,
-*         description = "Profile successfuly created/edited",
-*         @OA\Schema(ref = "#components/schemas/Profile"),
+*         description = "List of Profiles",
+*         @OA\JsonContent(type="array", @OA\Items(ref = "#/components/schemas/ProfileResponse")),
+*     )
+),* 
+@OA\Get(
+*	 path="/api/v1/profiles/{id}",
+*    tags={"Profile"},
+*    summary="Get single profile.",
+	 
+		security = {{"bearerAuth":{}}},
+	 @OA\Parameter(
+		name="id",
+		in="path",
+		required=true
+	 ),
+*     @OA\Response(
+*         response = 200,
+*         description = "Single Profile",
+*         @OA\JsonContent(ref = "#/components/schemas/ProfileResponse"),
+*     ),
+),* 
+@OA\Post(
+*	 path="/api/v1/profiles",
+*    tags={"Profile"},
+*    summary="Create new profile.",
+	 
+		security = {{"bearerAuth":{}}},
+	 @OA\RequestBody(
+*         description="Profile object to be created",
+*         required=true,
+		  @OA\JsonContent(ref="#/components/schemas/Profile")
+	 ),
+*     @OA\Response(
+*         response = 200,
+*         description = "Single Profile",
+*         @OA\JsonContent(ref = "#/components/schemas/ProfileResponse"),
+*     ),
+*     @OA\Response(
+*         response = 422,
+*         description = "Data Validation Failed",
+*         @OA\JsonContent(@OA\Items(
+				@OA\Property(property="field", type="string"),
+				@OA\Property(property="message", type="string")
+			)),
 *     ),
 )
 */
@@ -30,7 +72,7 @@ class ProfileController extends \app\controllers\BaseController
 		return \Yii::$app->request;
 	}
 	public function checkAccess($action, $model = null, $params=[]){
-		
+		if(\Yii::$app->rbac->canAdmin())return true;
 		switch($action){
 			case 'view': 
 				if(!\Yii::$app->user->can('viewOwnProfile', [ 'profile' => $model])){

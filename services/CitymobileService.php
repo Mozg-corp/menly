@@ -2,12 +2,13 @@
 
 class CitymobileService{
 	public $auth;
-	public $name = 'citymobile';
+	const NAME = 'Ситимобиль';
 	public function __construct(Array $auth){
 		$this->auth = $auth;
 	}
-	public function loginRequest(){
-		$request =  new \GuzzleHttp\Psr7\Request('POST', 'https://fleet.city-mobil.ru/api/1.0/user/identity');
+	public function loginRequest($api_url){
+		$auth_url = $api_url . '/user/identity';
+		$request =  new \GuzzleHttp\Psr7\Request('POST', $auth_url);
 		return $request;
 	}
 	public function loginData(){

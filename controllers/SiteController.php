@@ -20,31 +20,6 @@ use yii\base\Component;
 
 class SiteController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * {@inheritdoc}
@@ -70,88 +45,22 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
-    public function actionIndex()
-    {
-        return $this->render('index');
-    }
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
-		 
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
 	
-	public function actionAddadmin(){
-		$admin = new User();
-		$admin->phone = "79251234567";
-		$admin->password = 'menly_4ever';
-		$admin->password_hash = \Yii::$app->getSecurity()->generatePasswordHash($admin->password);
-        $admin->auth_key = \Yii::$app->getSecurity()->generateRandomString();
-        $admin->token = \Yii::$app->getSecurity()->generateRandomString();
+	// public function actionAddadmin(){
+		// $admin = new User();
+		// $admin->phone = "79251234567";
+		// $admin->password = 'menly_4ever';
+		// $admin->password_hash = \Yii::$app->getSecurity()->generatePasswordHash($admin->password);
+        // $admin->auth_key = \Yii::$app->getSecurity()->generateRandomString();
+        // $admin->token = \Yii::$app->getSecurity()->generateRandomString();
 
-        if($admin->save()){
-            // $role = \Yii::$app->authManager->getRole('admin');
-            // \Yii::$app->authManager->assign($role, $admin->getId());
-            return true;
-        }else{
-			print_r($admin->errors);
-		}
-	}
-	public function actionAddposts(){
-		for($i=1;$i<10;$i++){
-			$post = new Post();
-			$post->title = 'Заголовок '.$i;
-			$post->preview = 'Какой-то текст '.$i;
-			$post->body = 'Какой-то текст '.$i.' и его более длинное продолжение';
-			$post->id_users = 1;
-			$post->img = 'https://via.placeholder.com/400x200';
-			$post->postedAt = (new \DateTime('01/07/2020'))->add(new \DateInterval( "P".$i."D" ))->format('Y-m-d H:i:s');
-			
-			if(!$post->save()){
-				print_r($post->errors);
-			}
-			
-		}
-	}
-	public function actionApi(){
-		$openapi = \OpenApi\scan('../');
-		header('Content-Type: application/x-yaml');
-		echo $openapi->toYaml();
-	}
+        // if($admin->save()){
+            // return true;
+        // }else{
+			// print_r($admin->errors);
+		// }
+	// }
 	public function actionTest($id){
 		//print_r(\Yii::$app->authManager->getPermissionsByUser(\Yii::$app->user->getId()));
 		//\Yii::$app->user->loginByAccessToken('k2CPENB9Jv7NcvhvVC00Wp4SuvN0N7Lb');\app\models\Profile::findOne($id)]
@@ -163,21 +72,21 @@ class SiteController extends Controller
 			return 'bad';
 		}
 	}
-	public function actionAddPermission(){
-		$am = \Yii::$app->authManager;
+	// public function actionAddPermission(){
+		// $am = \Yii::$app->authManager;
 		
-		$admin= $am->getRole('admin');
+		// $admin= $am->getRole('admin');
 		
-		$viewAllCars= $am->createPermission('updateAnyCar');
-        $viewAllCars->description = 'Изменение любой машины';
+		// $viewAllCars= $am->createPermission('updateAnyCar');
+        // $viewAllCars->description = 'Изменение любой машины';
 
-        $am->add($viewAllCars);
-		$am->addChild($admin, $viewAllCars);
-	}
-	public function actionDeletePermission(){
-		$am = \Yii::$app->authManager;
-		$p = $am->getPermission('createProfile');
-		$am->remove($p);
+        // $am->add($viewAllCars);
+		// $am->addChild($admin, $viewAllCars);
+	// }
+	// public function actionDeletePermission(){
+		// $am = \Yii::$app->authManager;
+		// $p = $am->getPermission('createProfile');
+		// $am->remove($p);
 		// $r = $am->getRule('carOwnerRule');
 		// $am->remove($r);
 		// $admin= $am->getRole('admin');
@@ -187,7 +96,7 @@ class SiteController extends Controller
 
         // $am->add($viewAllCars);
 		// $am->addChild($admin, $viewAllCars);
-	}
+	//}
 	public function actionSee(){
 
 		$auth = file_exists('/'.@app.'/config/citymobile_auth_local.php')
@@ -202,23 +111,45 @@ class SiteController extends Controller
 		print_r($response);
 	}
 	public function actionGuzzle(){
-		// $client = new \app\services\HttpClientService(['base_uri' => 'https://randomuser.me/api/']);
-		$authCitymobile = file_exists('/'.@app.'/config/citymobile_auth_local.php')
-			? (require '/'.@app.'/config/citymobile_auth_local.php')
-			: [];
-		$citymobile = new \app\services\CitymobileService($authCitymobile);
-		$authGett = file_exists('/'.@app.'/config/gett_auth_local.php')
-			? (require '/'.@app.'/config/gett_auth_local.php')
-			: [];
-		$gett = new \app\services\GettService($authGett);
-		$client = new \app\services\HttpClientService(['citymobile' => $citymobile, 'gett' => $gett], ['headers' => [
-																										'Content-Type' => 'application/json'
-																									  ]
-													  ]);
-		// $client = new \app\services\HttpClientService($citymobile);
-		// $client = new \GuzzleHttp\Client();
-		$responses = $client->loginAll();
+		$ag = \app\models\Agregator::find()->select(['name','token','refresh_token','expire'])->where(['name' => ['Ситимобиль','Gett']])->all();
+		print_r($ag[1]);
+		// if(){}else{
+			// \Yii::$app->async->run(new \app\async\CityAuthLoader());
+			// \Yii::$app->async->run(new \app\async\GettAuthLoader());
+			// $auths = \Yii::$app->async->wait();
+			// $citymobile = new \app\services\CitymobileService($auths[0]);
+			// $gett = new \app\services\GettService($auths[1]);
+			// $agregators = [
+							// \app\services\CitymobileService::NAME => $citymobile, 
+							// \app\services\GettService::NAME => $gett
+						// ];
+			// $client = new \app\services\HttpClientService($agregators, ['headers' => [
+																						// 'Content-Type' => 'application/json'
+																					  // ]
+																		// ]);
+
+			// $responses = $client->loginAll();
+			// forEach($agregators as $name => $agregatorService){
+				// $body = json_decode($responses[$name]['value']->getBody()->getContents());
+				// $agregator = \app\models\Agregator::find()->getAgregatorByName($name);;
+				// $agregator->token = isset($body->token)?$body->token:$body->access_token;
+				// $agregator->refresh_token = isset($body->refresh_token)?$body->refresh_token:null;
+				// $agregator->expire = time() + 7200;
+				// $agregator->save();
+			// }
+		// }
+		//return;
 		// return json_encode((new \app\services\CitymobileService())->loginRequest());
-		return json_encode($responses);
+		return json_encode($responses, JSON_UNESCAPED_UNICODE);
+		//print_r($responses['gett']['reason']);
+		// print_r($responses);
+	}
+	public function actionAgregators(){
+		$agr = \app\models\Agregator::find()->findAgregatorByName('Ситимобиль');
+
+		print_r($agr);
+	}
+	public function actionParams(){
+		print_r(\Yii::$app->params);
 	}
 }

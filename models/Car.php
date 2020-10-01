@@ -5,20 +5,29 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "cars".
- *
- * @property int $id
- * @property string|null $brand
- * @property string|null $model
- * @property string|null $year
- * @property string|null $color
- * @property string|null $registration
- * @property string|null $vin
- * @property string|null $sts
- * @property string|null $license
- * @property int $id_users
- *
- * @property User $user
+ * @OA\Schema(
+	required={
+		"brand",
+		"model",
+		"vin",
+		"sts",
+		"registration",
+		"year",
+		"color",
+		"license",
+		"id_users"
+	},
+ * @OA\Property(property="id", type="integer"),
+ * @OA\Property(property="brand", type="string", example="Mercedes"),
+ * @OA\Property(property="model", type="string", example="600"),
+ * @OA\Property(property="year", type="string", format="date-time", example="2000"),
+ * @OA\Property(property="color", type="string", example="синий"),
+ * @OA\Property(property="registration", type="string"),
+ * @OA\Property(property="vin", type="string", example="XXXXXXX"),
+ * @OA\Property(property="sts", type="string", example="XXXXXXX"),
+ * @OA\Property(property="license", type="string", example="XXXXXXXXXX"),
+ * @OA\Property(property="id_users", type="integer"),
+ ),
  */
 class Car extends CarBase
 {
@@ -41,9 +50,24 @@ class Car extends CarBase
 					'sts',
 					'registration',
 					'year',
+					'license',
 					'color'
 				], 'required', 'on' => self::SCENARIO_CREATE,
 			],
          ],parent::rules());
     }
+	public function fields(){
+		return [
+			'id',
+			'brand',
+			'model',
+			'year',
+			'color',
+			'registration',
+			'vin',
+			'sts',
+			'license',
+			'id_users'
+		];
+	}
 }

@@ -7,28 +7,13 @@ namespace app\models;
  *
  * @see AgregatorBase
  */
-class AgregatorQuery extends \yii\db\ActiveQuery
+class AgregatorQuery extends \app\models\AgregatorBaseQuery
 {
-    /*public function active()
-    {
-        return $this->andWhere('[[status]]=1');
-    }*/
 
-    /**
-     * {@inheritdoc}
-     * @return AgregatorBase[]|array
-     */
-    public function all($db = null)
-    {
-        return parent::all($db);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return AgregatorBase|array|null
-     */
-    public function one($db = null)
-    {
-        return parent::one($db);
-    }
+	public function getApies(){
+		return $this->select(['name', 'apiv1', 'apiv2'])->all();
+	}
+	public function getAgregatorByName(string $name):?\app\models\Agregator{
+		return $this->where(['name' => $name])->one();
+	}
 }
