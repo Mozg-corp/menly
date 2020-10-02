@@ -106,7 +106,11 @@ class Profile extends ProfileBase
 				return $this->lastname . ' ' . $this->firstname . ' ' . $this->secondname;
 			},
 			'birthdate',
-			'phone',
+			'phone'
+		];
+	}
+	public function extraFields(){
+		return [
 			'passport' => function(){
 				return [
 					'series' => $this->passport_series,
@@ -124,7 +128,6 @@ class Profile extends ProfileBase
 					'expire' => $this->license_expire
 				];
 			}
-			
 		];
 	}
 }

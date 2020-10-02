@@ -10,6 +10,10 @@ use OpenApi as OA;
 	 
 		security = {{"bearerAuth":{}}},
 	 
+	 @OA\Parameter(
+	  name="expand",
+	  in="query"
+	 ),
 *     @OA\Response(
 *         response = 200,
 *         description = "List of all Agregators",
@@ -25,6 +29,10 @@ use OpenApi as OA;
 		name="id",
 		in="path",
 		required=true
+	 ),
+	 @OA\Parameter(
+	  name="expand",
+	  in="query"
 	 ),
 *     @OA\Response(
 *         response = 200,
