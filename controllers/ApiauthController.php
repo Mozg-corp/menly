@@ -7,31 +7,32 @@
  *  ]
  */
 namespace app\controllers;
-
+use Yii;
 use app\models\User;
 use yii\helpers\Json;
 use yii\web\Response;
 use app\components\RbacComponent;
-
-class ApiauthController extends \yii\web\Controller
+ // \yii\rest\Controller
+class ApiauthController extends \yii\rest\Controller
 {
 
-public actionRegistration($ArrayRequestRegistrations){
-
-
-
-
-
-
-
+public function actionRegistration($phone,$password,$token,$key){
+//
     try {
-        const  $RESOURSE = Yii::$app->request->get();
+         $ResponseUrl = Yii::$app->request->get();
+         $PhoneUser = $ResponseUrl["phone"];
+         $PasswordPassword = $ResponseUrl["password"];
+         $PasswordToken = $ResponseUrl["token"];
+         $PasswordKey = $ResponseUrl["key"];
+         //var_dump($ResponseUrl);
+         //die();
 
         } catch (Exception $e) {
             echo 'Выброшено исключение в функции actionRegistration: ', $e->getMessage();
             die();
         }
-
+        return "This good!";
+        // return $this->render('index');
 }
 
 }
