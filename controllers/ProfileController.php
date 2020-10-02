@@ -59,6 +59,36 @@ define("API_HOST", (YII_ENV_DEV === "production") ? "example.com" : "localhost")
 				@OA\Property(property="message", type="string")
 			)),
 *     ),
+),* 
+@OA\Put(
+*	 path="/api/v1/profiles/{id}",
+*    tags={"Profile"},
+*    summary="Update existing profile.",
+	 
+		security = {{"bearerAuth":{}}},
+	@OA\Parameter(
+		name="id",
+		in="path",
+		required=true
+	 ),
+	 @OA\RequestBody(
+*         description="Profile properties to be updated",
+*         required=true,
+		  @OA\JsonContent(ref="#/components/schemas/ProfileUpdate")
+	 ),
+*     @OA\Response(
+*         response = 200,
+*         description = "Single Profile",
+*         @OA\JsonContent(ref = "#/components/schemas/ProfileResponse"),
+*     ),
+*     @OA\Response(
+*         response = 422,
+*         description = "Data Validation Failed",
+*         @OA\JsonContent(@OA\Items(
+				@OA\Property(property="field", type="string"),
+				@OA\Property(property="message", type="string")
+			)),
+*     ),
 )
 */
 
@@ -86,6 +116,9 @@ class ProfileController extends \app\controllers\BaseController
 				}
 				break;
 			case 'create':
+				if(\Yii::$app->request->post()['user_id'] !== \Yii::$app->user->id){
+					throw new \yii\web\ForbiddenHttpException('You can create profile only for youself');
+				}
 				break;
 			case 'update':
 				if(!\Yii::$app->user->can('updateProfiles')){

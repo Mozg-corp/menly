@@ -1,7 +1,6 @@
 <?php
 
 namespace app\models;
-use 
 use Yii;
 
 /**
@@ -16,11 +15,10 @@ use Yii;
 	 @OA\Property(property="refresh_token", type="string")
 )
  */
-)
- */
+
 class Agregator extends AgregatorBase
 {
-	const SCENARIO_UPDATE = 'update agregator';
+	// const SCENARIO_UPDATE = 'update agregator';
 	const SCENARIO_CREATE = 'create agregator';
     /**
      * {@inheritdoc}
@@ -29,8 +27,8 @@ class Agregator extends AgregatorBase
     {
         return array_merge([
 			[['name'], 'unique', 'on' => self::SCENARIO_CREATE],
-			[['name'], 'required', 'on' => self::SCENARIO_CREATE],
-			[['name'], 'exist', 'on' => self::SCENARIO_UPDATE],
+			[['name'], 'required', 'on' => self::SCENARIO_CREATE]//,
+			// [['name'], 'exist', 'on' => self::SCENARIO_UPDATE],
          ],parent::rules());
     }
 	 /**

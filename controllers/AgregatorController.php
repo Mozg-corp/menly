@@ -6,7 +6,7 @@ use OpenApi as OA;
 * @OA\Get(
 *	 path="/api/v1/agregators",
 *    tags={"Agregator"},
-*    summary="Get all Agregators",
+*    summary="Get all agregators",
 	 
 		security = {{"bearerAuth":{}}},
 	 
@@ -32,10 +32,45 @@ use OpenApi as OA;
 *         @OA\JsonContent(ref = "#/components/schemas/AgregatorResponse"),
 *     ),
 ),
+*@OA\Post(
+	path="/api/v1/agregators",
+	tags={"Agregator"},
+	summary="Create new agregator",
+	security = {{"bearerAuth":{}}},
+	@OA\RequestBody(
+		required=true,
+		@OA\JsonContent(ref="#components/schemas/Agregator")
+	),
+	@OA\Response(
+		response=200,
+		description="Profile Created",
+		@OA\JsonContent(ref="#/components/schemas/AgregatorResponse")
+	)
+),
+*@OA\Put(
+	path="/api/v1/agregators/{id}",
+	tags={"Agregator"},
+	summary="Update existing agregator",
+	security={{"bearerAuth":{}}},
+	@OA\Parameter(
+		name="id",
+		in="path",
+		required=true
+	),
+	@OA\RequestBody(
+		required=true,
+		@OA\JsonContent(ref="#/components/schemas/AgregatorUpdate")
+	),
+	@OA\Response(
+		response=200,
+		description="Agregator updated",
+		@OA\JsonContent(ref="#/components/schemas/AgregatorResponse")
+	)
+)
 */
 class AgregatorController extends \app\controllers\BaseController{
 	public $modelClass = \app\models\Agregator::class;
-	public $updateScenario = \app\models\Agregator::SCENARIO_UPDATE;
+	// public $updateScenario = \app\models\Agregator::SCENARIO_UPDATE;
 	public $createScenario = \app\models\Agregator::SCENARIO_CREATE;
 	public function behaviors(){
         $behaviors = parent::behaviors();
