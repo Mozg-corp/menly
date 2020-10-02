@@ -22,7 +22,8 @@ class AuthController extends \yii\web\Controller
 *             @OA\Schema(
 				type="object",
 				@OA\Property(property="User[phone]", type="string"),
-			  @OA\Property(property="User[password]", type="string")
+			  @OA\Property(property="User[password]", type="string"),
+			  required={"User[phone]", "User[password]"}
 			)
 		)
 	),
