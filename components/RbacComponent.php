@@ -7,21 +7,11 @@ use app\models\GoodsLists;
 
 class RbacComponent
 {
-    // public function canCreateGoodsList():bool{
 
-        // return \Yii::$app->user->can('createGoodsList');
-    // }
-    // public function canChangeGoodsList(GoodsLists $goodsList){
-
-        // if(\Yii::$app->user->can('viewOwnerGoodsList', ['goodslist' => $goodsList])){
-
-            // return true;
-        // }
-        // return false;
-    // }
     public function canAdmin(){
-
-        foreach (\Yii::$app->authManager->getAssignments(\Yii::$app->user->identity->id) as $index => $assignment) {
+		$id = \Yii::$app->user->identity ? \Yii::$app->user->identity->id : null;
+        if($id){
+			foreach (\Yii::$app->authManager->getAssignments(\Yii::$app->user->identity->id) as $index => $assignment) {
 
 //            var_dump($assignment);
             if ($assignment->roleName === 'admin') {
@@ -29,6 +19,7 @@ class RbacComponent
                 return true;
             }
         }
+		}
         return false;
     }
 }

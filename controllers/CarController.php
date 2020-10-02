@@ -103,7 +103,7 @@
 *         description = "Forbidden",
 *         @OA\JsonContent(@OA\Items(
 				@OA\Property(property="name", type="string", example="Forbidden"),
-				@OA\Property(property="message", type="string", example="You can create car only for you"),
+				@OA\Property(property="message", type="string", example="You cann't update car"),
 				@OA\Property(property="code", type="integer"),
 				@OA\Property(property="status", type="integer", example="403"),
 				@OA\Property(property="type", type="string", example="yii\\web\\ForbiddenHttpException")
@@ -131,7 +131,7 @@ class CarController extends \app\controllers\BaseController{
 				break;
 			case 'create':
 				if(\Yii::$app->request->post()['id_users'] !== \Yii::$app->user->id){
-					throw new \yii\web\ForbiddenHttpException('You can create car only for you');
+					throw new \yii\web\ForbiddenHttpException('You can create car only for youself');
 				}
 				break;
 			case 'update':

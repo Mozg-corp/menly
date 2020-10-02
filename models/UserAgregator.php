@@ -5,14 +5,13 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "users_agregators".
- *
- * @property int $users_id
- * @property int $agregators_id
- * @property int $id
- *
- * @property Agregator $agregators
- * @property User $users
+ * @OA\Schema(
+	required={"agregators_id", "users_id"},
+	@OA\Property(property="id", type="integer"),
+	@OA\Property(property="agregators_id", type="integer"),
+	@OA\Property(property="users_id", type="integer")
+ 
+ )
  */
 class UserAgregator extends \app\models\UserAgregatorBase
 {
@@ -27,4 +26,11 @@ class UserAgregator extends \app\models\UserAgregatorBase
             
         ], parent::rules());
     }
+	// public function fields(){
+		// return [
+			// 'agregators' => function(){
+				
+			// }
+		// ];
+	// }
 }

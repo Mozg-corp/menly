@@ -9,10 +9,10 @@ use yii\web\IdentityInterface;
 
  * @OA\Component(),
  * @OA\Schema(
-	required={"phone", "password"},
- * @OA\Property(property="phone", type="string", example="7991234567"),
- * @OA\Property(property="password", type="string"),
- * @OA\Property(property="password_repeat", type="string"),
+	required={"phone", "password", "password_repeat"},
+ * @OA\Property(property="User[phone]", type="string", example="7991234567"),
+ * @OA\Property(property="User[password]", type="string"),
+ * @OA\Property(property="User[password_repeat]", type="string"),
  * )
  */
 
@@ -91,11 +91,7 @@ class User extends UserBase implements IdentityInterface
 			},
 			'car',
 			'profile',
-			'usersAgregators'
-			// 'profile_id' => function(){
-				// $profile = \app\models\Profile::find()->where(['user_id' => $this->id])->one();
-				// return $profile? $profile->id : null;
-			// }
+			'agregators'
 		];
 	}
 	public function  extraFields(){
@@ -202,4 +198,8 @@ class User extends UserBase implements IdentityInterface
     {
         return $this->auth_key === $authKey;
     }
+	public function getAgregators(){
+		return $this->hasMany(\app\models\Agregator::className(),['id' => 'agregators_id'])
+					->via('usersAgregators');
+	}
 }

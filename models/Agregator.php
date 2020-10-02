@@ -1,7 +1,6 @@
 <?php
 
 namespace app\models;
-use 
 use Yii;
 
 /**
@@ -10,17 +9,13 @@ use Yii;
  * @OA\Property(property="id", type="integer"),
  	 @OA\Property(property="name", type="string"),
 	 @OA\Property(property="apiv1", type="string"),
-	 @OA\Property(property="apiv2", type="string"),
-	 @OA\Property(property="token", type="string"),
-	 @OA\Property(property="expire", type="integer"),
-	 @OA\Property(property="refresh_token", type="string")
+	 @OA\Property(property="apiv2", type="string")
 )
  */
-)
- */
+
 class Agregator extends AgregatorBase
 {
-	const SCENARIO_UPDATE = 'update agregator';
+	// const SCENARIO_UPDATE = 'update agregator';
 	const SCENARIO_CREATE = 'create agregator';
     /**
      * {@inheritdoc}
@@ -29,8 +24,8 @@ class Agregator extends AgregatorBase
     {
         return array_merge([
 			[['name'], 'unique', 'on' => self::SCENARIO_CREATE],
-			[['name'], 'required', 'on' => self::SCENARIO_CREATE],
-			[['name'], 'exist', 'on' => self::SCENARIO_UPDATE],
+			[['name'], 'required', 'on' => self::SCENARIO_CREATE]//,
+			// [['name'], 'exist', 'on' => self::SCENARIO_UPDATE],
          ],parent::rules());
     }
 	 /**
@@ -44,7 +39,11 @@ class Agregator extends AgregatorBase
 	public function fields(){
 		return [
 			'id',
-			'name',
+			'name'			
+		];
+	}
+	public function extraFields(){
+		return [
 			'apiv1',
 			'apiv2'
 		];

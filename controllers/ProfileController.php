@@ -12,6 +12,10 @@ define("API_HOST", (YII_ENV_DEV === "production") ? "example.com" : "localhost")
 	 
 		security = {{"bearerAuth":{}}},
 	 
+	 @OA\Parameter(
+	  name="expand",
+	  in="query"
+	 ),
 *     @OA\Response(
 *         response = 200,
 *         description = "List of Profiles",
@@ -24,6 +28,11 @@ define("API_HOST", (YII_ENV_DEV === "production") ? "example.com" : "localhost")
 *    summary="Get single profile.",
 	 
 		security = {{"bearerAuth":{}}},
+		
+	 @OA\Parameter(
+	  name="expand",
+	  in="query"
+	 ),
 	 @OA\Parameter(
 		name="id",
 		in="path",
@@ -59,6 +68,36 @@ define("API_HOST", (YII_ENV_DEV === "production") ? "example.com" : "localhost")
 				@OA\Property(property="message", type="string")
 			)),
 *     ),
+),* 
+@OA\Put(
+*	 path="/api/v1/profiles/{id}",
+*    tags={"Profile"},
+*    summary="Update existing profile.",
+	 
+		security = {{"bearerAuth":{}}},
+	@OA\Parameter(
+		name="id",
+		in="path",
+		required=true
+	 ),
+	 @OA\RequestBody(
+*         description="Profile properties to be updated",
+*         required=true,
+		  @OA\JsonContent(ref="#/components/schemas/ProfileUpdate")
+	 ),
+*     @OA\Response(
+*         response = 200,
+*         description = "Single Profile",
+*         @OA\JsonContent(ref = "#/components/schemas/ProfileResponse"),
+*     ),
+*     @OA\Response(
+*         response = 422,
+*         description = "Data Validation Failed",
+*         @OA\JsonContent(@OA\Items(
+				@OA\Property(property="field", type="string"),
+				@OA\Property(property="message", type="string")
+			)),
+*     ),
 )
 */
 
@@ -68,9 +107,32 @@ class ProfileController extends \app\controllers\BaseController
 	public $updateScenario = \app\models\Profile::SCENARIO_UPDATE;
 	public $createScenario = \app\models\Profile::SCENARIO_CREATE;
 
-	public function actionIndex(){
-		return \Yii::$app->request;
+	public function actions() {
+		
+		$actions = parent::actions();
+		$actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+
+		return $actions;
 	}
+
+	public function prepareDataProvider() {
+
+		$searchModel = new \app\models\searchmodels\ProfileSearch();    
+		return $searchModel->search(\Yii::$app->request->queryParams);
+	}
+	    // public function behaviors()
+    // {
+        // return [
+            // [
+                // 'class' => \yii\behaviors\TimestampBehavior::className(),
+                // 'attributes' => [
+                    // \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['createdAt', 'updatedAt'],
+                    // \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['updatedAt'],
+                // ],
+                // 'value' => new \yii\db\Expression('NOW()'),
+            // ],
+        // ];
+    // }
 	public function checkAccess($action, $model = null, $params=[]){
 		if(\Yii::$app->rbac->canAdmin())return true;
 		switch($action){
@@ -86,6 +148,9 @@ class ProfileController extends \app\controllers\BaseController
 				}
 				break;
 			case 'create':
+				if(\Yii::$app->request->post()['user_id'] !== \Yii::$app->user->id){
+					throw new \yii\web\ForbiddenHttpException('You can create profile only for youself');
+				}
 				break;
 			case 'update':
 				if(!\Yii::$app->user->can('updateProfiles')){

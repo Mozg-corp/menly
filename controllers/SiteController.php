@@ -149,7 +149,9 @@ class SiteController extends Controller
 
 		print_r($agr);
 	}
-	public function actionParams(){
-		print_r(\Yii::$app->params);
+	public function actionF(){
+		$d = \app\models\User::findOne(3);
+		// print_r($d->usersAgregators[1]->agregators);
+		print_r($d->agregators);
 	}
 }
