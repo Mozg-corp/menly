@@ -10,7 +10,29 @@ use app\components\RbacComponent;
 class AuthController extends \yii\web\Controller
 {
     public $enableCsrfValidation = false;
-
+/**
+* @OA\Post(
+	path="/auth/sign-in",
+	tags={"auth"},
+	summary="User authentication",
+	@OA\RequestBody(
+		
+		@OA\MediaType(
+			mediaType="multipart/form-data",
+*             @OA\Schema(
+				type="object",
+				@OA\Property(property="User[phone]", type="string"),
+			  @OA\Property(property="User[password]", type="string")
+			)
+		)
+	),
+	@OA\Response(
+		response=200,
+		description="Successfull authentication",
+		@OA\JsonContent(ref="#/components/schemas/UserResponse")
+	)
+)
+*/
     public function actionSignIn()
     {
 //        $this->enableCsrfValidation = false;
