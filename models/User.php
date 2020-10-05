@@ -202,4 +202,7 @@ class User extends UserBase implements IdentityInterface
 		return $this->hasMany(\app\models\Agregator::className(),['id' => 'agregators_id'])
 					->via('usersAgregators');
 	}
+	public function getAgregatorsNames(){
+		return array_map(function($el){return $el->name;},$this->agregators);
+	}
 }

@@ -1,13 +1,17 @@
 <?php
 namespace app\services;
 
-class HttpClientService extends \GuzzleHttp\Client {
-	public $agregatorServices;
-	public $agregatorsApies;
-	public function __construct(Array $agregatorServices, Array $apies, Array $opt = []){
+class HttpClientService extends \GuzzleHttp\Client implements \app\interfaces\ClientInterface{
+	// public $agregatorServices;
+	// public $agregatorsApies;
+	//private $factory;
+	public function __construct(
+	//\app\interfaces\ServiceFactoryInterface $factory, 
+	Array $opt = []){
 		parent::__construct($opt);
-		$this->agregatorServices = $agregatorServices;
-		$this->agregatorsApies = \app\models\Agregator::find()->Apies;
+		//$this->factory = $factory;
+		//$this->agregatorServices = $agregatorServices;
+		//$this->agregatorsApies = \app\models\Agregator::find()->Apies;
 	}
 	public function loginAll(){
 		// $city_api = $this->agregatorsApies->where(['name' => 'Ситимобиль'])->one()->apiv1;
@@ -29,5 +33,9 @@ class HttpClientService extends \GuzzleHttp\Client {
 			// return parent::send($this->agregatorServices->loginRequest());
 			//return parent::send($this->agregatorServices->loginRequest(), $this->agregatorServices->loginData());
 			// return $this->agregatorServices->loginRequest();
+	}
+	public function loginAgregator(string $name){
+		$service = \app\services\ServiceFactory::getServiceFactory($name);
+		return $this->sendAsync($service->loginRequest(), $service->loginData());
 	}
 }

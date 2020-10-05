@@ -6,7 +6,8 @@ class CitymobileService{
 	public function __construct(Array $auth){
 		$this->auth = $auth;
 	}
-	public function loginRequest($api_url){
+	public function loginRequest(){
+		$api_url = \app\models\Agregator::find()->getApiByName('Ситимобиль');
 		$auth_url = $api_url . '/user/identity';
 		$request =  new \GuzzleHttp\Psr7\Request('POST', $auth_url);
 		return $request;
