@@ -6,7 +6,8 @@ class GettService{
 	public function __construct(Array $auth){
 		$this->auth = $auth;
 	}
-	public function loginRequest($api_url){
+	public function loginRequest(){
+		$api_url = \app\models\Agregator::find()->getApiByName('Gett');
 		$auth_url = $api_url . '/auth';
 		$request = new \GuzzleHttp\Psr7\Request('POST', $auth_url);
 		return $request;

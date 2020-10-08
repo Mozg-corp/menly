@@ -19,7 +19,7 @@ $db = file_exists(__DIR__ . '/db_local.php')?
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log', \app\bootstrap\EventsSubscriber::class],
+    'bootstrap' => ['log', \app\bootstrap\EventsSubscriber::class, \app\bootstrap\DependencyInjector::class],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -29,6 +29,12 @@ $config = [
 	'container' => [
 		'singletons' => [
 			\Symfony\Contracts\EventDispatcher\EventDispatcherInterface::class => ['class' => \Symfony\Component\EventDispatcher\EventDispatcher::class]
+		]
+	],
+	'container' => [
+		'singletons' => [
+			\app\interfaces\ClientInterface::class => ['class' => \app\services\HttpClientService::class],
+			\app\services\LoginService::class => ['class' => \app\services\LoginService::class]
 		]
 	],
     'components' => [

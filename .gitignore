@@ -38,6 +38,7 @@ tests/_support/_generated
 
 #db settings
 *_local.php
+raw
 #uploded files
 web/profiles
 web/assets/*

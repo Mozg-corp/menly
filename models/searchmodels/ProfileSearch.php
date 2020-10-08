@@ -18,7 +18,7 @@ class ProfileSearch extends ProfileBase
     {
         return [
             [['id', 'user_id'], 'integer'],
-            [['firstname', 'secondname', 'lastname', 'phone', 'birthdate', 'passport_series', 'passport_number', 'passport_giver', 'passport_date', 'registration_address', 'license_series', 'license_number', 'license_date', 'license_expire', 'uuid', 'createdAt', 'updatedAt'], 'safe'],
+            [['firstname', 'secondname', 'lastname', 'phone', 'birthdate', 'passport_series', 'passport_number', 'passport_giver', 'passport_date', 'registration_address', 'license_series', 'license_number', 'license_date', 'license_expire', 'uuid', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -48,7 +48,7 @@ class ProfileSearch extends ProfileBase
             'query' => $query,
         ]);
 
-        $this->load($params, '');
+        $this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -63,8 +63,8 @@ class ProfileSearch extends ProfileBase
             'passport_date' => $this->passport_date,
             'license_date' => $this->license_date,
             'license_expire' => $this->license_expire,
-            'createdAt' => $this->createdAt,
-            'updatedAt' => $this->updatedAt,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
             'user_id' => $this->user_id,
         ]);
 

@@ -30,7 +30,17 @@ class User extends UserBase implements IdentityInterface
     const SCENARIO_SIGNIN = 'signin';
     const SCENARIO_UPDATE = 'update User';
     const SCENARIO_CREATE = 'create User';
-
+	public function behaviors(){
+		$behaviors = parent::behaviors();
+		$behaviors['timestamp'] = [
+                'class' => \yii\behaviors\TimestampBehavior::className(),
+                'attributes' => [
+                    \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                'value' => new \yii\db\Expression('NOW()'),
+            ];
+			return $behaviors;
+	}
     public function scenarioSignUp():self
     {
         $this->setScenario(self::SCENARIO_SIGNUP);
@@ -201,5 +211,8 @@ class User extends UserBase implements IdentityInterface
 	public function getAgregators(){
 		return $this->hasMany(\app\models\Agregator::className(),['id' => 'agregators_id'])
 					->via('usersAgregators');
+	}
+	public function getAgregatorsNames(){
+		return array_map(function($el){return $el->name;},$this->agregators);
 	}
 }

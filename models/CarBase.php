@@ -17,6 +17,8 @@ use Yii;
  * @property string|null $sts
  * @property string|null $license
  * @property int $id_users
+ * @property string|null $created_at
+ * @property string|null $updated_at
  *
  * @property Users $users
  */
@@ -38,6 +40,7 @@ class CarBase extends \yii\db\ActiveRecord
         return [
             [['id_users'], 'required'],
             [['id_users'], 'integer'],
+            [['created_at', 'updated_at'], 'safe'],
             [['brand', 'model', 'color'], 'string', 'max' => 50],
             [['year'], 'string', 'max' => 4],
             [['registration'], 'string', 'max' => 9],
@@ -63,25 +66,27 @@ class CarBase extends \yii\db\ActiveRecord
             'sts' => 'Sts',
             'license' => 'License',
             'id_users' => 'Id Users',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
 
     /**
      * Gets query for [[Users]].
      *
-     * @return \yii\db\ActiveQuery|yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|UsersQuery
      */
-    public function getUser()
+    public function getUsers()
     {
-        return $this->hasOne(User::className(), ['id' => 'id_users']);
+        return $this->hasOne(Users::className(), ['id' => 'id_users']);
     }
 
     /**
      * {@inheritdoc}
-     * @return CarQuery the active query used by this AR class.
+     * @return CarBaseQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new CarQuery(get_called_class());
+        return new CarBaseQuery(get_called_class());
     }
 }

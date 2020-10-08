@@ -18,16 +18,16 @@ class m200826_113815_create_profiles_table extends Migration
             'secondname' => $this->string(50),
             'lastname' => $this->string(50)->notNull(),
             'phone' => $this->string(20),
-            'birthdate' => $this->timestamp(),
+            'birthdate' => $this->timestamp()->defaultValue(null),
             'passport_series' => $this->string(4),
             'passport_number' => $this->string(6),
             'passport_giver' => $this->string(),
-            'passport_date' => $this->timestamp(),
+            'passport_date' => $this->timestamp()->defaultValue(null),
             'registration_address' => $this->string(),
             'license_series' => $this->string(4),
             'license_number' => $this->string(6),
-            'license_date' => $this->timestamp(),
-            'license_expire' => $this->timestamp(),
+            'license_date' => $this->timestamp()->defaultValue(null),
+            'license_expire' => $this->timestamp()->defaultValue(null),
         ]);
     }
 

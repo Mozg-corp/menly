@@ -32,6 +32,29 @@ class AuthController extends \yii\web\Controller
 		description="Successfull authentication",
 		@OA\JsonContent(ref="#/components/schemas/UserResponse")
 	)
+),
+* @OA\Post(
+	path="/auth/sign-up",
+	tags={"auth"},
+	summary="User registration",
+	@OA\RequestBody(
+		
+		@OA\MediaType(
+			mediaType="multipart/form-data",
+*             @OA\Schema(
+				type="object",
+				@OA\Property(property="User[phone]", type="string"),
+				  @OA\Property(property="User[password]", type="string"),
+				  @OA\Property(property="User[password_repeat]", type="string"),
+				  required={"User[phone]", "User[password]", "User[password_repeat]"}
+			)
+		)
+	),
+	@OA\Response(
+		response=200,
+		description="Successfull registration",
+		@OA\JsonContent(ref="#/components/schemas/UserResponse")
+	)
 )
 */
     public function actionSignIn()

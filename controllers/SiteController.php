@@ -20,6 +20,11 @@ use yii\base\Component;
 
 class SiteController extends Controller
 {
+	private $loginService;
+	public function __construct($id, $module, \app\services\LoginService $loginService, $config=[]){
+		$this->loginService = $loginService;
+		parent::__construct($id, $module, $config);
+	}
 
     /**
      * {@inheritdoc}
@@ -145,13 +150,43 @@ class SiteController extends Controller
 		// print_r($responses);
 	}
 	public function actionAgregators(){
-		$agr = \app\models\Agregator::find()->findAgregatorByName('Ситимобиль');
+		$agr = \app\models\Agregator::find()->getAgregatorByName('Ситимобиль');
 
 		print_r($agr);
 	}
 	public function actionF(){
 		$d = \app\models\User::findOne(3);
 		// print_r($d->usersAgregators[1]->agregators);
-		print_r($d->agregators);
+		
+		print_r($d->agregatorsNames);
+	}
+	public function actionD(){
+		$d = \app\models\User::findOne(3);
+		return print_r(\app\models\Agregator::find()->getApiByName('Gett'));
+	}
+	public function actionT(){
+		$user = \app\models\User::findOne(3);
+		$userAgregators = $user->agregatorsNames;
+		$client = new \app\services\HttpClientService();
+		// $promises = [];
+		// forEach($userAgregators as $agregator){
+			// $promises[$agregator] = $client->logInAgregator($agregator);
+		// }
+		//print_r($promises); exit;
+		//$promises['Ситимобиль'] = $client->logInAgregator('Ситимобиль');
+		//print_r($promise);
+		// $responses = \GuzzleHttp\Promise\settle($promises)->wait();
+		$loginService = new \app\services\LoginService($client);
+		$tokens = $loginService->loginAll($userAgregators);
+		print_r($tokens);
+	}
+	public function actionB(){
+		$client = new \app\services\HttpClientService();
+		$loginService = new \app\services\LoginService($client);
+		$tokens = $loginService->login('Ситимобиль');
+		print_r($tokens);
+	}
+	public function actionGo(){
+		return $this->loginService->login('Ситимобиль');
 	}
 }

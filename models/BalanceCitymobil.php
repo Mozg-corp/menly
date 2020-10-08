@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 
-final class BalanceGet extends Model
+final class BalanceCitymobil extends Model
 {
 private $ArrayRides = array();       // Массив с водителями
 public $ArrayTravel = array();       // Массив с удачными путешествиями ([id = [Цена+чаевые]])
 private $ArrayPayment = array();     // Массив по остатку платежей
-public function GetArray($StringUrlContent){
+public function __construct($StringUrlContent){
 try {
         $ReportJson=file_get_contents($StringUrlContent);         //Расположение JSON файла
         $AnswerJson=json_decode($ReportJson,true);                // Получаем массив
@@ -25,7 +25,7 @@ try {
         }
 
          } catch (Exception $e) {
-            echo 'Выброшено исключение в модели BalanceGet функции Конструктор: ', $e->getMessage();
+            echo 'Выброшено исключение в модели BalanceCitymobil функции Конструктор: ', $e->getMessage();
             die();
         }
 
