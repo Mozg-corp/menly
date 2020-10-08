@@ -12,7 +12,7 @@ class m200827_084103_add_updatedAt_column_to_profiles_table extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('{{%profiles}}', 'updatedAt', $this->timestamp());
+        $this->addColumn('{{%profiles}}', 'updatedAt', $this->timestamp()->defaultValue(null));
     }
 
     /**

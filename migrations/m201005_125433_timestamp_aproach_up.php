@@ -13,7 +13,7 @@ class m201005_125433_timestamp_aproach_up extends Migration
     public function safeUp()
     {
 		$this->addColumn('cars','created_at', $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'));
-		$this->addColumn('cars','updated_at', $this->timestamp());
+		$this->addColumn('cars','updated_at', $this->timestamp()->defaultValue(null));
 		$this->renameColumn('profiles', 'createdAt', 'created_at');
 		$this->renameColumn('profiles', 'updatedAt', 'updated_at');
     }
