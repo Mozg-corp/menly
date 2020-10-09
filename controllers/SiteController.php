@@ -20,9 +20,9 @@ use yii\base\Component;
 
 class SiteController extends Controller
 {
-	private $loginService;
-	public function __construct($id, $module, \app\services\LoginService $loginService, $config=[]){
-		$this->loginService = $loginService;
+	private $client;
+	public function __construct($id, $module, \app\interfaces\ClientInterface $client, $config=[]){
+		$this->client = $client;
 		parent::__construct($id, $module, $config);
 	}
 
@@ -187,6 +187,17 @@ class SiteController extends Controller
 		print_r($tokens);
 	}
 	public function actionGo(){
-		return $this->loginService->login('Ситимобиль');
+		return $this->client->obtainToken('Ситимобиль');
+	}
+	public function actionBalance(){
+		$reportRaw = file_get_contents('../raw/gett report.json');
+		$report = json_decode($reportRaw);
+		// $gs = new ();
+		print_r(
+		 \app\services\GettService::getBalances($report->data->rides)
+		);
+	}
+	public function actionCreateReport(){
+		return $this->client->createGettReport();
 	}
 }

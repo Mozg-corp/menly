@@ -15,5 +15,14 @@ class CitymobileService{
 	public function loginData(){
 		return ['json' => ['login' => $this->auth['login'], 'password' => $this->auth['password']]];
 	}
-	
+	public function prepearRequest(string $type){
+		switch($type){
+			case 'login': return $this->loginRequest();
+		}
+	}
+	public function prepearData(string $type, $payload = null){
+		switch($type){
+			case 'login': return $this->loginData();
+		}
+	}
 }

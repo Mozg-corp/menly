@@ -1,5 +1,5 @@
 <?php namespace app\services;
-class ServiceFactory{
+class ServiceFactory implements \app\interfaces\ServiceFactoryInterface{
 	public static function getServiceFactory( string $agregatorName){
 		$agregatorApi = \app\models\Agregator::find()->getAgregatorByName($agregatorName);
 		switch($agregatorName){

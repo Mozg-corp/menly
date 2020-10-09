@@ -33,8 +33,13 @@ $config = [
 	],
 	'container' => [
 		'singletons' => [
-			\app\interfaces\ClientInterface::class => ['class' => \app\services\HttpClientService::class],
-			\app\services\LoginService::class => ['class' => \app\services\LoginService::class]
+			\app\interfaces\ClientInterface::class => [
+				'class' => \app\services\HttpClientService::class
+				],
+			\app\interfaces\ServiceFactoryInterface::class => [
+				'class' => \app\services\ServiceFactory::class
+			]
+			
 		]
 	],
     'components' => [

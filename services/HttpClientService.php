@@ -1,41 +1,63 @@
 <?php
 namespace app\services;
 
-class HttpClientService extends \GuzzleHttp\Client implements \app\interfaces\ClientInterface{
-	// public $agregatorServices;
-	// public $agregatorsApies;
-	//private $factory;
-	public function __construct(
-	//\app\interfaces\ServiceFactoryInterface $factory, 
-	Array $opt = []){
-		parent::__construct($opt);
-		//$this->factory = $factory;
-		//$this->agregatorServices = $agregatorServices;
-		//$this->agregatorsApies = \app\models\Agregator::find()->Apies;
+class HttpClientService implements \app\interfaces\ClientInterface{
+	private $serviceFactory;
+	private $token = [
+		'value' => null,
+		'expire' => null
+	];
+	private $client;
+	public function __construct(\app\interfaces\ServiceFactoryInterface $serviceFactory, Array $opt = []){
+		//parent::__construct($opt);
+		$this->serviceFactory = $serviceFactory;
+		$this->client = new \GuzzleHttp\Client();
 	}
-	public function loginAll(){
-		// $city_api = $this->agregatorsApies->where(['name' => 'Ситимобиль'])->one()->apiv1;
-		// $gett_api = $this->agregatorsApies->where(['name' => 'Gett'])->one()->apiv1;
-		$city_api = array_values(array_filter($this->agregatorsApies, function($el){
-			return $el->name === \app\services\CitymobileService::NAME;
-		}))[0];
-		$gett_api = array_values(array_filter($this->agregatorsApies, function($el){
-			return $el->name === \app\services\GettService::NAME;
-		}))[0];
-		$promises = [
-			\app\services\CitymobileService::NAME => parent::sendAsync(($this->agregatorServices[\app\services\CitymobileService::NAME])->loginRequest($city_api->apiv1), ($this->agregatorServices[\app\services\CitymobileService::NAME])->loginData()),
-			\app\services\GettService::NAME => parent::sendAsync(($this->agregatorServices[\app\services\GettService::NAME])->loginRequest($gett_api->apiv1), ($this->agregatorServices[\app\services\GettService::NAME])->loginData()),
-		];
-		$results =  \GuzzleHttp\Promise\settle($promises)->wait();
-		// return [$results['citymobile']['value'], $results['gett']['value']];
-		return $results;
-		// print_r($this->agregatorServices->loginRequest());
-			// return parent::send($this->agregatorServices->loginRequest());
-			//return parent::send($this->agregatorServices->loginRequest(), $this->agregatorServices->loginData());
-			// return $this->agregatorServices->loginRequest();
+	public function fetch(string $name, string $type, string $token = null){
+		$service = $this->serviceFactory::getServiceFactory($name);
+		//print_r($service->prepearRequest($type));die;
+		return $this->client->sendAsync($service->prepearRequest($type), $service->prepearData($type, $token));
 	}
-	public function loginAgregator(string $name){
-		$service = \app\services\ServiceFactory::getServiceFactory($name);
-		return $this->sendAsync($service->loginRequest(), $service->loginData());
+	public function loginByName(string $agregatorName):array{
+		$promise = $this->fetch($agregatorName, 'login');
+		$response = $promise->wait();
+		$body = json_decode($response->getBody()->getContents());
+		$agregator = \app\models\Agregator::find()->getAgregatorByName($agregatorName);
+		$agregator->token = isset($body->token)?$body->token:$body->access_token;
+		$agregator->refresh_token = isset($body->refresh_token)?$body->refresh_token:null;
+		$agregator->expire = time() + 7200;
+		$agregator->save();
+		
+		return [ 
+			'value' => $agregator->token,
+			'expire' => $agregator->expire
+			];
 	}
+	private function obtainToken(string $agregatorName){
+		if($this->token['value'] && $this->token['expire'] -100 > time()){
+			return $this->token['value'];
+		}
+		else{
+			$agregator = \app\models\Agregator::find()->getAgregatorByName($agregatorName);
+			if($agregator->token && $agregator->expire - 100 > time()){
+				$this->token['value'] = $agregator->token;
+				$this->token['expire'] = $agregator->expire;
+				return $agregator->token;
+			}else{
+				$this->token = $this->loginByName($agregatorName);
+				return $this->token['value'];
+			}
+		}
+	}
+	public function createGettReport(){
+		$service = $this->serviceFactory::getServiceFactory('Gett');
+		$token = $this->obtainToken($service::NAME);
+		$promise = $this->fetch('Gett','report', $token);
+		$response = $promise->wait();
+		print_r($response);
+		echo PHP_EOL;
+		$body = json_decode($response[0]['value']->getBody()->getContents());
+		print_r($body);
+	}
+	// public function obtainGettBalance
 }
