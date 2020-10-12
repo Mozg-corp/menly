@@ -200,4 +200,7 @@ class SiteController extends Controller
 	public function actionCreateReport(){
 		return $this->client->createGettReport();
 	}
+	public function actionYaBalance(){
+		return $this->client->getBalance("0e19f22e02004b44a1ff395ae83e711a");
+	}
 }

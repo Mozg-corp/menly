@@ -7,6 +7,18 @@ class GettService{
 	public function __construct(Array $auth = []){
 		$this->auth = $auth;
 	}
+	public function prepearRequest(string $type){
+		switch($type){
+			case 'login': return $this->getLoginRequest();
+			case 'report': return $this->createReportRequest();
+		}
+	}
+	public function prepearData(string $type, array $payload = []){
+		switch($type){
+			case 'login': return $this->loginData();
+			case 'report': return $this->createReportData($payload);
+		}
+	}
 	public function getLoginRequest(){
 		$api_url = $this->getApiUri();
 		$path = $api_url . '/auth';
@@ -22,24 +34,12 @@ class GettService{
 	public function loginData(){
 		return ['json' => ['login' => $this->auth['login'], 'password' => $this->auth['password']]];
 	}
-	public function prepearRequest(string $type){
-		switch($type){
-			case 'login': return $this->getLoginRequest();
-			case 'report': return $this->createReportRequest();
-		}
-	}
-	public function prepearData(string $type, string $token = null){
-		switch($type){
-			case 'login': return $this->loginData();
-			case 'report': return $this->createReportData($token);
-		}
-	}
 	public function getApiUri(){
 		return $this->uri ? $this->uri : \app\models\Agregator::find()->getApiByName('Gett');
 	}
-	public function createReportData(string $token){
+	public function createReportData(array $payload){
 		return ['headers' => [
-			'Authorization' => 'Bearer '. $token
+			'Authorization' => 'Bearer '. $payload['token']
 		],
 			'json' => ['from' => '2020-10-01 00:00:00', 'to' => '2020-10-08 23:59:59']
 		];
