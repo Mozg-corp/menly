@@ -19,6 +19,7 @@ use Yii;
  * @property int $id_users
  * @property string|null $created_at
  * @property string|null $updated_at
+ * @property string|null $id_yandex
  *
  * @property Users $users
  */
@@ -46,7 +47,8 @@ class CarBase extends \yii\db\ActiveRecord
             [['registration'], 'string', 'max' => 9],
             [['vin'], 'string', 'max' => 17],
             [['sts', 'license'], 'string', 'max' => 10],
-            [['id_users'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['id_users' => 'id']],
+            [['id_yandex'], 'string', 'max' => 32],
+            [['id_users'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['id_users' => 'id']],
         ];
     }
 
@@ -68,6 +70,7 @@ class CarBase extends \yii\db\ActiveRecord
             'id_users' => 'Id Users',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'id_yandex' => 'Id Yandex',
         ];
     }
 

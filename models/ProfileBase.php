@@ -23,9 +23,10 @@ use Yii;
  * @property string|null $license_date
  * @property string|null $license_expire
  * @property string|null $uuid
- * @property string|null $createdAt
- * @property string|null $updatedAt
+ * @property string|null $created_at
+ * @property string|null $updated_at
  * @property int $user_id
+ * @property string|null $id_yandex
  *
  * @property User $user
  */
@@ -46,7 +47,7 @@ class ProfileBase extends \yii\db\ActiveRecord
     {
         return [
             [['firstname', 'lastname', 'user_id'], 'required'],
-            [['birthdate', 'passport_date', 'license_date', 'license_expire', 'createdAt', 'updatedAt'], 'safe'],
+            [['birthdate', 'passport_date', 'license_date', 'license_expire', 'created_at', 'updated_at'], 'safe'],
             [['user_id'], 'integer'],
             [['firstname', 'secondname', 'lastname'], 'string', 'max' => 50],
             [['phone'], 'string', 'max' => 20],
@@ -54,6 +55,7 @@ class ProfileBase extends \yii\db\ActiveRecord
             [['passport_number', 'license_number'], 'string', 'max' => 6],
             [['passport_giver', 'registration_address'], 'string', 'max' => 255],
             [['uuid'], 'string', 'max' => 36],
+            [['id_yandex'], 'string', 'max' => 32],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -80,9 +82,10 @@ class ProfileBase extends \yii\db\ActiveRecord
             'license_date' => 'License Date',
             'license_expire' => 'License Expire',
             'uuid' => 'Uuid',
-            'createdAt' => 'Created At',
-            'updatedAt' => 'Updated At',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
             'user_id' => 'User ID',
+            'id_yandex' => 'Id Yandex',
         ];
     }
 
@@ -98,10 +101,10 @@ class ProfileBase extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return ProfileQuery the active query used by this AR class.
+     * @return ProfileBaseQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new ProfileQuery(get_called_class());
+        return new ProfileBaseQuery(get_called_class());
     }
 }
