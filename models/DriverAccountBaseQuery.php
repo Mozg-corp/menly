@@ -3,11 +3,11 @@
 namespace app\models;
 
 /**
- * This is the ActiveQuery class for [[ProfileBase]].
+ * This is the ActiveQuery class for [[DriverAccountBase]].
  *
- * @see ProfileBase
+ * @see DriverAccountBase
  */
-class ProfileQuery extends ProfileBaseQuery
+class DriverAccountBaseQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class ProfileQuery extends ProfileBaseQuery
 
     /**
      * {@inheritdoc}
-     * @return ProfileBase[]|array
+     * @return DriverAccountBase[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class ProfileQuery extends ProfileBaseQuery
 
     /**
      * {@inheritdoc}
-     * @return ProfileBase|array|null
+     * @return DriverAccountBase|array|null
      */
     public function one($db = null)
     {

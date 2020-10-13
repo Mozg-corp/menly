@@ -34,7 +34,7 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 			];
 	}
 	private function obtainToken($service){
-		if($this->token['value'] && $this->token['expire'] -100 > time()){
+		if($this->token['value'] && $this->token['expire'] - 100 > time()){
 			return $this->token['value'];
 		}
 		else{
@@ -49,22 +49,66 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 			}
 		}
 	}
+	//Запрос на создание отчёта в Gett
 	public function createGettReport(){
 		$service = $this->serviceFactory::getServiceFactory('Gett');
 		$token = $this->obtainToken($service);
-		$promise = $this->fetch($service,'report', ["token" => $token]);
+		$promise = $this->fetch($service,'reportCreate', ["token" => $token]);
 		$response = $promise->wait();
 		// print_r($response);
 		// echo PHP_EOL;
 		$body = json_decode($response->getBody()->getContents());
 		print_r($body);
 	}
-	public function getBalance(string $driverId){
-		$service = $this->serviceFactory::getServiceFactory('Яндекс');
-		$promise = $this->fetch($service,'balance', ["driverId" => $driverId]);
+	//Запрос на получение отчёта в Gett
+	public function readGettReport($uid){
+		$service = $this->serviceFactory::getServiceFactory('Gett');
+		$token = $this->obtainToken($service);
+		$promise = $this->fetch($service,'reportRead', ["token" => $token, "uid" => $uid]);
 		$response = $promise->wait();
+		// print_r($response);
+		// echo PHP_EOL;
 		$body = json_decode($response->getBody()->getContents());
-		print_r($body->driver_profiles[0]->accounts[0]->balance);
+		print_r($response->getBody()->getContents());
 	}
-	// public function obtainGettBalance
+	
+	// public function getYaBalance(string $driverId){
+		// $service = $this->serviceFactory::getServiceFactory('Яндекс');
+		// $promise = $this->fetch($service,'balance', ["driverId" => $driverId]);
+		// $response = $promise->wait();
+		// $body = json_decode($response->getBody()->getContents());
+		// print_r($body->driver_profiles[0]->accounts[0]->balance);
+	// }
+	/**
+	* Получение баланса водителя яндекс
+	* @param string $driverId
+	*/
+	public function getYandexBalance(string $driverId){
+		$service = $this->serviceFactory::getServiceFactory('Яндекс');
+		return $this->fetch($service,'balance', ["driverId" => $driverId]);
+		// $response = $promise->wait();
+		// $body = json_decode($response->getBody()->getContents());
+		// print_r($body->driver_profiles[0]->accounts[0]->balance);
+	}
+	// public function getCityBalance(string $login){
+		// $service = $this->serviceFactory::getServiceFactory('Ситимобиль');
+		// $token = $this->obtainToken($service);
+		// $promise = $this->fetch($service,'balance', ["token" => $token, "login" => $login,]);
+		// $response = $promise->wait();
+		// $body = json_decode($response->getBody()->getContents());
+		// return $body->drivers[0]->balance;
+	// }
+	/**
+	* Получение баланса водителя в ситимобиле
+	* @param string $login
+	*/
+	public function getCityBalance(string $login){
+		$service = $this->serviceFactory::getServiceFactory('Ситимобиль');
+		$token = $this->obtainToken($service);
+		return $this->fetch($service,'balance', ["token" => $token, "login" => $login,]);
+		// $response = $promise->wait();
+		// $body = json_decode($response->getBody()->getContents());
+		// return $body->drivers[0]->balance;
+	}
+	
 }

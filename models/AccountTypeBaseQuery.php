@@ -3,11 +3,11 @@
 namespace app\models;
 
 /**
- * This is the ActiveQuery class for [[ProfileBase]].
+ * This is the ActiveQuery class for [[AccountTypeBase]].
  *
- * @see ProfileBase
+ * @see AccountTypeBase
  */
-class ProfileQuery extends ProfileBaseQuery
+class AccountTypeBaseQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class ProfileQuery extends ProfileBaseQuery
 
     /**
      * {@inheritdoc}
-     * @return ProfileBase[]|array
+     * @return AccountTypeBase[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class ProfileQuery extends ProfileBaseQuery
 
     /**
      * {@inheritdoc}
-     * @return ProfileBase|array|null
+     * @return AccountTypeBase|array|null
      */
     public function one($db = null)
     {

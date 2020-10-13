@@ -201,6 +201,13 @@ class SiteController extends Controller
 		return $this->client->createGettReport();
 	}
 	public function actionYaBalance(){
-		return $this->client->getBalance("0e19f22e02004b44a1ff395ae83e711a");
+		return $this->client->getYandexBalance("0e19f22e02004b44a1ff395ae83e711a");
+	}
+	public function actionCityBalance(){
+		//
+		return $this->client->getCityBalance("786565");
+	}
+	public function actionGettReport(){
+		return $this->client->readGettReport("5f84315b64775");
 	}
 }

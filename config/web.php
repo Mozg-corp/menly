@@ -139,6 +139,16 @@ $config = [
 					'prefix' => 'api/v1',
 					'except' => ['delete']
                 ],
+                [
+					'class'=>UrlRule::class,
+                    'controller' => 'balance',
+					'prefix' => 'api/v1',
+					'except' => ['delete', 'put', 'patch'],
+					'extraPatterns' => [
+							'GET citymobile' => 'citymobile',
+						]
+					
+                ],
 
             ],
         ],

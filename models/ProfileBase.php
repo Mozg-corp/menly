@@ -98,13 +98,4 @@ class ProfileBase extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
-
-    /**
-     * {@inheritdoc}
-     * @return ProfileBaseQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new ProfileBaseQuery(get_called_class());
-    }
 }

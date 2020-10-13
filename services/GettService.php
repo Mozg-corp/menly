@@ -10,13 +10,15 @@ class GettService{
 	public function prepearRequest(string $type){
 		switch($type){
 			case 'login': return $this->getLoginRequest();
-			case 'report': return $this->createReportRequest();
+			case 'reportCreate': return $this->createReportRequest();
+			case 'reportRead': return $this->readReportRequest();
 		}
 	}
 	public function prepearData(string $type, array $payload = []){
 		switch($type){
 			case 'login': return $this->loginData();
-			case 'report': return $this->createReportData($payload);
+			case 'reportCreate': return $this->createReportData($payload);
+			case 'reportRead': return $this->readReportData($payload);
 		}
 	}
 	public function getLoginRequest(){
@@ -31,6 +33,12 @@ class GettService{
 		$request = new \GuzzleHttp\Psr7\Request('POST', $path);
 		return $request;
 	}
+	public function readReportRequest(){
+		$api_url = $this->getApiUri();
+		$path = $api_url . 'dbr/get';
+		$request = new \GuzzleHttp\Psr7\Request('POST', $path);
+		return $request;
+	}
 	public function loginData(){
 		return ['json' => ['login' => $this->auth['login'], 'password' => $this->auth['password']]];
 	}
@@ -42,6 +50,13 @@ class GettService{
 			'Authorization' => 'Bearer '. $payload['token']
 		],
 			'json' => ['from' => '2020-10-01 00:00:00', 'to' => '2020-10-08 23:59:59']
+		];
+	}
+	public function readReportData(array $payload){
+		return ['headers' => [
+			'Authorization' => 'Bearer '. $payload['token']
+		],
+			'json' => ['uid' => $payload['uid']]
 		];
 	}
 }
