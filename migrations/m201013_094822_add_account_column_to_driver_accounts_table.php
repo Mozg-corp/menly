@@ -13,6 +13,12 @@ class m201013_094822_add_account_column_to_driver_accounts_table extends Migrati
     public function safeUp()
     {
         $this->addColumn('{{%driver_accounts}}', 'account', $this->string(32));
+		  // creates index for column `account`
+        $this->createIndex(
+            '{{%idx-driver_accounts-account}}',
+            '{{%driver_accounts}}',
+            'account'
+        );
     }
 
     /**
@@ -21,5 +27,11 @@ class m201013_094822_add_account_column_to_driver_accounts_table extends Migrati
     public function safeDown()
     {
         $this->dropColumn('{{%driver_accounts}}', 'account');
+		
+		 // drops index for column `account`
+        $this->dropIndex(
+            '{{%idx-driver_accounts-account}}',
+            '{{%driver_accounts}}'
+        );
     }
 }
