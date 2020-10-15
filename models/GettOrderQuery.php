@@ -3,11 +3,11 @@
 namespace app\models;
 
 /**
- * This is the ActiveQuery class for [[DriverAccount]].
+ * This is the ActiveQuery class for [[GettOrder]].
  *
- * @see DriverAccount
+ * @see GettOrder
  */
-class DriverAccountQuery extends DriverAccountBaseQuery
+class GettOrderQuery extends GettOrderBaseQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class DriverAccountQuery extends DriverAccountBaseQuery
 
     /**
      * {@inheritdoc}
-     * @return DriverAccount[]|array
+     * @return GettOrder[]|array
      */
     public function all($db = null)
     {
@@ -25,13 +25,13 @@ class DriverAccountQuery extends DriverAccountBaseQuery
 
     /**
      * {@inheritdoc}
-     * @return DriverAccount|array|null
+     * @return GettOrder|array|null
      */
     public function one($db = null)
     {
         return parent::one($db);
     }
-	public function byAccount($account){
-		return $this->where(['account' => $account]);
+	public function findOrderByRide($ride){
+		return $this->where(['id_ride' => $ride]);
 	}
 }

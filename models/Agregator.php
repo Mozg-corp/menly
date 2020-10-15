@@ -30,7 +30,7 @@ class Agregator extends AgregatorBase
     }
 	 /**
      * {@inheritdoc}
-     * @return AgregatorBaseQuery the active query used by this AR class.
+     * @return AgregatorQuery the active query used by this AR class.
      */
     public static function find()
     {

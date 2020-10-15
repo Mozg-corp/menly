@@ -273,9 +273,9 @@ class SiteController extends Controller
 		echo $from;
 	}
 	public function actionGettGrow(){
-		// $raw_drivers = file_get_contents('../raw/gett drivers list.json');
-		// $drivers = json_decode($raw_drivers);
-		// forEach($drivers->data as $driver){
+		$raw_drivers = file_get_contents('../raw/gett drivers list.json');
+		$drivers = json_decode($raw_drivers);
+		forEach($drivers->data as $driver){
 			// $user = new \app\models\User();
 			// $user->phone = $driver->phone;
 			// $user->password = "menly_4ever";
@@ -283,7 +283,7 @@ class SiteController extends Controller
 			// $user->scenarioSignUp();
 			// \Yii::$app->auth->signUp($user);
 			
-			// $user_created = \app\models\User::find()->where(['phone' => $driver->phone])->one();
+			//$user_created = \app\models\User::find()->where(['phone' => $driver->phone])->one();
 			// $profile = new \app\models\ProfileBase();
 			// $fio = explode(' ', $driver->name);
 			// $profile->firstname = $fio[0];
@@ -302,9 +302,70 @@ class SiteController extends Controller
 			// $driver_account->id_agregator = 3;
 			// $driver_account->id_account_types = 1;
 			// $driver_account->id_users = $user_created->id;
-			// $driver_account->account = $driver->driver_id;
+			// $driver_account->account = (string)$driver->driver_id;
 			// $driver_account->save();
-		// }
-		// echo "done";
+			// print_r($driver_account->errors);
+		}
+		echo "done";
+	}
+	public function actionRide(){
+		$data = json_decode(' {
+                "driver_id": 422566,
+                "driver_name": "Калиничев Андрей Владиславович",
+                "order_id": 1348851134,
+                "division": "moscow comfort",
+                "scheduled_at": "2020-09-08 19:52:06",
+                "ended_at": "2020-09-08 20:14:54",
+                "origin_full_address": "Станционная улица, Москва",
+                "collected_from_client": "0.00",
+                "cost_for_driver": "290.00",
+                "driver_order_balance": "290.00",
+                "driver_tips": "0.00",
+                "coupon": "0.00",
+                "payment_type": "Credit_card",
+                "full_tips": "0.00",
+                "cost_for_driver_wo_tips": "290.00",
+                "pwg_reward": null,
+                "fact_ride_estimate": "00:13:29",
+                "recorded_waiting_time": "00:00:20",
+                "destination_full_address": "улица Академика Комарова, д. 5В, Москва",
+                "distance": 3.6,
+                "parking_cost": null,
+                "action_summ": null
+            }');
+		$ride = new \app\models\Ride();
+		$ride->fillFromRideData($data);
+		
+		$order = new \app\models\GettOrder();
+		$order->fillFromRide($ride);
+		$order->save();
+		print_r($order->errors);
+		$balance = /*new \app\models\GettBalance();// = */ \app\models\GettBalance::find()->byDriver($ride)->one();
+		if($balance){
+			$balance->accumulateRide($ride);
+			echo 'gffg'.'\n';
+		}else{
+			$balance = new \app\models\GettBalance();
+			$balance->fillFromRide($ride);
+			echo 'fggf'.'\n';
+		}
+		if($balance->save()){
+			print_r($balance);
+		}else{
+			print_r($balance->errors);
+		}
+	}
+	public function actionFindUser(){
+		$gett = \app\models\Agregator::find()->getAgregatorByName('Gett');
+		$user = \app\models\User::find()
+							->joinWith('driverAccounts')
+							->where(['account' => 422566])
+							->andWhere(['id_agregator' => $gett->id])
+							->one();
+		print_r($user->id);
+	}
+	public function actionFindOrder(){
+		$order = \app\models\GettOrder::find()->findOrderByRide(1348851134)->one();
+		print_r($order);
 	}
 }

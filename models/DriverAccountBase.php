@@ -16,6 +16,8 @@ use Yii;
  * @property AccountType $accountTypes
  * @property Agregator $agregator
  * @property User $users
+ * @property GettBalance[] $gettBalances
+ * @property GettOrder[] $gettOrders
  */
 class DriverAccountBase extends \yii\db\ActiveRecord
 {
@@ -84,6 +86,26 @@ class DriverAccountBase extends \yii\db\ActiveRecord
     public function getUsers()
     {
         return $this->hasOne(User::className(), ['id' => 'id_users']);
+    }
+
+    /**
+     * Gets query for [[GettBalances]].
+     *
+     * @return \yii\db\ActiveQuery|GettBalanceQuery
+     */
+    public function getGettBalances()
+    {
+        return $this->hasMany(GettBalance::className(), ['id_driver' => 'account']);
+    }
+
+    /**
+     * Gets query for [[GettOrders]].
+     *
+     * @return \yii\db\ActiveQuery|GettOrderQuery
+     */
+    public function getGettOrders()
+    {
+        return $this->hasMany(GettOrder::className(), ['id_driver' => 'account']);
     }
 
     /**

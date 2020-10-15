@@ -3,11 +3,11 @@
 namespace app\models;
 
 /**
- * This is the ActiveQuery class for [[DriverAccount]].
+ * This is the ActiveQuery class for [[GettOrderBase]].
  *
- * @see DriverAccount
+ * @see GettOrderBase
  */
-class DriverAccountQuery extends DriverAccountBaseQuery
+class GettOrderBaseQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class DriverAccountQuery extends DriverAccountBaseQuery
 
     /**
      * {@inheritdoc}
-     * @return DriverAccount[]|array
+     * @return GettOrderBase[]|array
      */
     public function all($db = null)
     {
@@ -25,13 +25,10 @@ class DriverAccountQuery extends DriverAccountBaseQuery
 
     /**
      * {@inheritdoc}
-     * @return DriverAccount|array|null
+     * @return GettOrderBase|array|null
      */
     public function one($db = null)
     {
         return parent::one($db);
     }
-	public function byAccount($account){
-		return $this->where(['account' => $account]);
-	}
 }
