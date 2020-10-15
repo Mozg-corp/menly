@@ -29,8 +29,8 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		$agregator->save();
 		
 		return [ 
-			'value' => $agregator->token,
-			'expire' => $agregator->expire
+				'value' => $agregator->token,
+				'expire' => $agregator->expire
 			];
 	}
 	private function obtainToken($service){
@@ -50,26 +50,31 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		}
 	}
 	//Запрос на создание отчёта в Gett
-	public function createGettReport(){
+	public function createGettReport($from, $to){
 		$service = $this->serviceFactory::getServiceFactory('Gett');
 		$token = $this->obtainToken($service);
-		$promise = $this->fetch($service,'reportCreate', ["token" => $token]);
-		$response = $promise->wait();
+		
+		return $this->fetch($service,'reportCreate', [
+			"token" => $token,
+			"from" => $from,
+			"to" => $to
+		]);
+		// $response = $promise->wait();
 		// print_r($response);
 		// echo PHP_EOL;
-		$body = json_decode($response->getBody()->getContents());
-		print_r($body);
+		// $body = json_decode($response->getBody()->getContents());
+		// print_r($body);
 	}
 	//Запрос на получение отчёта в Gett
 	public function readGettReport($uid){
 		$service = $this->serviceFactory::getServiceFactory('Gett');
 		$token = $this->obtainToken($service);
-		$promise = $this->fetch($service,'reportRead', ["token" => $token, "uid" => $uid]);
-		$response = $promise->wait();
+		return $this->fetch($service,'reportRead', ["token" => $token, "uid" => $uid]);
+		// $response = $promise->wait();
 		// print_r($response);
 		// echo PHP_EOL;
-		$body = json_decode($response->getBody()->getContents());
-		print_r($response->getBody()->getContents());
+		// $body = json_decode($response->getBody()->getContents());
+		// print_r($response);
 	}
 	
 	// public function getYaBalance(string $driverId){
@@ -110,5 +115,10 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		// $body = json_decode($response->getBody()->getContents());
 		// return $body->drivers[0]->balance;
 	}
-	
+	public function getBalanceByName(string $name, string $account){
+		switch($name){
+			case 'Ситимобиль': return $this->getCityBalance($account);
+			case 'Яндекс': return $this->getYandexBalance($account);
+		}
+	}	
 }

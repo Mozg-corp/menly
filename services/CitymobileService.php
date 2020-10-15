@@ -52,4 +52,7 @@ class CitymobileService{
 	public function getApiUri(){
 		return $this->uri ? $this->uri : \app\models\Agregator::find()->getApiByName(self::NAME);
 	}
+	public static function extractBalanceFromBody($body){
+		return $body->drivers[0]->full_balance;
+	}
 }

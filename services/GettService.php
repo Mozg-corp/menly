@@ -35,7 +35,7 @@ class GettService{
 	}
 	public function readReportRequest(){
 		$api_url = $this->getApiUri();
-		$path = $api_url . 'dbr/get';
+		$path = $api_url . '/dbr/get';
 		$request = new \GuzzleHttp\Psr7\Request('POST', $path);
 		return $request;
 	}
@@ -46,10 +46,14 @@ class GettService{
 		return $this->uri ? $this->uri : \app\models\Agregator::find()->getApiByName('Gett');
 	}
 	public function createReportData(array $payload){
+		
 		return ['headers' => [
 			'Authorization' => 'Bearer '. $payload['token']
 		],
-			'json' => ['from' => '2020-10-01 00:00:00', 'to' => '2020-10-08 23:59:59']
+			'json' => [
+				'from' => $payload['from'], 
+				'to' => $payload['to']
+			]
 		];
 	}
 	public function readReportData(array $payload){

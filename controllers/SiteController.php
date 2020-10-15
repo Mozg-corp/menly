@@ -198,6 +198,11 @@ class SiteController extends Controller
 		);
 	}
 	public function actionCreateReport(){
+		// $date = new \DateTime();
+		// $date->add(new \DateInterval("PT3H"));
+		// echo $date->format('Y-m-d H:i:s').PHP_EOL;
+		// $date->sub(new \DateInterval("P30D"));
+		// echo $date->format('Y-m-d H:i:s');
 		return $this->client->createGettReport();
 	}
 	public function actionYaBalance(){
@@ -208,6 +213,98 @@ class SiteController extends Controller
 		return $this->client->getCityBalance("786565");
 	}
 	public function actionGettReport(){
-		return $this->client->readGettReport("5f84315b64775");
+		$promise_create =  $this->client->createGettReport();
+		$response_create = $promise_create->wait();
+		print_r($response);
+		echo PHP_EOL;
+		$body_create = json_decode($response_create->getBody()->getContents());
+		if($body_create->result === true){
+			$uid = $body_create->uid;
+			echo $uid .PHP_EOL;
+			sleep(60);
+			$promise_report = $this->client->readGettReport($uid);
+			$response_report = $promise_report->wait();
+			$body_report= json_decode($response_report->getBody()->getContents());
+			print_r($body_report);
+		}else{
+			print_r('bad create'.PHP_EOL .$body);
+		}
+	}
+	public function actionCityGrow(){
+		// $raw_drivers = file_get_contents('../raw/citymobile driver list.json');
+		// $drivers = json_decode($raw_drivers);
+		// forEach($drivers->drivers as $driver){
+			// $user = new \app\models\User();
+			// $user->phone = $driver->phone_number;
+			// $user->password = "menly_4ever";
+			// $user->password_repeat = "menly_4ever";
+			// $user->scenarioSignUp();
+			// \Yii::$app->auth->signUp($user);
+			//$user_created = \app\models\User::find()->where(['phone' => $driver->phone_number])->one();
+			// $profile = new \app\models\ProfileBase();
+			// $profile->firstname = $driver->name;
+			// $profile->secondname = $driver->middle_name;
+			// $profile->lastname = $driver->last_name;
+			// $profile->user_id = $user_created->id;
+			// $profile->phone = $driver->phone_number;
+			// $profile->save();
+			//// $profile_created = \app\models\Profile::find()->where(['user_id' => $user_created->id])->one();
+			// $user_agregator = new \app\models\UserAgregator();
+			// $user_agregator->users_id = $user_created->id;
+			// $user_agregator->agregators_id = 2;
+			// $user_agregator->save();
+			// $driver_account = new \app\models\DriverAccount();
+			// $driver_account->id_agregator = 2;
+			// $driver_account->id_account_types = 1;
+			// $driver_account->id_users = $user_created->id;
+			// $driver_account->account = $driver->login;
+			// $driver_account->save();
+			// print_r($driver);
+		// }
+		// echo "done";
+	}
+	public function actionTime(){
+		$date = new \DateTime();
+		$date->add(new \DateInterval("PT3H"));
+		$to = $date->format('Y-m-d H:i:s');
+		echo $to.PHP_EOL;
+		$date->sub(new \DateInterval("P30D"));
+		$from = $date->format('Y-m-d H:i:s');
+		echo $from;
+	}
+	public function actionGettGrow(){
+		// $raw_drivers = file_get_contents('../raw/gett drivers list.json');
+		// $drivers = json_decode($raw_drivers);
+		// forEach($drivers->data as $driver){
+			// $user = new \app\models\User();
+			// $user->phone = $driver->phone;
+			// $user->password = "menly_4ever";
+			// $user->password_repeat = "menly_4ever";
+			// $user->scenarioSignUp();
+			// \Yii::$app->auth->signUp($user);
+			
+			// $user_created = \app\models\User::find()->where(['phone' => $driver->phone])->one();
+			// $profile = new \app\models\ProfileBase();
+			// $fio = explode(' ', $driver->name);
+			// $profile->firstname = $fio[0];
+			// $profile->secondname = count($fio) > 2 ? $fio[1] : '';
+			// $profile->lastname = count($fio) > 2 ? $fio[2] : $fio[1];
+			// $profile->user_id = $user_created->id;
+			// $profile->phone = $driver->phone;
+			// $profile->save();
+			
+			// $user_agregator = new \app\models\UserAgregator();
+			// $user_agregator->users_id = $user_created->id;
+			// $user_agregator->agregators_id = 3;
+			// $user_agregator->save();
+			
+			// $driver_account = new \app\models\DriverAccount();
+			// $driver_account->id_agregator = 3;
+			// $driver_account->id_account_types = 1;
+			// $driver_account->id_users = $user_created->id;
+			// $driver_account->account = $driver->driver_id;
+			// $driver_account->save();
+		// }
+		// echo "done";
 	}
 }

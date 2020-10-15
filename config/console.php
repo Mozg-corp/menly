@@ -2,7 +2,11 @@
 
 use yii\rbac\DbManager;
 
-$params = require __DIR__ . '/params.php';
+$params = file_exists(__DIR__ . '/params_local.php')
+			?
+			(require __DIR__ . '/params_local.php')
+			:
+			(require __DIR__ . '/params.php');
 $db = file_exists(__DIR__ . '/db_local.php')?
     (require __DIR__ . '/db_local.php')
     :(require __DIR__ . '/db.php');
@@ -17,6 +21,17 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
         '@tests' => '@app/tests',
     ],
+	'container' => [
+		'singletons' => [
+			\app\interfaces\ClientInterface::class => [
+				'class' => \app\services\HttpClientService::class
+				],
+			\app\interfaces\ServiceFactoryInterface::class => [
+				'class' => \app\services\ServiceFactory::class
+			]
+			
+		]
+	],
     'components' => [
         'authManager' => [
             'class' => DbManager::class

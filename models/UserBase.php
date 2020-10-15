@@ -17,6 +17,7 @@ use Yii;
  * @property int|null $status
  *
  * @property Car[] $cars
+ * @property DriverAccount[] $driverAccounts
  * @property Profile[] $profiles
  * @property UsersAgregator[] $usersAgregators
  */
@@ -66,11 +67,21 @@ class UserBase extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Cars]].
      *
-     * @return \yii\db\ActiveQuery|CarQuery
+     * @return \yii\db\ActiveQuery|CarBaseQuery
      */
     public function getCars()
     {
         return $this->hasMany(Car::className(), ['id_users' => 'id']);
+    }
+
+    /**
+     * Gets query for [[DriverAccounts]].
+     *
+     * @return \yii\db\ActiveQuery|DriverAccountQuery
+     */
+    public function getDriverAccounts()
+    {
+        return $this->hasMany(DriverAccount::className(), ['id_users' => 'id']);
     }
 
     /**

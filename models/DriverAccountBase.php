@@ -10,9 +10,12 @@ use Yii;
  * @property int $id
  * @property int $id_agregator
  * @property int $id_account_types
+ * @property int $id_users
+ * @property string|null $account
  *
  * @property AccountType $accountTypes
  * @property Agregator $agregator
+ * @property User $users
  */
 class DriverAccountBase extends \yii\db\ActiveRecord
 {
@@ -30,10 +33,12 @@ class DriverAccountBase extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_agregator', 'id_account_types'], 'required'],
-            [['id_agregator', 'id_account_types'], 'integer'],
+            [['id_agregator', 'id_account_types', 'id_users'], 'required'],
+            [['id_agregator', 'id_account_types', 'id_users'], 'integer'],
+            [['account'], 'string', 'max' => 32],
             [['id_account_types'], 'exist', 'skipOnError' => true, 'targetClass' => AccountType::className(), 'targetAttribute' => ['id_account_types' => 'id']],
             [['id_agregator'], 'exist', 'skipOnError' => true, 'targetClass' => Agregator::className(), 'targetAttribute' => ['id_agregator' => 'id']],
+            [['id_users'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['id_users' => 'id']],
         ];
     }
 
@@ -46,13 +51,15 @@ class DriverAccountBase extends \yii\db\ActiveRecord
             'id' => 'ID',
             'id_agregator' => 'Id Agregator',
             'id_account_types' => 'Id Account Types',
+            'id_users' => 'Id Users',
+            'account' => 'Account',
         ];
     }
 
     /**
      * Gets query for [[AccountTypes]].
      *
-     * @return \yii\db\ActiveQuery|AccountTypeQuery
+     * @return \yii\db\ActiveQuery|AccountTypeBaseQuery
      */
     public function getAccountTypes()
     {
@@ -67,6 +74,16 @@ class DriverAccountBase extends \yii\db\ActiveRecord
     public function getAgregator()
     {
         return $this->hasOne(Agregator::className(), ['id' => 'id_agregator']);
+    }
+
+    /**
+     * Gets query for [[Users]].
+     *
+     * @return \yii\db\ActiveQuery|UserQuery
+     */
+    public function getUsers()
+    {
+        return $this->hasOne(User::className(), ['id' => 'id_users']);
     }
 
     /**

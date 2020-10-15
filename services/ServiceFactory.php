@@ -8,4 +8,11 @@ class ServiceFactory implements \app\interfaces\ServiceFactoryInterface{
 			case 'Яндекс': return new \app\services\YandexService(\Yii::$app->params['agregators']['yandex']);
 		}
 	}
+	public function getClassByName(string $agregatorName){
+		switch($agregatorName){
+			case 'Ситимобиль': return \app\services\CitymobileService::class;
+			case 'Gett': return \app\services\GettService::class;
+			case 'Яндекс': return \app\services\YandexService::class;
+		}
+	}
 }

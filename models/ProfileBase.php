@@ -26,7 +26,6 @@ use Yii;
  * @property string|null $created_at
  * @property string|null $updated_at
  * @property int $user_id
- * @property string|null $id_yandex
  *
  * @property User $user
  */
@@ -55,7 +54,6 @@ class ProfileBase extends \yii\db\ActiveRecord
             [['passport_number', 'license_number'], 'string', 'max' => 6],
             [['passport_giver', 'registration_address'], 'string', 'max' => 255],
             [['uuid'], 'string', 'max' => 36],
-            [['id_yandex'], 'string', 'max' => 32],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -85,7 +83,6 @@ class ProfileBase extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'user_id' => 'User ID',
-            'id_yandex' => 'Id Yandex',
         ];
     }
 
@@ -97,5 +94,14 @@ class ProfileBase extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return ProfileBaseQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new ProfileBaseQuery(get_called_class());
     }
 }
