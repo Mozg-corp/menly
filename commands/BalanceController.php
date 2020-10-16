@@ -45,6 +45,9 @@ class BalanceController extends \yii\console\Controller{
 				print_r('bad create'.PHP_EOL .$body);
 			}
 			print_r($body_report);
+			$rides_data = $body_report->data->rides;
+			$gettReportService = new \app\services\GettReportService($rides_data);
+			$gettReportService->calculateBalances();
 		}
 	}
 	public function actionSeeReport(){

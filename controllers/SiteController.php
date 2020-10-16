@@ -368,4 +368,65 @@ class SiteController extends Controller
 		$order = \app\models\GettOrder::find()->findOrderByRide(1348851134)->one();
 		print_r($order);
 	}
+	public function actionProccessReport(){
+		//$ride_data_raw = file_get_contents('../raw/gett_report_2.json');
+		// $ride_data = json_decode($ride_data_raw);
+		$ride_data = json_decode('{
+			"driver_id":422566,
+			"driver_name":"\u0421\u043b\u0430\u0434\u043a\u043e\u0432 \u0410\u043d\u0434\u0440\u0435\u0439 \u041d\u0438\u043a\u043e\u043b\u0430\u0435\u0432\u0438\u0447",
+			"order_id":1354431427,
+			"division":"sp visa business",
+			"scheduled_at":"2020-09-16 17:58:26",
+			"ended_at":"2020-09-16 18:21:10",
+			"origin_full_address":"\u041a\u0430\u0437\u0430\u043d\u0441\u043a\u0430\u044f \u0443\u043b\u0438\u0446\u0430, \u0434. 3\u0430, \u0421\u0430\u043d\u043a\u0442-\u041f\u0435\u0442\u0435\u0440\u0431\u0443\u0440\u0433",
+			"collected_from_client":"0.00",
+			"cost_for_driver":"783.00",
+			"driver_order_balance":"783.00",
+			"driver_tips":"0.00",
+			"coupon":"0.00",
+			"payment_type":"Credit_card",
+			"full_tips":"0.00",
+			"cost_for_driver_wo_tips":"783.00",
+			"pwg_reward":null,
+			"fact_ride_estimate":"00:20:34",
+			"recorded_waiting_time":"00:01:42",
+			"destination_full_address":"\u041a\u0440\u0435\u043c\u0435\u043d\u0447\u0443\u0433\u0441\u043a\u0430\u044f \u0443\u043b\u0438\u0446\u0430, \u0434. 13\u043a2, \u0421\u0430\u043d\u043a\u0442-\u041f\u0435\u0442\u0435\u0440\u0431\u0443\u0440\u0433",
+			"distance":4,
+			"parking_cost":700,
+			"action_summ":null}');
+		// print_r($ride_data);
+		// $grs = new \app\services\GettReportService($ride_data->data->rides);
+		$grs = new \app\services\GettReportService([$ride_data]);
+		$grs->calculateBalances();
+	}
+	public function actionUserExist(){
+		$data = json_decode('{
+			"driver_id":422566,
+			"driver_name":"\u0421\u043b\u0430\u0434\u043a\u043e\u0432 \u0410\u043d\u0434\u0440\u0435\u0439 \u041d\u0438\u043a\u043e\u043b\u0430\u0435\u0432\u0438\u0447",
+			"order_id":1354431427,
+			"division":"sp visa business",
+			"scheduled_at":"2020-09-16 17:58:26",
+			"ended_at":"2020-09-16 18:21:10",
+			"origin_full_address":"\u041a\u0430\u0437\u0430\u043d\u0441\u043a\u0430\u044f \u0443\u043b\u0438\u0446\u0430, \u0434. 3\u0430, \u0421\u0430\u043d\u043a\u0442-\u041f\u0435\u0442\u0435\u0440\u0431\u0443\u0440\u0433",
+			"collected_from_client":"0.00",
+			"cost_for_driver":"783.00",
+			"driver_order_balance":"783.00",
+			"driver_tips":"0.00",
+			"coupon":"0.00",
+			"payment_type":"Credit_card",
+			"full_tips":"0.00",
+			"cost_for_driver_wo_tips":"783.00",
+			"pwg_reward":null,
+			"fact_ride_estimate":"00:20:34",
+			"recorded_waiting_time":"00:01:42",
+			"destination_full_address":"\u041a\u0440\u0435\u043c\u0435\u043d\u0447\u0443\u0433\u0441\u043a\u0430\u044f \u0443\u043b\u0438\u0446\u0430, \u0434. 13\u043a2, \u0421\u0430\u043d\u043a\u0442-\u041f\u0435\u0442\u0435\u0440\u0431\u0443\u0440\u0433",
+			"distance":4,
+			"parking_cost":300,
+			"action_summ":null}');
+		$ride = new \app\models\Ride();
+		$ride->fillFromRideData($data);
+		
+		if($ride->userExist()) print_r('ok');
+		else echo 'no';
+	}
 }

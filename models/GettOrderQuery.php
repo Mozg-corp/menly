@@ -31,7 +31,7 @@ class GettOrderQuery extends GettOrderBaseQuery
     {
         return parent::one($db);
     }
-	public function findOrderByRide($ride){
-		return $this->where(['id_ride' => $ride]);
+	public function byRide($ride){
+		return $this->where(['id_ride' => $ride->id_ride]);//если $ride это модель Ride, то нужно взять ->id_ride
 	}
 }

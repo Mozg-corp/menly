@@ -35,4 +35,23 @@ class GettOrder extends GettOrderBase
 		$this->collected_from_client = $ride->collected_from_client;
 		$this->driver_tips = $ride->driver_tips;
 	}
+	public function getBalance(){
+		$tax = $this->calculateTax();
+		$tips = $this->tips;
+		$parking_cost = $this->parkingCost;
+		
+		return $tax + $tips - $parking_cost;
+	}
+	public function calculateTax(){
+		$costForDriver = $this->cost_for_driver_wo_tips;
+		$collectedFromClient = $this->collected_from_client;
+		
+		return $costForDriver - $collectedFromClient;
+	}
+	public function getTips(){
+		return $this->driver_tips;
+	}
+	public function getParkingCost(){
+		return $this->parking_cost;
+	}
 }

@@ -6,21 +6,24 @@ class GettReportService {
 	}
 	public function calculateBalances(){
 		forEach($this->rides as $ride_data){
+			
 			$ride = new \app\models\Ride();
 			$ride->fillFromRideData($ride_data);
 			
-			$order = new \app\models\GettOrder();
-			$order->fillFromRide($ride);
-			$order->save();
-			
-			$balance = \app\models\GettBalance::find()->byDriver($ride)->one();
-			if($balance){
-				$balance->accumulateRide($ride);
-			}else{
-				$balance = new \app\models\GettBalance();
-				$balance->fillFromRide($ride);
+			if($ride->userExist()){
+				echo 'user exist';
+				if($ride->exist()){
+					echo 'ride exist';
+					if($ride->balanceChanged()){
+						echo 'balance changed';
+						$ride->updateOrderAndBalance();
+					}
+					
+				}else{
+					$ride->saveOrder();
+					$ride->saveBalance();
+				}
 			}
-			$balance->save();
 		}
 	}
 }
