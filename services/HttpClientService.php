@@ -119,6 +119,14 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		switch($name){
 			case 'Ситимобиль': return $this->getCityBalance($account);
 			case 'Яндекс': return $this->getYandexBalance($account);
+			case 'Gett': return $this->getGettBalance($account);
 		}
 	}	
+	public function getGettBalance($id_driver){
+		// echo $id_driver;
+		$promise =  new \GuzzleHttp\Promise\Promise();
+		$balance = \app\models\GettBalance::find()->byDriverId($id_driver)->one();
+		$promise->resolve($balance);
+		return $promise;
+	}
 }

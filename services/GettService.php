@@ -63,4 +63,11 @@ class GettService{
 			'json' => ['uid' => $payload['uid']]
 		];
 	}
+	public static function extractBalanceFromResponse($response){
+		$balance = $response['value']->balance;
+		$tips = $response['value']->tips;
+		$parking_cost = $response['value']->parking_cost;
+		$total_gross = $balance + $tips - $parking_cost;
+		return $total_gross - ($total_gross)* 0.198;
+	}
 }

@@ -7,7 +7,6 @@ class ViewAction extends \yii\rest\ViewAction{
 		}catch(\yii\base\ErrorException $e){
 			throw new \yii\web\NotFoundHttpException('Такой пользователь не найден');
 		}
-		// return $profile;
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, $profile);
         }
@@ -17,8 +16,8 @@ class ViewAction extends \yii\rest\ViewAction{
 										->joinWith('agregator')
 										->asArray()
 										->all();
-		// return $driverAccounts;
-		$promises = [];		
+										
+		$promises = [];
 		forEach($driverAccounts as $account){
 			$name = $account['name'];
 			$account = $account['account'];
@@ -28,9 +27,8 @@ class ViewAction extends \yii\rest\ViewAction{
 		$balances = [];
 		forEach($driverAccounts as $account){
 			$name = $account['name'];
-			$body = json_decode($responses[$name]['value']->getBody()->getContents());
 			$staticService = $this->controller->factory->getClassByName($name);
-			$balances[$name] = $staticService::extractBalanceFromBody($body);
+			$balances[$name] = $staticService::extractBalanceFromResponse($responses[$name]);
 		}
 		return $balances;
 	}

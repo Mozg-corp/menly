@@ -63,4 +63,8 @@ class YandexService{
 	public static function extractBalanceFromBody($body){
 		return $body->driver_profiles[0]->accounts[0]->balance;
 	}
+	public static function extractBalanceFromResponse($response){
+		$body = $response['value']->getBody()->getContents();
+		return self::extractBalanceFromBody(json_decode($body));
+	}
 }

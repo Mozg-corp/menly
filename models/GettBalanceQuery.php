@@ -34,4 +34,7 @@ class GettBalanceQuery extends GettBalanceBaseQuery
 	public function byDriver($ride){
 		return $this->where(['id_driver' => $ride->id_driver]);
 	}
+	public function byDriverId($id_driver){
+		return $this->where(['id_driver' => $id_driver]);
+	}
 }

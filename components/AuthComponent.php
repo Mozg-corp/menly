@@ -43,7 +43,7 @@ class AuthComponent extends Component
             return true;
         }else{
 			echo '========='.$model->phone.'==============';
-			print_r($model->errors);
+			// print_r($model->errors);
 		}
         return false;
     }

@@ -55,4 +55,8 @@ class CitymobileService{
 	public static function extractBalanceFromBody($body){
 		return $body->drivers[0]->full_balance;
 	}
+	public static function extractBalanceFromResponse($response){
+		$body = $response['value']->getBody()->getContents();
+		return self::extractBalanceFromBody(json_decode($body));
+	}
 }
