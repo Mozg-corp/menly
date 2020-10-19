@@ -44,28 +44,12 @@ class BalanceController extends \yii\console\Controller{
 			}else{
 				print_r('bad create'.PHP_EOL .$body);
 			}
-			print_r($body_report);
+			
+			//print_r($body_report);
 			$rides_data = $body_report->data->rides;
 			$gettReportService = new \app\services\GettReportService($rides_data);
 			$gettReportService->calculateBalances();
-		}
-	}
-	public function actionSeeReport(){
-		$promise_report = null;
-		try{
-			$promise_report = $this->client->readGettReport("5f86eacdb4113");
-		}catch(\Exception $e){
-			print_r($e);
-			echo PHP_EOL;
-		}
-		//print_r($promise_report);
-		echo PHP_EOL;
-		if($promise_report){
-			$response_report = $promise_report->wait();
-			$body_report= json_decode($response_report->getBody()->getContents());
-			print_r($body_report->data->rides);
-		}else{
-			
+			echo 'end'.PHP_EOL;
 		}
 	}
 }

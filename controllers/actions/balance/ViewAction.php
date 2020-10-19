@@ -2,7 +2,11 @@
 class ViewAction extends \yii\rest\ViewAction{
 	public function run($id){
 		$user = $this->findModel($id);
-		$profile = $user->profiles[0];
+		try{
+			$profile = $user->profiles[0];
+		}catch(\yii\base\ErrorException $e){
+			throw new \yii\web\NotFoundHttpException('Такой пользователь не найден');
+		}
 		// return $profile;
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, $profile);
@@ -28,9 +32,6 @@ class ViewAction extends \yii\rest\ViewAction{
 			$staticService = $this->controller->factory->getClassByName($name);
 			$balances[$name] = $staticService::extractBalanceFromBody($body);
 		}
-		// return json_encode($response->getBody()->getContents())['drivers'];//[0]->full_balance;
-		// $body = json_decode($response->getBody()->getContents());
-		// return $body->drivers[0]->full_balance;
 		return $balances;
 	}
 }

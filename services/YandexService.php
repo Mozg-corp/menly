@@ -60,5 +60,7 @@ class YandexService{
             ];
         }
     }
-
+	public static function extractBalanceFromBody($body){
+		return $body->driver_profiles[0]->accounts[0]->balance;
+	}
 }

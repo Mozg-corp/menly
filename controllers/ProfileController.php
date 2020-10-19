@@ -120,19 +120,6 @@ class ProfileController extends \app\controllers\BaseController
 		$searchModel = new \app\models\searchmodels\ProfileSearch();    
 		return $searchModel->search(\Yii::$app->request->queryParams);
 	}
-	    // public function behaviors()
-    // {
-        // return [
-            // [
-                // 'class' => \yii\behaviors\TimestampBehavior::className(),
-                // 'attributes' => [
-                    // \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['createdAt', 'updatedAt'],
-                    // \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['updatedAt'],
-                // ],
-                // 'value' => new \yii\db\Expression('NOW()'),
-            // ],
-        // ];
-    // }
 	public function checkAccess($action, $model = null, $params=[]){
 		if(\Yii::$app->rbac->canAdmin())return true;
 		switch($action){

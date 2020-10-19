@@ -39,8 +39,12 @@ class AuthComponent extends Component
         if($model->save()){
             $role = \Yii::$app->authManager->getRole('candidate');
             \Yii::$app->authManager->assign($role, $model->getId());
+			echo '_____'.$model->phone.'____________';
             return true;
-        }
+        }else{
+			echo '========='.$model->phone.'==============';
+			print_r($model->errors);
+		}
         return false;
     }
     private function validatePassword($password, $passwordHash)

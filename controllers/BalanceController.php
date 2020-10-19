@@ -36,12 +36,7 @@ class BalanceController extends BaseController{
 				'class' => \app\controllers\actions\balance\ViewAction::class,
 				'modelClass' => $this->modelClass,
 				'checkAccess' => [$this, 'checkAccess']
-			],
-            'citymobile' => [
-                'class' => \app\controllers\actions\balance\CitymobileAction::class,
-                'modelClass' => $this->modelClass,
-                'checkAccess' => [$this, 'checkAccess'],
-            ]
+			]
 		];
 	}
 	public function checkAccess($action, $model = null, $params=[]){

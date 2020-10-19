@@ -11,11 +11,11 @@ class GettReportService {
 			$ride->fillFromRideData($ride_data);
 			
 			if($ride->userExist()){
-				echo 'user exist';
+				//echo 'user exist';
 				if($ride->exist()){
-					echo 'ride exist';
+					// echo 'ride exist';
 					if($ride->balanceChanged()){
-						echo 'balance changed';
+						// echo 'balance changed';
 						$ride->updateOrderAndBalance();
 					}
 					
