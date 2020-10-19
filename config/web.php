@@ -38,8 +38,7 @@ $config = [
 				],
 			\app\interfaces\ServiceFactoryInterface::class => [
 				'class' => \app\services\ServiceFactory::class
-			]
-			
+			],
 		]
 	],
     'components' => [
@@ -48,7 +47,6 @@ $config = [
         ],
         'auth' => ['class' => app\components\AuthComponent::class],
         'rbac' => ['class' => app\components\RbacComponent::class],
-		'notifier' => ['class' => app\components\NotificationComponent::class],
 		'async' => [
             'class' => 'vxm\async\Async',
             'appConfigFile' => '@app/config/async.php' // optional when you need to use yii feature in async process.
@@ -87,6 +85,9 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+		'notifier' => [
+				'class'=>\app\components\NotificationComponent::class
+		],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'useFileTransport' => false,
