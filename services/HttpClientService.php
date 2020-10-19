@@ -8,14 +8,11 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		'expire' => null
 	];
 	private $client;
-	public function __construct(\app\interfaces\ServiceFactoryInterface $serviceFactory, Array $opt = []){
-		//parent::__construct($opt);
+	public function __construct(\app\interfaces\ServiceFactoryInterface $serviceFactory){
 		$this->serviceFactory = $serviceFactory;
 		$this->client = new \GuzzleHttp\Client();
 	}
 	public function fetch($service, string $type, array $payload = []){
-		//$service = $this->serviceFactory::getServiceFactory($name);
-		//print_r($service->prepearRequest($type));die;
 		return $this->client->sendAsync($service->prepearRequest($type), $service->prepearData($type, $payload));
 	}
 	public function loginByName($service):array{
@@ -59,31 +56,13 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 			"from" => $from,
 			"to" => $to
 		]);
-		// $response = $promise->wait();
-		// print_r($response);
-		// echo PHP_EOL;
-		// $body = json_decode($response->getBody()->getContents());
-		// print_r($body);
 	}
 	//Запрос на получение отчёта в Gett
 	public function readGettReport($uid){
 		$service = $this->serviceFactory::getServiceFactory('Gett');
 		$token = $this->obtainToken($service);
 		return $this->fetch($service,'reportRead', ["token" => $token, "uid" => $uid]);
-		// $response = $promise->wait();
-		// print_r($response);
-		// echo PHP_EOL;
-		// $body = json_decode($response->getBody()->getContents());
-		// print_r($response);
 	}
-	
-	// public function getYaBalance(string $driverId){
-		// $service = $this->serviceFactory::getServiceFactory('Яндекс');
-		// $promise = $this->fetch($service,'balance', ["driverId" => $driverId]);
-		// $response = $promise->wait();
-		// $body = json_decode($response->getBody()->getContents());
-		// print_r($body->driver_profiles[0]->accounts[0]->balance);
-	// }
 	/**
 	* Получение баланса водителя яндекс
 	* @param string $driverId
@@ -91,18 +70,7 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 	public function getYandexBalance(string $driverId){
 		$service = $this->serviceFactory::getServiceFactory('Яндекс');
 		return $this->fetch($service,'balance', ["driverId" => $driverId]);
-		// $response = $promise->wait();
-		// $body = json_decode($response->getBody()->getContents());
-		// print_r($body->driver_profiles[0]->accounts[0]->balance);
 	}
-	// public function getCityBalance(string $login){
-		// $service = $this->serviceFactory::getServiceFactory('Ситимобиль');
-		// $token = $this->obtainToken($service);
-		// $promise = $this->fetch($service,'balance', ["token" => $token, "login" => $login,]);
-		// $response = $promise->wait();
-		// $body = json_decode($response->getBody()->getContents());
-		// return $body->drivers[0]->balance;
-	// }
 	/**
 	* Получение баланса водителя в ситимобиле
 	* @param string $login
@@ -111,9 +79,6 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		$service = $this->serviceFactory::getServiceFactory('Ситимобиль');
 		$token = $this->obtainToken($service);
 		return $this->fetch($service,'balance', ["token" => $token, "login" => $login,]);
-		// $response = $promise->wait();
-		// $body = json_decode($response->getBody()->getContents());
-		// return $body->drivers[0]->balance;
 	}
 	public function getBalanceByName(string $name, string $account){
 		switch($name){
@@ -123,7 +88,6 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		}
 	}	
 	public function getGettBalance($id_driver){
-		// echo $id_driver;
 		$promise =  new \GuzzleHttp\Promise\Promise();
 		$balance = \app\models\GettBalance::find()->byDriverId($id_driver)->one();
 		$promise->resolve($balance);

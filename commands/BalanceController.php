@@ -22,8 +22,6 @@ class BalanceController extends \yii\console\Controller{
 		}
 		if($promise_create){
 			$response_create = $promise_create->wait();
-			//print_r($response_create);
-			echo PHP_EOL;
 			$body_create = json_decode($response_create->getBody()->getContents());
 			if($body_create->result === true){
 				$uid = $body_create->uid;
@@ -39,13 +37,10 @@ class BalanceController extends \yii\console\Controller{
 				if($promise_report){
 					$response_report = $promise_report->wait();
 					$body_report = json_decode($response_report->getBody()->getContents());
-					//print_r($body_report);
 				}
 			}else{
-				print_r('bad create'.PHP_EOL .$body);
+				print_r('bad create'.PHP_EOL .$body_create);
 			}
-			
-			//print_r($body_report);
 			$rides_data = $body_report->data->rides;
 			$gettReportService = new \app\services\GettReportService($rides_data);
 			$gettReportService->calculateBalances();

@@ -68,6 +68,7 @@ class GettService{
 		$tips = $response['value']->tips;
 		$parking_cost = $response['value']->parking_cost;
 		$total_gross = $balance + $tips - $parking_cost;
-		return $total_gross - ($total_gross)* 0.198;
+		$agregator_commition = 0.198;
+		return $total_gross - ($total_gross)* $agregator_commition;
 	}
 }
