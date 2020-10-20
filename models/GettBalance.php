@@ -17,6 +17,17 @@ use Yii;
  */
 class GettBalance extends GettBalanceBase
 {
+	public function behaviors(){
+		$behaviors = parent::behaviors();
+		$behaviors['timestamp'] = [
+                'class' => \yii\behaviors\TimestampBehavior::className(),
+                'attributes' => [
+                    \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                'value' => new \yii\db\Expression('NOW()'),
+            ];
+			return $behaviors;
+	}
     /**
      * {@inheritdoc}
      * @return GettBalanceQuery the active query used by this AR class.

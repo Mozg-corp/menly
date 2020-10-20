@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24b1f41afc9655af94daa130b37e147b",
+    "content-hash": "0deb84bd1c91fa68625627a13ed5ae3b",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -32,7 +32,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "git@github.com:RobinHerbots/Inputmask.git",
+                "url": "https://github.com/RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -53,7 +53,7 @@
             "version": "3.5.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jquery/jquery-dist.git",
+                "url": "git@github.com:jquery/jquery-dist.git",
                 "reference": "4c0e4becb8263bb5b3e6dadc448d8e7305ef8215"
             },
             "dist": {
@@ -402,6 +402,50 @@
                 "php"
             ],
             "time": "2020-05-25T17:44:05+00:00"
+        },
+        {
+            "name": "dragonmantank/cron-expression",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dragonmantank/cron-expression.git",
+                "reference": "9504fa9ea681b586028adaaa0877db4aecf32bad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dragonmantank/cron-expression/zipball/9504fa9ea681b586028adaaa0877db4aecf32bad",
+                "reference": "9504fa9ea681b586028adaaa0877db4aecf32bad",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0|~5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Cron\\": "src/Cron/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "CRON for PHP: Calculate the next or previous run date and determine if a CRON expression is due",
+            "keywords": [
+                "cron",
+                "schedule"
+            ],
+            "time": "2017-01-23T04:29:33+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -860,6 +904,56 @@
                 "psr-3"
             ],
             "time": "2020-07-23T08:41:23+00:00"
+        },
+        {
+            "name": "omnilight/yii2-scheduling",
+            "version": "1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/omnilight/yii2-scheduling.git",
+                "reference": "c7ffcd3b26143d47455ddd8e0cdf1611dbd9b74c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/omnilight/yii2-scheduling/zipball/c7ffcd3b26143d47455ddd8e0cdf1611dbd9b74c",
+                "reference": "c7ffcd3b26143d47455ddd8e0cdf1611dbd9b74c",
+                "shasum": ""
+            },
+            "require": {
+                "dragonmantank/cron-expression": "1.*",
+                "php": ">=5.4.0",
+                "symfony/process": "2.6.* || 3.* || 4.*",
+                "yiisoft/yii2": "2.0.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.36"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "Required to use the thenPing method on schedules (~5.0)."
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "bootstrap": "omnilight\\scheduling\\Bootstrap"
+            },
+            "autoload": {
+                "psr-4": {
+                    "omnilight\\scheduling\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Pavel Agalecky",
+                    "email": "pavel.agalecky@gmail.com"
+                }
+            ],
+            "description": "Scheduling extension for Yii2 framework",
+            "keywords": [
+                "cron",
+                "scheduling",
+                "yii"
+            ],
+            "time": "2020-03-31T21:02:32+00:00"
         },
         {
             "name": "opis/closure",
@@ -1960,20 +2054,6 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-09-02T16:08:58+00:00"
         },
         {
@@ -5116,6 +5196,5 @@
     "platform": {
         "php": ">=7.4.0"
     },
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }

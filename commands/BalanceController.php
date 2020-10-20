@@ -7,6 +7,7 @@ class BalanceController extends \yii\console\Controller{
 	}
 	
 	public function actionGettReport(){
+		echo 'balance updating';
 		$promise_create = null;
 		$body_report = null;
 		$date = new \DateTime();

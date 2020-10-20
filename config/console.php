@@ -33,6 +33,7 @@ $config = [
 		]
 	],
     'components' => [
+		'schedule' => 'omnilight\scheduling\Schedule',
         'authManager' => [
             'class' => DbManager::class
         ],

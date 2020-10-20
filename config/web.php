@@ -19,7 +19,12 @@ $db = file_exists(__DIR__ . '/db_local.php')?
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log', \app\bootstrap\EventsSubscriber::class, \app\bootstrap\DependencyInjector::class],
+    'bootstrap' => [
+		'log', 
+		\app\bootstrap\EventsSubscriber::class,
+		\app\bootstrap\DependencyInjector::class,
+		// \app\bootstrap\SchedulerSetup::class
+	],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -28,20 +33,19 @@ $config = [
     'defaultRoute' => '',
 	'container' => [
 		'singletons' => [
-			\Symfony\Contracts\EventDispatcher\EventDispatcherInterface::class => ['class' => \Symfony\Component\EventDispatcher\EventDispatcher::class]
-		]
-	],
-	'container' => [
-		'singletons' => [
 			\app\interfaces\ClientInterface::class => [
 				'class' => \app\services\HttpClientService::class
 				],
 			\app\interfaces\ServiceFactoryInterface::class => [
 				'class' => \app\services\ServiceFactory::class
 			],
+			\Symfony\Contracts\EventDispatcher\EventDispatcherInterface::class => [
+				'class' => \Symfony\Component\EventDispatcher\EventDispatcher::class
+			]
 		]
 	],
     'components' => [
+		// 'schedule' => 'omnilight\scheduling\Schedule',
         'authManager' => [
             'class' => DbManager::class
         ],

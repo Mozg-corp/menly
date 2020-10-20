@@ -264,13 +264,16 @@ class SiteController extends Controller
 		echo "done";
 	}
 	public function actionTime(){
-		$date = new \DateTime();
-		$date->add(new \DateInterval("PT3H"));
-		$to = $date->format('Y-m-d H:i:s');
-		echo $to.PHP_EOL;
-		$date->sub(new \DateInterval("P30D"));
-		$from = $date->format('Y-m-d H:i:s');
-		echo $from;
+		// $date = new \DateTime();
+		// $date->add(new \DateInterval("PT3H"));
+		// $to = $date->format('Y-m-d H:i:s');
+		// echo $to.PHP_EOL;
+		// $date->sub(new \DateInterval("P30D"));
+		// $from = $date->format('Y-m-d H:i:s');
+		// echo $from;
+		$dt = new \DateTime();
+		$dt->setTimestamp(1603191509);
+		print_r($dt);
 	}
 	public function actionGettGrow(){
 		$raw_drivers = file_get_contents('../raw/gett drivers list.json');
