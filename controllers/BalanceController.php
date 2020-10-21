@@ -39,6 +39,7 @@ try{
 }
 public function actionCitymobil(){
 //// https://fleet.city-mobil.ru/api/doc
+/// {type}/{version}/news
 try{
     \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
     $Balance = new BalanceCitymobil('http://menly/TEST.json');
