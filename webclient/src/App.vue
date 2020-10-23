@@ -159,7 +159,7 @@
 			
 		},
         methods: {
-			...mapActions(['fetchAgregatorsList', 'fetchUserData']),
+			...mapActions(['fetchAgregatorsList', 'fetchUserData', 'fetchBalances']),
             logout(){
               this.$store.dispatch('logout')
                   .then(()=>{
@@ -173,6 +173,9 @@
                     this.$store.dispatch('signIn', bodyFormData)
                         .then(()=>{
 							this.showModal = !this.showModal
+							if(this.user.agregators.length){
+								this.fetchBalances(this.userId)
+							}
                         })
                         .catch();
             },
@@ -190,7 +193,14 @@
 
         },
         mounted() {
-			this.fetchUserData(this.userId);
+			this.fetchUserData(this.userId)
+				.then(
+					()=> {
+						if(this.user.agregators.length){
+							this.fetchBalances(this.userId)
+						}
+					}
+				);
 			this.fetchAgregatorsList()
 				
 			//this.username = this.$store.getters.getUsername;

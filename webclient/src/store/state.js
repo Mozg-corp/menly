@@ -7,6 +7,7 @@ export default{
 	username: '',
 	agregators_list: [],
 	user: [],
+	balances: [],
 	contact: [],
 	requisites: {
 		bankAccount: "",

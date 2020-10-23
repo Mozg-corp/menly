@@ -64,6 +64,7 @@ class GettService{
 		];
 	}
 	public static function extractBalanceFromResponse($response){
+		if(!isset($response['value'])) return 0;
 		$balance = $response['value']->balance;
 		$tips = $response['value']->tips;
 		$parking_cost = $response['value']->parking_cost;

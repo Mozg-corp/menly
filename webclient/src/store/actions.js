@@ -134,15 +134,12 @@ export default {
 			}
 		)
 	},
-	fetchProfile: ({commit, dispatch,getters}, id) => {
-		
+	fetchProfile: ({commit, dispatch,getters}) => {
 			return new Promise(
 				async (resolve, reject) => {
-					let url = typeof(id) == "undefined"? '/api/v1/profile' : `/api/v1/profile/${id}`;
-					console.log(url)
 					let response =  await axios({
 						method: 'get',
-						url
+						url: '/api/v1/profiles'
 					})
 					let profile = response.data;
 					commit('SET_PROFILE', profile);
@@ -150,39 +147,59 @@ export default {
 				}
 			)
 	},
-	fetchUser: ({commit, dispatch,getters}, id) => {
-		
-			return new Promise(
-				async (resolve, reject) => {
-					let url = `/api/v1/management/users/${id}`;
-					//console.log(url)
-					let response =  await axios({
-						method: 'get',
-						url
-					})
-					let profile = response.data;
-					commit('SET_PROFILE', profile);
-					resolve(profile);
-				}
-			)
-	},
-	updateUser: ({commit}, updatedProfile) => {
-			//console.log(updatedProfile)
-			//console.log(`/api/v1/management/users/${updatedProfile.id}`)
+	createProfile: ({commit}, newProfile) => {
 		return new Promise(
-			
-			async (resolve, rejected) => {
-				let response = await axios({
-					method: 'post',
-					url: `/api/v1/management/users/${updatedProfile.id}`,
-					data: updatedProfile
-				})
-				if(response.status === 200){
+			async (resolve, reject) => {
+				try{
+					let response = await axios({
+						method: 'post',
+						url: '/api/v1/profiles',
+						data: newProfile
+					})
 					let profile = response.data;
 					commit('SET_PROFILE', profile);
 					resolve(profile);
-				}else{
-					rejected(response);
+				}catch(e){
+					console.log(e.response.data.message)
+					console.log(e.response);
+				}
+				
+			}
+		)
+	},
+	createCar: ({commit}, newCar) => {
+		return new Promise(
+			async (resolve, reject) => {
+				try{
+					let response = await axios({
+						method: 'post',
+						url: '/api/v1/cars',
+						data: newCar
+					})
+					let car = response.data;
+					commit('SET_CAR', car);
+					resolve(car);
+				}catch(e){
+					console.log(e.response);
+					reject(e.response)
+				}
+			}
+		)
+	},
+	fetchBalances: ({commit}, userId) => {
+		return new Promise(
+			async (resolve, reject) => {
+				try{
+					let response = await axios({
+						method: 'get',
+						url: `/api/v1/balances/${userId}`
+					})
+					let balances = response.data;
+					commit('SET_BALANCES', balances);
+					resolve(balances);
+				}catch(e){
+					console.log(e.response);
+					reject(e.response)
 				}
 			}
 		)
@@ -202,22 +219,6 @@ export default {
 					resolve(claims);
 				}
 			)
-	},
-	updateProfile: ({commit, dispatch, getters}, newUserData) => {
-		console.log(newUserData)
-		return new Promise(
-			async (resolve, rejected) => {
-				let response = await axios ({
-					method: 'post',
-					url: '/api/v1/profile/update',
-					data: newUserData
-				});
-				
-				let updatedUserData= response.data;
-				commit('SET_USER', updatedUserData);
-				resolve(getters.getProfile);
-			}
-		);
 	},
 	fetchCounters: ({commit, dispatch, getters}) => {
 		return new Promise(

@@ -41,6 +41,12 @@ export default {
 	SET_PROFILE: (state, profile) => {
 		state.profile = profile;
 	},
+	SET_CAR: (state, car) => {
+		state.car = car
+	},
+	SET_BALANCES: (state, balances) => {
+		state.balances = balances
+	},
 	SET_COUNTERS: (state, counters) => {
 		state.counters = counters;
 	},
