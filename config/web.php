@@ -136,7 +136,10 @@ $config = [
                     'controller' => 'user-agregator',
 					'prefix' => 'api/v1',
 					'pluralize' =>false,
-					'except' => ['delete']
+					'except' => ['delete'],
+					'extraPatterns' => [
+							'POST batch' => 'batch',
+						]
                 ],
                 [
 					'class'=>UrlRule::class,

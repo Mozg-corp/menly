@@ -12,7 +12,7 @@ class m201020_072857_add_updated_at_column_to_gett_orders_table extends Migratio
      */
     public function safeUp()
     {
-        $this->addColumn('{{%gett_orders}}', 'updated_at', $this->timestamp());
+        $this->addColumn('{{%gett_orders}}', 'updated_at', $this->timestamp()->defaultValue(null));
     }
 
     /**

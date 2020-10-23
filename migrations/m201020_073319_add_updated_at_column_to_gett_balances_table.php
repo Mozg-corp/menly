@@ -12,7 +12,7 @@ class m201020_073319_add_updated_at_column_to_gett_balances_table extends Migrat
      */
     public function safeUp()
     {
-        $this->addColumn('{{%gett_balances}}', 'updated_at', $this->timestamp());
+        $this->addColumn('{{%gett_balances}}', 'updated_at', $this->timestamp()->defaultValue(null));
     }
 
     /**

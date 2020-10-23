@@ -61,7 +61,8 @@ class AuthController extends \yii\web\Controller
     {
 //        $this->enableCsrfValidation = false;
         $model = new User();
-
+		// \Yii::$app->response->format = Response::FORMAT_JSON;
+		// return \Yii::$app->request->post();
         if (\Yii::$app->request->isPost){
             $model->load(\Yii::$app->request->post());
 			

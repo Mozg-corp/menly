@@ -20,7 +20,7 @@ class AuthComponent extends Component
         }
         $user = $this->getUserByName($model->phone);
         if (!$this->validatePassword($model->password, $user->password_hash)){
-            $model->addError('password', 'Wronge password');
+            $model->addError('password', 'Wrong password');
             return false;
         }
 		
