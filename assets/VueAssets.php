@@ -12,12 +12,10 @@ class VueAssets extends AssetBundle
     public $baseUrl = '@web';
 
     public $css = [
-        './css/chunk-vendors.7ff6960d.css',
-        './css/app.c0dbb0d5.css',
     ];
     public $js = [
-        'js/chunk-vendors.9d02e274.js',
-        'js/app.059ec15f.js'
+        'js/chunk-vendors.js',
+        'js/app.js',
         ];
     public function init()
     {

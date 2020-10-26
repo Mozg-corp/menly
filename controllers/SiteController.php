@@ -234,31 +234,33 @@ class SiteController extends Controller
 		$raw_drivers = file_get_contents('../raw/citymobile driver list.json');
 		$drivers = json_decode($raw_drivers);
 		forEach($drivers->drivers as $driver){
-			// $user = new \app\models\User();
-			// $user->phone = $driver->phone_number;
-			// $user->password = "menly_4ever";
-			// $user->password_repeat = "menly_4ever";
-			// $user->scenarioSignUp();
-			// \Yii::$app->auth->signUp($user);
-			//$user_created = \app\models\User::find()->where(['phone' => $driver->phone_number])->one();
-			// $profile = new \app\models\ProfileBase();
-			// $profile->firstname = $driver->name;
-			// $profile->secondname = $driver->middle_name;
-			// $profile->lastname = $driver->last_name;
-			// $profile->user_id = $user_created->id;
-			// $profile->phone = $driver->phone_number;
-			// $profile->save();
-			// $profile_created = \app\models\Profile::find()->where(['user_id' => $user_created->id])->one();
-			// $user_agregator = new \app\models\UserAgregator();
-			// $user_agregator->users_id = $user_created->id;
-			// $user_agregator->agregators_id = 2;
-			// $user_agregator->save();
-			// $driver_account = new \app\models\DriverAccount();
-			// $driver_account->id_agregator = 2;
-			// $driver_account->id_account_types = 1;
-			// $driver_account->id_users = $user_created->id;
-			// $driver_account->account = $driver->login;
-			// $driver_account->save();
+			$user = new \app\models\User();
+			$user->phone = $driver->phone_number;
+			$user->password = "menly_4ever";
+			$user->password_repeat = "menly_4ever";
+			$user->scenarioSignUp();
+			\Yii::$app->auth->signUp($user);
+			$user_created = \app\models\User::find()->where(['phone' => $driver->phone_number])->one();
+			$profile = new \app\models\ProfileBase();
+			$profile->firstname = $driver->name;
+			$profile->secondname = $driver->middle_name;
+			$profile->lastname = $driver->last_name;
+			$profile->user_id = $user_created->id;
+			$profile->phone = $driver->phone_number;
+			$profile->save();
+			$profile_created = \app\models\Profile::find()->where(['user_id' => $user_created->id])->one();
+			if($user_created){
+				$user_agregator = new \app\models\UserAgregator();
+				$user_agregator->users_id = $user_created->id;
+				$user_agregator->agregators_id = 2;
+				$user_agregator->save();
+				$driver_account = new \app\models\DriverAccount();
+				$driver_account->id_agregator = 2;
+				$driver_account->id_account_types = 1;
+				$driver_account->id_users = $user_created->id;
+				$driver_account->account = $driver->login;
+				$driver_account->save();
+			}
 			//// print_r($driver);
 		}
 		echo "done";
@@ -272,7 +274,7 @@ class SiteController extends Controller
 		// $from = $date->format('Y-m-d H:i:s');
 		// echo $from;
 		$dt = new \DateTime();
-		$dt->setTimestamp(1603374688);
+		$dt->setTimestamp(1603693804);
 		var_dump($dt, (new \DateTime())->setTimestamp(time()));
 	}
 	public function actionGettGrow(){
@@ -316,22 +318,22 @@ class SiteController extends Controller
 		$drivers = json_decode($raw_drivers);
 		//print_r($drivers->driver_profiles[0]->driver_profile->phones[0]);
 		forEach($drivers->driver_profiles as $driver){
-			// $user = new \app\models\User();
-			// $user->phone = substr($driver->driver_profile->phones[0], 1);
-			// $user->password = "menly_4ever";
-			// $user->password_repeat = "menly_4ever";
-			// $user->scenarioSignUp();
-			// \Yii::$app->auth->signUp($user);
+			$user = new \app\models\User();
+			$user->phone = substr($driver->driver_profile->phones[0], 1);
+			$user->password = "menly_4ever";
+			$user->password_repeat = "menly_4ever";
+			$user->scenarioSignUp();
+			\Yii::$app->auth->signUp($user);
 			$phone = substr($driver->driver_profile->phones[0], 1);
 			$user_created = \app\models\User::find()->where(['phone' => $phone])->one();
-			// $profile = new \app\models\ProfileBase();
-			// $profile->firstname = $driver->driver_profile->first_name;
-			// $profile->secondname = $driver->driver_profile->middle_name??'';
-			// $profile->lastname = $driver->driver_profile->last_name;
-			// $profile->user_id = $user_created->id;
-			// $profile->phone = $phone;
-			////print_r($profile);
-			// $profile->save();
+			$profile = new \app\models\ProfileBase();
+			$profile->firstname = $driver->driver_profile->first_name;
+			$profile->secondname = $driver->driver_profile->middle_name??'';
+			$profile->lastname = $driver->driver_profile->last_name;
+			$profile->user_id = $user_created->id;
+			$profile->phone = $phone;
+			//print_r($profile);
+			$profile->save();
 			if($user_created){
 				$profile_created = \app\models\Profile::find()->where(['user_id' => $user_created->id])->one();
 				$user_agregator = new \app\models\UserAgregator();

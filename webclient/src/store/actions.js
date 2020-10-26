@@ -68,6 +68,7 @@ export default {
 			localStorage.removeItem('user-token');
 			localStorage.removeItem('user-isAdmin');
 			localStorage.removeItem('user-username');
+			localStorage.removeItem('user-id');
 			// remove the axios default header;
 			delete axios.defaults.headers.common['Authorization'];
 			resolve()

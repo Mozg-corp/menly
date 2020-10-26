@@ -44,6 +44,7 @@ $config = [
 			]
 		]
 	],
+	'defaultRoute' => 'index/vue',
     'components' => [
 		// 'schedule' => 'omnilight\scheduling\Schedule',
         'authManager' => [

@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import './assets/css/styles.css';
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = true;
 
 const token = localStorage.getItem('user-token');
 
@@ -21,6 +21,7 @@ store.state.token = localStorage.getItem('user-token');
 store.state.userId= localStorage.getItem('user-id');
 //console.log(store.state)
 axios.defaults.headers.common['Content-Type'] = 'Application/json';
+console.log('main.js');
 new Vue({
   router,
   store,

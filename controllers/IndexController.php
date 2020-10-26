@@ -19,6 +19,7 @@ class IndexController extends Controller
         // override bundle configuration if needed
         \Yii::$app->assetManager->bundles = [];
         // render page
+		\Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
         return $this->render('vue_page');
     }
 }

@@ -27,6 +27,7 @@ export default {
 		state.token = '';
 		state.username = '';
 		state.admin = false;
+		state.userId = '';
 
 	},
 	SET_AGREGATORS_LIST: (state, list) => {

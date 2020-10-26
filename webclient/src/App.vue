@@ -11,51 +11,7 @@
 					<div class="header_center r-flex">
 						<nav id="nav-menu-container_my">
 							<ul class="menu r-flex">
-								<router-link :to="{name: 'home'}">
-									<li >
-											главная
-									</li>
-								</router-link>
-								<router-link :to="{name: 'about'}">
-									<li>
-											о нас
-									</li>
-								</router-link>
-								<!--<a href="./pages/foto.html">-->
-								<!--	<li>-->
-								<!--			фото-->
-								<!--	</li>-->
-								<!--</a>-->
-								<!--<a href="#">-->
-								<!--	<li>-->
-								<!--		документы-->
-								<!--	</li>-->
-								<!--</a>-->
-								<!--<router-link :to="{name: 'claims'}">-->
-								<!--	<li>-->
-								<!--			обращения-->
-								<!--	</li>-->
-								</router-link>
-								<!--<a href="#">-->
-								<!--	<li>-->
-								<!--		голосования-->
-								<!--	</li>-->
-								<!--</a>-->
-								<router-link :to="{name: 'contacts'}">
-									<li>
-											контакты
-									</li>
-								</router-link>
-								<router-link v-show="isLogined" :to="{name: 'personal'}">
-									<li>
-											личный кабинет
-									</li>
-								</router-link>
-								<router-link v-show="isAdmin===true" :to="{name: 'cityzens'}">
-									<li>
-											управление снт
-									</li>
-								</router-link>
+								
 							</ul>
 						</nav>
 					</div>
@@ -155,7 +111,7 @@
 				return this.$store.getters.isAuthenticated;
 			},
 			...mapState(['username', 'userId', 'user']),
-			...mapGetters(['isAdmin']),
+			...mapGetters(['isAdmin', 'isAuthenticated']),
 			
 		},
         methods: {
@@ -196,7 +152,7 @@
 			this.fetchUserData(this.userId)
 				.then(
 					()=> {
-						if(this.user.agregators.length){
+						if(this.user.agregators.length && this.userId){
 							this.fetchBalances(this.userId)
 						}
 					}

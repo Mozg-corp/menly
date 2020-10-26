@@ -1,9 +1,10 @@
 <template>
 	<main >
 		<div class="container_my content">
-			<div class="main_box">
+			<div v-show="isAuthenticated" class="main_box">
 				<div class="left_side">
 					<div v-if="user.agregators && !user.agregators.length">
+						Выберите агрегаторов подключать
 						<ul @click="toggleLi($event)">
 							<li v-for="(agregator, i) 
 								in agregators_list" 
@@ -17,8 +18,11 @@
 							Выбрать
 						</a>
 					</div>
-					<div v-else>
-						<ul>
+					<div v-else style="border:1px solid black">
+						<h2 style="margin-bottom: 30px">
+							Вы подключены к
+						</h2>
+						<ul >
 							<li v-for="(agregator, i) in user.agregators" :key="agregator.id">
 									{{agregator.name}}
 							</li>
@@ -46,10 +50,15 @@
 							Отправить
 						</a>
 					</div>
-					<div v-else class="passport_box">
-						<p v-for="(property, i) in user.profile" :key="i" class="property">
-							{{property}}
-						</p>
+					<div v-else class="passport_box" style="border:1px solid black">
+						<h2 style="margin-bottom: 30px">
+							Профиль водителя
+						</h2>
+						<ul >
+							<li v-for="(property, i) in user.profile" :key="i" class="property">
+								{{property}}
+							</li>
+						</ul>
 					</div>
 					<div v-if="!user.car" class="passport_box">
 						<p>
@@ -137,6 +146,7 @@ export default {
   },
   computed: {
 	...mapState(['agregators_list', 'user', 'balances']),
+	...mapGetters(['isAuthenticated']),
 	summ(){
 		let summ = 0;
 		let b = JSON.parse(JSON.stringify(this.balances))

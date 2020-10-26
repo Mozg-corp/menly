@@ -2,4 +2,4 @@
 
 /* @var $this \yii\web\View */
 ?>
-<div id="app"></div>
+<div id=app></div>
