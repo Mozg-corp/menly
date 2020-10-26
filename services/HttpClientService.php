@@ -1,5 +1,6 @@
 <?php
 namespace app\services;
+use GuzzleHttp\Psr7;
 
 class HttpClientService implements \app\interfaces\ClientInterface{
 	private $serviceFactory;

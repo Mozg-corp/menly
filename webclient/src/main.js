@@ -21,7 +21,6 @@ store.state.token = localStorage.getItem('user-token');
 store.state.userId= localStorage.getItem('user-id');
 //console.log(store.state)
 axios.defaults.headers.common['Content-Type'] = 'Application/json';
-console.log('main.js');
 new Vue({
   router,
   store,

@@ -149,14 +149,16 @@
 
         },
         mounted() {
-			this.fetchUserData(this.userId)
-				.then(
-					()=> {
-						if(this.user.agregators.length && this.userId){
-							this.fetchBalances(this.userId)
+			if(this.userId){
+				this.fetchUserData(this.userId)
+					.then(
+						()=> {
+							if(this.user.agregators.length && this.userId){
+								this.fetchBalances(this.userId)
+							}
 						}
-					}
-				);
+					);
+			}
 			this.fetchAgregatorsList()
 				
 			//this.username = this.$store.getters.getUsername;

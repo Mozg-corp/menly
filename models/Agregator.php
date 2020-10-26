@@ -48,4 +48,9 @@ class Agregator extends AgregatorBase
 			'apiv2'
 		];
 	}
+	public function flushToken(){
+		$this->token = '';
+		$this->expire = null;
+		$this->save();
+	}
 }

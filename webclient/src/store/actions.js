@@ -31,6 +31,7 @@ export default {
 				localStorage.removeItem('user-token'); // if the request fails, remove any possible user token if possible
 				localStorage.removeItem('user-isAdmin');
 				localStorage.removeItem('user-username');
+				localStorage.removeItem('user-id');
 			});
 	},
 	signUp: ({commit, dispatch, getters}, bodyFormData)=>{
@@ -44,9 +45,11 @@ export default {
 				if (response.data !== ''){
 					let data = response.data;
 						let token = data.token,
-							username = data.phone;
+							username = data.phone,
+							userId = data.id;
 						localStorage.setItem('user-token', token); // store the token in localstorage
 						localStorage.setItem('user-username', username);
+						localStorage.setItem('user-id', userId);
 						let isAdmin = data.roles.includes('admin');
 						localStorage.setItem('user-isAdmin', isAdmin);
 						//console.log('auth_action',isAdmin);						
@@ -60,6 +63,7 @@ export default {
 				localStorage.removeItem('user-token'); // if the request fails, remove any possible user token if possible
 				localStorage.removeItem('user-isAdmin');
 				localStorage.removeItem('user-username');
+				localStorage.removeItem('user-id');
 			});
 	},
 	logout({commit, dispatch}) {
