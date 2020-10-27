@@ -10,6 +10,7 @@
 								in agregators_list" 
 								:key="agregator.id"
 								:data-id="agregator.id"
+								 :class="{selected: selectedAgregators.includes(`${agregator.id}`), agregator_item: true}"
 								>
 									{{agregator.name}}
 							</li>
@@ -99,7 +100,7 @@
 							<b>Summ</b>
 						</p>
 						<p>
-							{{summ}}
+							<b>{{summ}}</b>
 						</p>
 					</div>
 				</div> <!--right_side-->
@@ -140,7 +141,8 @@ export default {
 		year: '',
 		color: '',
 		license: '',
-	}
+	},
+	
   }),
   components: {
   },
@@ -159,6 +161,7 @@ export default {
 		}
 		//*/
 	}
+	
   },
   methods:{
 	...mapActions(['postAgregators', 'createProfile', 'createCar', 'fetchBalances']),
@@ -183,6 +186,9 @@ export default {
 	sendCarHandler(){
 		this.car.id_users = this.user.id;
 		this.createCar(this.car)
+	},
+	isSelected(id){
+		return this.selectedAgregators.includes(id)
 	}
   },
   
@@ -223,4 +229,11 @@ export default {
 		width: 100%
 		border-bottom: 1px solid black
 		margin: 5px 0
+	
+	.agregator_item:hover
+		background-color: grey
+		opacity: 0.3
+	.selected
+		background-color: grey
+		opacity: 0.3
 </styles>

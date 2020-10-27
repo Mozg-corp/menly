@@ -11,7 +11,11 @@
 					<div class="header_center r-flex">
 						<nav id="nav-menu-container_my">
 							<ul class="menu r-flex">
-								
+								<router-link :to="{name: 'users'}" class="agregator_item">
+									<li >
+										Пользователи
+									</li>
+								</router-link>
 							</ul>
 						</nav>
 					</div>
