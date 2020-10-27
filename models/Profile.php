@@ -141,4 +141,12 @@ class Profile extends ProfileBase
 			}
 		];
 	}
+    /**
+     * {@inheritdoc}
+     * @return ProfileQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new ProfileQuery(get_called_class());
+    }
 }

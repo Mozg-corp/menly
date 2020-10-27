@@ -12,7 +12,7 @@ use OpenApi as OA;
 *         @OA\JsonContent(type="array", @OA\Items(ref = "#/components/schemas/UserResponse")),
 *     )
 ),
-@OA\Get(
+*@OA\Get(
 *	 path="/api/v1/users/{id}",
 *    tags={"User"},
 *    summary="Get single user.",
@@ -29,6 +29,28 @@ use OpenApi as OA;
 *         @OA\JsonContent(ref = "#/components/schemas/UserResponse"),
 *     ),
 ),
+*@OA\Put(
+*	 path="/api/v1/users/{id}",
+*    tags={"User"},
+*    summary="Change  user.",
+	 
+		security = {{"bearerAuth":{}}},
+	 @OA\Parameter(
+		name="id",
+		in="path",
+		required=true
+	 ),
+*	 @OA\RequestBody(
+*         description="User properties to be updated",
+*         required=true,
+		  @OA\JsonContent(ref="#/components/schemas/UserUpdate")
+	 ),
+*     @OA\Response(
+*         response = 200,
+*         description = "User Changed",
+*         @OA\JsonContent(ref = "#/components/schemas/UserResponse"),
+*     )
+)
 */
 class UserController extends \app\controllers\BaseController{
 	public $modelClass = \app\models\User::class;

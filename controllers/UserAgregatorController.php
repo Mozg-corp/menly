@@ -46,7 +46,7 @@
 	path="/api/v1/user-agregator/{id}",
 	tags={"user-agregator"},
 	summary="Update existing user-agregator relation",
-	security={{"beareAuth"={}}},
+	security = {{"bearerAuth":{}}},
 	@OA\Parameter(
 		name="id",
 		in="path",
@@ -57,18 +57,50 @@
 		description="user-agregator relation've been updated",
 		@OA\JsonContent(ref="#/components/schemas/UserAgregator")
 	)
+),
+*@OA\Post(
+	path="/api/v1/user-agregator/batch",
+	tags={"user-agregator"},
+	summary="Batch creating user-agregator relation",
+*	security = {{"bearerAuth":{}}},
+	@OA\RequestBody(
+		required=true,
+		@OA\JsonContent(ref="#/components/schemas/UserAgregator")
+	),
+	@OA\Response(
+		response=200,
+		description="user-agregator relation've been updated",
+		@OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/UserAgregator"))
+	)
 )
 */
 class UserAgregatorController extends \app\controllers\BaseController{
 	public $modelClass = \app\models\UserAgregator::class;
-	// public $updateScenario = \app\models\UserAgregator::SCENARIO_UPDATE;
-	// public $createScenario = \app\models\UserAgregator::SCENARIO_CREATE;
 	
+    
+	public function actions(){
+		return array_merge([
+			'batch' => [
+				'class' => \app\controllers\actions\useragregator\BatchAction::class,
+				'modelClass' => $this->modelClass,
+				'checkAccess' => [$this, 'checkAccess']
+			]
+		], parent::actions());
+	}
 	public function checkAccess($action, $model = null, $param = []){
 		switch($action){
 			case 'create':
-				if(\Yii::$app->request->post()['users_id'] !== \Yii::$app->user->id){
+				if(array_key_exists('users_id', \Yii::$app->request->post()) && \Yii::$app->request->post()['users_id'] !== \Yii::$app->user->id){
 					throw new \yii\web\ForbiddenHttpException('You can create user-agregator relation data only for yourself');
+				}else{
+					throw new \yii\web\BadRequestHttpException('wrong request body');
+				}
+				break;
+			case 'batch':
+				if(array_key_exists('users_id', \Yii::$app->request->post()) && \Yii::$app->request->post()['users_id'] !== \Yii::$app->user->id){
+					throw new \yii\web\ForbiddenHttpException('You can create user-agregator relation data only for yourself');
+				}else{
+					throw new \yii\web\BadRequestHttpException('wrong request body');
 				}
 				break;
 			default:

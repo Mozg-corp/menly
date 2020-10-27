@@ -7,7 +7,7 @@ namespace app\models;
  *
  * @see ProfileBase
  */
-class ProfileQuery extends \yii\db\ActiveQuery
+class ProfileQuery extends ProfileBaseQuery
 {
     /*public function active()
     {

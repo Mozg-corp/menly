@@ -20,7 +20,7 @@ class AuthComponent extends Component
         }
         $user = $this->getUserByName($model->phone);
         if (!$this->validatePassword($model->password, $user->password_hash)){
-            $model->addError('password', 'Wronge password');
+            $model->addError('password', 'Wrong password');
             return false;
         }
 		
@@ -39,8 +39,12 @@ class AuthComponent extends Component
         if($model->save()){
             $role = \Yii::$app->authManager->getRole('candidate');
             \Yii::$app->authManager->assign($role, $model->getId());
+			// echo '_____'.$model->phone.'____________';
             return true;
-        }
+        }else{
+			// echo '========='.$model->phone.'==============';
+			// print_r($model->errors);
+		}
         return false;
     }
     private function validatePassword($password, $passwordHash)

@@ -215,4 +215,12 @@ class User extends UserBase implements IdentityInterface
 	public function getAgregatorsNames(){
 		return array_map(function($el){return $el->name;},$this->agregators);
 	}
+	/**
+     * {@inheritdoc}
+     * @return UserBaseQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new UserQuery(get_called_class());
+    }
 }

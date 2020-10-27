@@ -20,7 +20,7 @@ use Yii;
  * @property string|null $created_at
  * @property string|null $updated_at
  *
- * @property Users $users
+ * @property User $users
  */
 class CarBase extends \yii\db\ActiveRecord
 {
@@ -74,11 +74,11 @@ class CarBase extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Users]].
      *
-     * @return \yii\db\ActiveQuery|UsersQuery
+     * @return \yii\db\ActiveQuery|UserQuery
      */
     public function getUsers()
     {
-        return $this->hasOne(Users::className(), ['id' => 'id_users']);
+        return $this->hasOne(User::className(), ['id' => 'id_users']);
     }
 
     /**
