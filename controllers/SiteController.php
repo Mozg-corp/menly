@@ -321,4 +321,15 @@ class SiteController extends Controller
 		if($ride->userExist()) print_r('ok');
 		else echo 'no';
 	}
+	public function actionUserTable(){
+		// $ut =User::find()
+					// ->joinWith('agregators')
+					// ->joinWith('profile')
+					// ->joinWith('car')
+					// ->asArray()
+					// ->all();
+					$query = \app\models\User::find();
+print_r($query->andFilterWhere(['like','phone', '7964'])->all());
+        return json_encode(\app\models\User::find()->andWhere(['like', 'phone','8926', false])->all());
+	}
 }

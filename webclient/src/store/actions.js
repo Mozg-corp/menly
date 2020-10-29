@@ -102,7 +102,6 @@ export default {
 				agregators_id: +el
 			})
 		})
-		console.log(body);
 		return new Promise(
 			async (resolve, reject) => {
 				let response = null;
@@ -206,6 +205,93 @@ export default {
 					console.log(e.response);
 					reject(e.response)
 				}
+			}
+		)
+	},
+	fetchAllUsers: ({commit}, page) => {
+		return new Promise(
+			async (resolve, reject) => {
+				let response = await axios({
+					method: 'get',
+					url: `/api/v1/users?page=${page}`
+				})
+				let users = response.data;
+				console.log(response.headers)
+				let pagination = {
+					current_page: +response.headers['x-pagination-current-page'],
+					page_count: +response.headers['x-pagination-page-count'],
+					per_page: +response.headers['x-pagination-per-page'],
+					total_count: +response.headers['x-pagination-total-count']
+				}
+				commit('SET_USERS', users);
+				resolve({users, pagination});
+			}
+		)
+	},
+	fetchUsersPage: ({commit}, url) => {
+		return new Promise(
+			async (resolve, reject) => {
+				try{
+					let response = await axios({
+						method: 'get',
+						url
+					})
+					let users = response.data;
+					commit('SET_USERS', users);
+					resolve(users);
+				}catch(e){
+					reject(e.response)
+				}
+			}
+		)
+	},
+	changeUserState: ({commit}, {userId, status}) => {
+		console.log({status})
+		console.log(userId)
+		return new Promise(
+			async (resolve, reject) =>{
+				let response = null;
+				try{
+					response = await axios({
+						method: 'put',
+						url: `/api/v1/users/${userId}`,
+						data: {status}
+					})
+				}catch(e){
+					console.log(e);
+					reject(e.response);
+					return;
+				}
+				console.log(response)
+				if(response && response.status === 200){
+					let updatedUser = response.data;
+					commit("UPDATE_USER_STATUS", updatedUser);
+					resolve(updatedUser);
+				}
+			}
+		)
+	},
+	deleteUser: ({commit}, id) => {
+		return new Promise(
+			async (resolve, reject) => {
+				let response = null;
+				try{
+					let response = await axios({
+						method: 'delete',
+						url: `/api/v1/users/${id}`
+					})
+					if(response.status === 204){
+						commit('DELETE_USER', id);
+						resolve();
+					}else{
+						reject(response);
+					}
+				}catch(e){
+					console.log(e);
+					reject(e.response);
+					return;
+				}
+				
 			}
 		)
 	},

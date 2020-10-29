@@ -58,8 +58,8 @@ class User extends UserBase implements IdentityInterface
         return array_merge([
            self::SCENARIO_SIGNUP => ['phone','password'],
            self::SCENARIO_SIGNIN => ['phone', 'password'],
-		   self::SCENARIO_UPDATE => ['phone', 'password_hash', 'token', 'auth_key', 'create_at', 'updated_at'],
-		   self::SCENARIO_CREATE => ['phone', 'password_hash', 'token', 'auth_key', 'create_at', 'updated_at'],
+		   self::SCENARIO_UPDATE => ['status'],
+		   self::SCENARIO_CREATE => [],
         ],parent::scenarios());
     }
 
@@ -76,8 +76,9 @@ class User extends UserBase implements IdentityInterface
 			}
 		}
         return array_merge([
-            ['password', 'required'],
+            ['password', 'required', 'on' => [self::SCENARIO_SIGNUP, self::SCENARIO_SIGNIN]],
             ['password', 'string', 'min' => 8],
+			['status', 'safe'],
 			['password_repeat', 'compare', 'compareAttribute' => 'password'],
 			['phone', 'match', 'pattern' => '/^[8,7]\d{3}\d{3}\d{2}\d{2}/', 'message' => 'Телефон, должен быть в формате 8XXXXXXXXXX или 7XXXXXXXXXX'],
             [['phone'], 'unique', 'on' => self::SCENARIO_SIGNUP],

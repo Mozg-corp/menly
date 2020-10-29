@@ -54,9 +54,20 @@ use OpenApi as OA;
 */
 class UserController extends \app\controllers\BaseController{
 	public $modelClass = \app\models\User::class;
-	public $updateScenario = \app\models\User::SCENARIO_UPDATE;
-	public $createScenario = \app\models\User::SCENARIO_CREATE;
+	//public $updateScenario = \app\models\User::SCENARIO_UPDATE;
+	//public $createScenario = \app\models\User::SCENARIO_CREATE;
+	public function actions() {
+		
+		$actions = parent::actions();
+		$actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
 
+		return $actions;
+	}
+	public function prepareDataProvider() {
+
+		$searchModel = new \app\models\searchmodels\UserSearch();    
+		return $searchModel->search(\Yii::$app->request->queryParams);
+	}
 
 	public function checkAccess($action, $model = null, $params=[]){
 		

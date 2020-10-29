@@ -32,7 +32,7 @@ const routes = [
     {
         path: '/users',
         name:'users',
-        component: Users,
+        component: Users
         // component: ()=>import(/*webpackChunkName: "Users page"*/ '@/views/Users.vue'),
     },
     // {

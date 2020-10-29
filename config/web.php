@@ -124,7 +124,7 @@ $config = [
 					'class'=>\yii\rest\UrlRule::class,
                     'controller' => 'user',
 					'prefix' => 'api/v1',
-					'except' => ['delete']
+					//'except' => ['delete']
                 ],
                 [
 					'class'=>UrlRule::class,

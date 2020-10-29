@@ -1,6 +1,9 @@
 <template>
 	<main >
 		<div class="container_my content">
+			<h3>
+				Статус {{userStatuses[user.status]}}
+			</h3>
 			<div v-show="isAuthenticated" class="main_box">
 				<div class="left_side">
 					<div v-if="user.agregators && !user.agregators.length">
@@ -147,7 +150,7 @@ export default {
   components: {
   },
   computed: {
-	...mapState(['agregators_list', 'user', 'balances']),
+	...mapState(['agregators_list', 'user', 'balances', 'userId', 'userStatuses']),
 	...mapGetters(['isAuthenticated']),
 	summ(){
 		let summ = 0;
@@ -164,7 +167,7 @@ export default {
 	
   },
   methods:{
-	...mapActions(['postAgregators', 'createProfile', 'createCar', 'fetchBalances']),
+	...mapActions(['postAgregators', 'createProfile', 'createCar', 'fetchBalances', 'fetchUserData', 'fetchAgregatorsList']),
 	chooseAgregatorsHandler(){
 		this.postAgregators(this.selectedAgregators)
 	},
@@ -172,8 +175,6 @@ export default {
 		let id = $event.target.dataset.id;
 		if(this.selectedAgregators.includes(id)){
 			let index = this.selectedAgregators.findIndex(el => el === id);
-			console.log(this.selectedAgregators.slice(0, index));
-			console.log(this.selectedAgregators.slice(index+1));
 			this.selectedAgregators = [...this.selectedAgregators.slice(0, index), ...this.selectedAgregators.slice(index + 1)]
 		}else{
 			this.selectedAgregators.push(id)
@@ -182,6 +183,13 @@ export default {
 	sendProfileHandler(){
 		this.profile.user_id = this.user.id;
 		this.createProfile(this.profile)
+			.then(
+				() => {
+					this.selectedAgregators = [];
+					this.car = {};
+					this.profile = {};
+				}
+			)
 	},
 	sendCarHandler(){
 		this.car.id_users = this.user.id;
@@ -193,6 +201,18 @@ export default {
   },
   
   mounted(){
+	if(this.userId){
+		this.fetchUserData(this.userId)
+			.then(
+				()=> {
+					if(this.user.agregators.length){
+						this.fetchBalances(this.userId)
+					}else{
+						this.fetchAgregatorsList()
+					}
+				}
+			);
+	}
 		
   }
 }

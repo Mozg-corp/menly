@@ -135,6 +135,8 @@
 							this.showModal = !this.showModal
 							if(this.user.agregators.length){
 								this.fetchBalances(this.userId)
+							}else{
+								this.fetchAgregatorsList()
 							}
                         })
                         .catch();
@@ -157,13 +159,11 @@
 				this.fetchUserData(this.userId)
 					.then(
 						()=> {
-							if(this.user.agregators.length && this.userId){
-								this.fetchBalances(this.userId)
-							}
+							
 						}
 					);
 			}
-			this.fetchAgregatorsList()
+			//this.fetchAgregatorsList()
 				
 			//this.username = this.$store.getters.getUsername;
 			//this.isLogined = this.$store.getters.isAuthenticated;

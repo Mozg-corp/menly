@@ -7,7 +7,13 @@ export default{
 	username: '',
 	agregators_list: [],
 	user: [],
+	users: [],
 	balances: [],
+	userStatuses: [
+		'Not Active',
+		'Candidate',
+		'User'
+	],
 	contact: [],
 	requisites: {
 		bankAccount: "",

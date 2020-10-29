@@ -1,3 +1,15 @@
+let initState = {
+	userId: '',
+	token: '',
+	status: '',
+	errorMsg: '',
+	admin: false,
+	username: '',
+	agregators_list: [],
+	user: [],
+	users: [],
+	balances: []
+}
 export default {
 	AUTH_REQUEST: (state) => {
 
@@ -22,12 +34,14 @@ export default {
 	},
 
 	LOGOUT: (state) => {
-
-		state.status = '';
-		state.token = '';
-		state.username = '';
-		state.admin = false;
-		state.userId = '';
+		for(let prop in initState){
+			state[prop] = initState[prop];
+		}
+		state.userStatuses = [
+			'Not Active',
+			'Candidate',
+			'User'
+		]
 
 	},
 	SET_AGREGATORS_LIST: (state, list) => {
@@ -40,13 +54,24 @@ export default {
 		state.user.agregators = userAgregators
 	},
 	SET_PROFILE: (state, profile) => {
-		state.profile = profile;
+		state.user.profile = profile;
 	},
 	SET_CAR: (state, car) => {
 		state.car = car
 	},
 	SET_BALANCES: (state, balances) => {
 		state.balances = balances
+	},
+	SET_USERS: (state,users) => {
+		state.users = users
+	},
+	UPDATE_USER_STATUS: (state, updatedUser) => {
+		let index = state.users.findIndex( el => el.id === updatedUser.id);
+		state.users[index] = updatedUser;
+	},
+	DELETE_USER: (state, id) => {
+		let index = state.users.findIndex( el => el.id === id );
+		state.users = [...state.users.slice(0, index), ...state.users.slice(index+1)]
 	},
 	SET_COUNTERS: (state, counters) => {
 		state.counters = counters;
