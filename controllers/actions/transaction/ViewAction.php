@@ -72,7 +72,10 @@ class ViewAction extends \yii\rest\ViewAction{
 			
 		}
 		uasort($transaction, function($left, $right){
-			return !strcasecmp($left['date'], $right['date']);
+			$prev = new \Datetime($left['date']);
+			$next = new \Datetime($right['date']);
+			if($prev == $next) return 0;
+			return $prev < $next;
 		});
 		$dataProvider = new \yii\data\ArrayDataProvider([
 			'allModels' => $transaction,

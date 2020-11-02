@@ -106,7 +106,7 @@
 							<b>{{summ}}</b>
 						</p>
 					</div>
-					<div>
+					<div style="margin-top: 50px">
 						<h2>
 							Транзакции
 						</h2>
