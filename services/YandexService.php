@@ -55,11 +55,6 @@ class YandexService{
 						],
 						"transaction" => [
 							"category_ids" => [
-								"partner_service_recurrent_payment",
-								"partner_service_recurring_payment_cancellation",
-								"partner_service_recurring_payment",
-								"partner_service_other",
-								"partner_service_financial_statement",
 								"partner_service_manual",
 								"partner_service_manual_1",
 								"partner_service_manual_2",
