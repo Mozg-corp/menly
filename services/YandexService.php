@@ -131,7 +131,7 @@ class YandexService{
 				'agregator' => self::NAME,
 				'type' => $payment->description,
 				'balance' => $payment->amount,
-				'date' => $payment->event_at
+				'date' => (new \DateTime($payment->event_at))->format('d.m.Y H:m')
 			]);
 		}
 		

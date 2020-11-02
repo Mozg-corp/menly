@@ -104,7 +104,7 @@ class CitymobileService{
 				'agregator' => self::NAME,
 				'type' => $payment->type_name,
 				'balance' => $payment->sum,
-				'date' => $payment->oppdate
+				'date' => (new \DateTime($payment->oppdate))->format('d.m.Y H:m')
 			]);
 		}
 		return $transactions;

@@ -33,12 +33,11 @@ class ViewAction extends \yii\rest\ViewAction{
 		try{
 			$responses = \GuzzleHttp\Promise\settle($promises)->wait();
 		}catch(\GuzzleHttp\Exception\ClientException $e){
-			echo 'ddddd';
-			//$response = $e->getResponse();
-			//$responseBodyAsString = $response->getBody()->getContents();
-			//$responseStdObj = json_decode($responseBodyAsString);
-			//print_r($responseStdObj);
-			//die;
+			$response = $e->getResponse();
+			$responseBodyAsString = $response->getBody()->getContents();
+			$responseStdObj = json_decode($responseBodyAsString);
+			print_r($responseStdObj);
+			die;
 		}
 		$transaction = [];
 		forEach($driverAccounts as $account){

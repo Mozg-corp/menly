@@ -365,15 +365,9 @@ print_r($query->andFilterWhere(['like','phone', '7964'])->all());
 		uasort($transactions, function($left, $right){
 			return !strcasecmp($left['date'], $right['date']);
 		});
-		// $a = \app\models\Agregator::find()->all();
-		// print_r($a[0]);die;
-		\Yii::$app->response->format = Response::FORMAT_JSON;
 		$dataProvider = new \yii\data\ArrayDataProvider([
 			'allModels' => $transactions,
-			'sort' => [
-			]
 		]);
-		// print_r($dataProvider->getModels());die;
 		return $dataProvider;
 	}
 }

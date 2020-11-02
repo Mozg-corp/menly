@@ -106,6 +106,26 @@
 							<b>{{summ}}</b>
 						</p>
 					</div>
+					<div>
+						<h2>
+							Транзакции
+						</h2>
+						<div class="table">
+							<div class="table_row"
+								v-for="(transaction, i) in transactions" 
+								:key="i" >
+								<div class="table_cell">
+									{{transaction.date}}
+								</div>
+								<div class="table_cell">
+									{{transaction.agregator}}
+								</div>
+								<div class="table_cell table_cell__center">
+									{{transaction.balance}}
+								</div>
+								</div>
+						</div>
+					</div>
 				</div> <!--right_side-->
 			</div><!--main_box-->
 		</div><!--container-->
@@ -150,7 +170,7 @@ export default {
   components: {
   },
   computed: {
-	...mapState(['agregators_list', 'user', 'balances', 'userId', 'userStatuses']),
+	...mapState(['agregators_list', 'user', 'balances', 'userId', 'userStatuses', 'transactions']),
 	...mapGetters(['isAuthenticated']),
 	summ(){
 		let summ = 0;
@@ -167,7 +187,7 @@ export default {
 	
   },
   methods:{
-	...mapActions(['postAgregators', 'createProfile', 'createCar', 'fetchBalances', 'fetchUserData', 'fetchAgregatorsList']),
+	...mapActions(['postAgregators', 'createProfile', 'createCar', 'fetchBalances', 'fetchUserData', 'fetchAgregatorsList', 'fetchTransactions']),
 	chooseAgregatorsHandler(){
 		this.postAgregators(this.selectedAgregators)
 	},
@@ -207,6 +227,10 @@ export default {
 				()=> {
 					if(this.user.agregators.length){
 						this.fetchBalances(this.userId)
+						this.fetchTransactions(this.userId)
+							.then(
+								//transactions => console.log(transactions)
+							)
 					}else{
 						this.fetchAgregatorsList()
 					}
@@ -256,4 +280,13 @@ export default {
 	.selected
 		background-color: grey
 		opacity: 0.3
+	.table
+		display: table
+		&_row
+			display: table-row
+		&_cell
+			display: table-cell
+			border-bottom: 1px solid black
+			&__center
+				text-align: center
 </styles>
