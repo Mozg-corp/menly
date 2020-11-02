@@ -19,4 +19,7 @@ class AgregatorQuery extends \app\models\AgregatorBaseQuery
 	public function getApiByName(string $name):string{
 		return $this->select(['apiv1'])->where(['name' => $name])->one()->apiv1;
 	}
+	public function getApiV2ByName(string $name):string{
+		return $this->select(['apiv2'])->where(['name' => $name])->one()->apiv2;
+	}
 }

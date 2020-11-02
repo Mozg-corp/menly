@@ -14,6 +14,8 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		$this->client = new \GuzzleHttp\Client();
 	}
 	public function fetch($service, string $type, array $payload = []){
+		//print_r(json_encode($service->prepearData($type, $payload)));die;
+		// print_r($service->prepearRequest($type));die;
 		return $this->client->sendAsync($service->prepearRequest($type), $service->prepearData($type, $payload));
 	}
 	public function loginByName($service):array{
@@ -93,5 +95,28 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		$balance = \app\models\GettBalance::find()->byDriverId($id_driver)->one();
 		$promise->resolve($balance);
 		return $promise;
+	}
+	public function getTransactionsByName(string $name, array $payload){
+		switch($name){
+			case 'Яндекс': return $this->getYandexTransactions($payload);
+			case 'Ситимобиль': return $this->getCityMobileTransactions($payload);
+			case 'Gett': return $this->getGettTransactions($payload);
+		}
+	}
+	public function gettGettTransactions(array $Payload){
+		$promise = new \GuzzleHttp\Promise\Promise();
+		$transactions = [];
+		$promise->resolve($transeactions);
+		return $promise;
+	}
+	public function getYandexTransactions(array $payload){
+		$service = $this->serviceFactory::getServiceFactory('Яндекс');
+		return $this->fetch($service, 'transactions', $payload);
+	}
+	public function getCityMobileTransactions(array $payload){
+		$service = $this->serviceFactory::getServiceFactory('Ситимобиль');
+		$token = $this->obtainToken($service);
+		$payload['token'] = $token;
+		return $this->fetch($service, 'transactions', $payload);
 	}
 }

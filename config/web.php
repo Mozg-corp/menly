@@ -158,6 +158,15 @@ $config = [
 						]
 					
                 ],
+                [
+					'class'=>UrlRule::class,
+                    'controller' => 'transaction',
+					'prefix' => 'api/v1',
+					'except' => ['delete', 'put', 'patch'],
+					'extraPatterns' => [
+						]
+					
+                ],
 
             ],
         ],

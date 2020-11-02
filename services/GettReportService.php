@@ -6,21 +6,23 @@ class GettReportService {
 	}
 	public function calculateBalances(){
 		forEach($this->rides as $ride_data){
-			echo 'id_driver  ' . $ride_data->driver_id;
+			echo 'id_driver  ' . $ride_data->driver_id .PHP_EOL;
 			$ride = new \app\models\Ride();
 			$ride->fillFromRideData($ride_data);
 			
 			if($ride->userExist()){
 				echo '___user exist___';
 				if($ride->exist()){
-					echo '____ride exist____';
+					echo '++++++ride exist++++++';
 					if($ride->balanceChanged()){
-						echo '____balance changed____';
+						echo '============balance changed===========';
 						$ride->updateOrderAndBalance();
+					}else{
+						echo '!!!!!!!!balance NOT changed!!!!!!!';
 					}
 					
 				}else{
-					echo '___new ride___';
+					echo '???????new ride?????????';
 					$ride->saveOrder();
 					$ride->saveBalance();
 				}

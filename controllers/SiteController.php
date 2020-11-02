@@ -83,21 +83,21 @@ class SiteController extends Controller
 		$raw_drivers = file_get_contents('../raw/citymobile driver list.json');
 		$drivers = json_decode($raw_drivers);
 		forEach($drivers->drivers as $driver){
-			$user = new \app\models\User();
-			$user->phone = $driver->phone_number;
-			$user->password = "menly_4ever";
-			$user->password_repeat = "menly_4ever";
-			$user->scenarioSignUp();
-			\Yii::$app->auth->signUp($user);
+			// $user = new \app\models\User();
+			// $user->phone = $driver->phone_number;
+			// $user->password = "menly_4ever";
+			// $user->password_repeat = "menly_4ever";
+			// $user->scenarioSignUp();
+			// \Yii::$app->auth->signUp($user);
 			$user_created = \app\models\User::find()->where(['phone' => $driver->phone_number])->one();
-			$profile = new \app\models\ProfileBase();
-			$profile->firstname = $driver->name;
-			$profile->secondname = $driver->middle_name;
-			$profile->lastname = $driver->last_name;
-			$profile->user_id = $user_created->id;
-			$profile->phone = $driver->phone_number;
-			$profile->save();
-			$profile_created = \app\models\Profile::find()->where(['user_id' => $user_created->id])->one();
+			// $profile = new \app\models\ProfileBase();
+			// $profile->firstname = $driver->name;
+			// $profile->secondname = $driver->middle_name;
+			// $profile->lastname = $driver->last_name;
+			// $profile->user_id = $user_created->id;
+			// $profile->phone = $driver->phone_number;
+			// $profile->save();
+			// $profile_created = \app\models\Profile::find()->where(['user_id' => $user_created->id])->one();
 			if($user_created){
 				$user_agregator = new \app\models\UserAgregator();
 				$user_agregator->users_id = $user_created->id;
@@ -107,7 +107,7 @@ class SiteController extends Controller
 				$driver_account->id_agregator = 2;
 				$driver_account->id_account_types = 1;
 				$driver_account->id_users = $user_created->id;
-				$driver_account->account = $driver->login;
+				$driver_account->account = $driver->uuid;
 				$driver_account->save();
 			}
 			//// print_r($driver);
@@ -123,8 +123,34 @@ class SiteController extends Controller
 		// $from = $date->format('Y-m-d H:i:s');
 		// echo $from;
 		$dt = new \DateTime();
-		$dt->setTimestamp(1603693804);
-		var_dump($dt, (new \DateTime())->setTimestamp(time()));
+		
+		// echo $dt->format('Y-m-dTH:i:sP');
+		echo $dt->format('c');
+		
+		// $dt->setTimestamp(1603693804);
+		// var_dump($dt, (new \DateTime())->setTimestamp(time()));
+	}
+	public function actionTransactionsYandex(){
+		$payload = [];
+		$date = new \DateTime();
+		$date->setTimezone(new \DateTimeZone('Europe/Moscow'));
+		// $date->add(new \DateInterval("PT3H"));
+		$to = $date->format('c');
+		$date->sub(new \DateInterval("P180D"));
+		$from = $date->format('c');
+		$payload['to'] = $to;
+		$payload['from'] = $from;
+		// $payload['from'] = "2020-01-13T15:24:13+03:00";//"2020-10-13T15:24:41+03:00";
+		// $payload['to'] = "2020-10-30T15:24:13+03:00";//"2020-10-30T15:24:41+03:00";
+		// $payload['from'] = "2020-01-13T15:24:41+03:00";
+		// $payload['to'] = "2020-10-30T15:24:41+03:00";
+		// $payload['to'] = "2020-01";
+		// $payload['from'] = $from;
+		$payload['driverId'] = "7eb247e665794fcfba3d2af423e3e85f";
+		// print_r($payload);die;
+		$promise = $this->client->getTransactionsByName('Яндекс', $payload);
+		$response = $promise->wait();
+		print_r($response->getBody()->getContents());
 	}
 	public function actionGettGrow(){
 		$raw_drivers = file_get_contents('../raw/gett drivers list.json');
@@ -331,5 +357,23 @@ class SiteController extends Controller
 					$query = \app\models\User::find();
 print_r($query->andFilterWhere(['like','phone', '7964'])->all());
         return json_encode(\app\models\User::find()->andWhere(['like', 'phone','8926', false])->all());
+	}
+	public function actionTransactions(){
+		$raw_content = file_get_contents('../raw/transactions response sort.json');
+		$transactions = json_decode($raw_content, true);
+		// print_r($transactions);die;
+		uasort($transactions, function($left, $right){
+			return !strcasecmp($left['date'], $right['date']);
+		});
+		// $a = \app\models\Agregator::find()->all();
+		// print_r($a[0]);die;
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+		$dataProvider = new \yii\data\ArrayDataProvider([
+			'allModels' => $transactions,
+			'sort' => [
+			]
+		]);
+		// print_r($dataProvider->getModels());die;
+		return $dataProvider;
 	}
 }
