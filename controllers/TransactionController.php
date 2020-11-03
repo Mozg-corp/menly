@@ -36,6 +36,11 @@ class TransactionController extends BaseController{
 				'class' => \app\controllers\actions\transaction\ViewAction::class,
 				'modelClass' => $this->modelClass,
 				'checkAccess' => [$this, 'checkAccess']
+			],
+			'create' => [
+				'class' => \app\controllers\actions\transaction\CreateAction::class,
+				'modelClass' => $this->modelClass,
+				'checkAccess' => [$this, 'checkAccess']
 			]
 		];
 	}
@@ -45,6 +50,12 @@ class TransactionController extends BaseController{
 			case 'view': {
 				if(!\Yii::$app->user->can('viewOwnProfile', ['profile' => $model])){
 					throw new \yii\web\ForbiddenHttpException('You can see only your own transaction');
+				}
+				break;
+			}
+			case 'create': {
+				if(!\Yii::$app->user->can('viewOwnProfile', ['profile' => $model])){
+					throw new \yii\web\ForbiddenHttpException('You can transfer only your own balance');
 				}
 				break;
 			}

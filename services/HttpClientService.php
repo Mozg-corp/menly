@@ -14,9 +14,9 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		$this->client = new \GuzzleHttp\Client();
 	}
 	public function fetch($service, string $type, array $payload = []){
-		//print_r(json_encode($service->prepearData($type, $payload)));die;
-		// print_r($service->prepearRequest($type));die;
-		return $this->client->sendAsync($service->prepearRequest($type), $service->prepearData($type, $payload));
+		// print_r(json_encode($service->prepearData($type, $payload)));die;
+		// print_r($service->prepearRequest($type, $payload));die;
+		return $this->client->sendAsync($service->prepearRequest($type, $payload), $service->prepearData($type, $payload));
 	}
 	public function loginByName($service):array{
 		$promise = $this->fetch($service, 'login');
@@ -34,12 +34,12 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 			];
 	}
 	private function obtainToken($service){
-		if($this->token['value'] && $this->token['expire'] - 100 > time()){
+		if($this->token['value'] && $this->token['expire'] - 500 > time()){
 			return $this->token['value'];
 		}
 		else{
 			$agregator = \app\models\Agregator::find()->getAgregatorByName($service::NAME);
-			if($agregator->token && $agregator->expire - 100 > time()){
+			if($agregator->token && $agregator->expire - 500 > time()){
 				$this->token['value'] = $agregator->token;
 				$this->token['expire'] = $agregator->expire;
 				return $agregator->token;
@@ -118,5 +118,21 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		$token = $this->obtainToken($service);
 		$payload['token'] = $token;
 		return $this->fetch($service, 'transactions', $payload);
+	}
+	public function createTransactionByName(string $name, array $payload){
+		switch($name){
+			case 'Яндекс': return $this->createTransactionYandex($payload);
+			case 'Ситимобиль': return $this->createTransactionCitymobile($payload);
+		}
+	}
+	public function createTransactionYandex($payload){
+		$service = $this->serviceFactory::getServiceFactory('Яндекс');
+		return $this->fetch($service, 'transfer', $payload);
+	}
+	public function createTransactionCitymobile($payload){
+		$service = $this->serviceFactory::getServiceFactory('Ситимобиль');
+		$token = $this->obtainToken($service);
+		$payload['token'] = $token;
+		return $this->fetch($service, 'transfer', $payload);
 	}
 }

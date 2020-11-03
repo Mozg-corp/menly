@@ -16,11 +16,18 @@ class CitymobileService{
 	public function loginData(){
 		return ['json' => ['login' => $this->auth['login'], 'password' => $this->auth['password']]];
 	}
-	public function prepearRequest(string $type){
+	public function prepearRequest(string $type, array $payload = []){
 		switch($type){
 			case 'login': return $this->loginRequest();
 			case 'balance': return $this->balanceRequest();
 			case 'transactions' : return $this->transactionsRequest();
+			case 'transfer': {
+				if((float) $payload['balance'] > 0){
+					return $this->transferAddRequest();
+				}else{
+					return $this->transferSubRequest();
+				}
+			}
 		}
 	}
 	public function prepearData(string $type, array $payload = []){
@@ -28,6 +35,7 @@ class CitymobileService{
 			case 'login': return $this->loginData();
 			case 'balance': return $this->balanceData($payload);
 			case 'transactions' : return $this->transactionsData($payload);
+			case 'transfer': return $this->transferData($payload);
 		}
 	}
 	public function balanceRequest(){
@@ -63,6 +71,32 @@ class CitymobileService{
 		$path = $api_url . '/driver/payments';
 		$request = new \GuzzleHttp\Psr7\Request('POST', $path);
 		return $request;
+	}
+	public function transferAddRequest(){
+		$api_url = $this->getApiUri();
+		$path = $api_url . '/driver/createAccrualChargePayment';
+		$request = new \GuzzleHttp\Psr7\Request('POST', $path);
+		return $request;
+	}
+	public function transferSubRequest(){
+		$api_url = $this->getApiUri();
+		$path = $api_url . '/driver/createDebitChargePayment';
+		$request = new \GuzzleHttp\Psr7\Request('POST', $path);
+		return $request;
+	}
+	public function transferData($payload){
+		return [
+			'headers' => [
+				'Authorization' => 'Bearer '. $payload['token']
+			],
+			'json' => [
+					"driver_uuid" => $payload['account'],
+					"fields" => [
+						"payment" => (float) $payload['balance']
+					]
+             ],
+
+		];
 	}
 	public function transactionsData($payload){
 		$date = new \DateTime();

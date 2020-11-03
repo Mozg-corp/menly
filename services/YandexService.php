@@ -12,12 +12,17 @@ class YandexService{
 		switch($type){
 			case 'balance': return $this->balanceRequest();
 			case 'transactions': return $this->transactionsRequest();
+			case 'transfer': return $this->createTransactionRequest();
 		}
 	}
 	public function prepearData(string $type, $payload = []){
 		switch($type){
 			case 'balance': return $this->balanceData($payload);
 			case 'transactions': return $this->transactionsData($payload);
+			case 'transfer': {
+				$payload['idempotency'] = true;
+				return $this->createTransactionData($payload);
+			}
 		}
 	}
 	public function balanceRequest(){
@@ -79,7 +84,7 @@ class YandexService{
 		return $this->uriV2 ? $this->uriV2 : \app\models\Agregator::find()->getApiV2ByName(self::NAME);
 	}
 	public function balanceData(array $payload){
-		$idempotency = isset($payload['idempotency'])? $payload['idempotency'] : false;
+		$idempotency = isset($payload['idempotency'])?? false;
 		return [
 			'headers' => $this->getHeaders($idempotency),
 			'json' => [
@@ -96,6 +101,27 @@ class YandexService{
                     ],
 
 		];
+	}
+	public function createTransactionData(array $payload){
+		$idempotency = isset($payload['idempotency'])? $payload['idempotency'] : false;
+		$description = (float)$payload['balance'] > 0 ? "Add Пополнение счёта" : "Sub Вывод средств со счёта";
+		return [
+			'headers' => $this->getHeaders($idempotency),
+			'json' => [
+						"amount" => $payload['balance'],
+						"category_id" => "partner_service_manual",
+						"description" => $description,
+						"driver_profile_id" => $payload['account'],
+						"park_id" => $this->auth['parkId']
+                    ],
+
+		];
+	}
+	public function createTransactionRequest(){
+		$api_url = $this->getApiV2Uri();
+		$path = $api_url . '/parks/driver-profiles/transactions';
+		$request = new \GuzzleHttp\Psr7\Request('POST', $path);
+		return $request;
 	}
 	private function getHeaders(bool $idempotency = false): array
     {

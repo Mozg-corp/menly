@@ -1,22 +1,43 @@
 <?php namespace app\controllers\actions\transaction;
-class ViewAction extends \yii\rest\ViewAction{
-	public function run($id){
-		$user = $this->findModel($id);
+class CreateAction extends \yii\rest\CreateAction{
+	public function run(){
+		$user = \Yii::$app->user->identity;
+		// print_r($user);die;
 		try{
 			$profile = $user->profiles[0];
 		}catch(\yii\base\ErrorException $e){
 			throw new \yii\web\NotFoundHttpException('Заполните свой профиль');
 		}
         if ($this->checkAccess) {
-            call_user_func($this->checkAccess, $this->id, $profile);
+            // call_user_func($this->checkAccess, $this->id, $profile);
         }
-		$driverAccounts= \app\models\DriverAccount::find()
-										->where(['id_users' => $id])
-										->select('name, account, id_agregator')
-										->joinWith('agregator')
-										->asArray()
-										->all();
-		// print_r($driverAccounts);die;						
+		$createTransaction = new \app\models\CreateTransaction();
+		$createTransaction->load(\Yii::$app->getRequest()->getBodyParams(), '');
+		// $found = \app\models\Agregator::find()->getAgregatorByName($createTransaction->agregatorName);
+		// print_r($createTransaction);die;
+		
+		
+		if($createTransaction->validate()){
+			$driverAccount = \app\models\DriverAccount::find()
+											->where(['id_users' => $user->id])
+											->select('name, account, id_agregator')
+											->joinWith('agregator')
+											->andWhere(['name' => $createTransaction->agregatorName])
+											->asArray()
+											->one();
+			// print_r($driverAccount);die;						
+			$name = $driverAccount['name'];
+			$account = $driverAccount['account'];
+			$payload = [];
+			$payload['account'] = $account;
+			$payload['balance'] = $createTransaction->balance;
+			$promise = $this->controller->client->createTransactionByName($name, $payload);
+			$response = $promise->wait();
+			print_r($response->getBody()->getContents());die;
+		}else{
+			return $createTransaction->errors;
+		}
+		/*
 		$promises = [];
 		forEach($driverAccounts as $account){
 			$name = $account['name'];
