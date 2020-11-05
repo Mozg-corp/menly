@@ -20,8 +20,8 @@ class ViewAction extends \yii\rest\ViewAction{
 		$promises = [];
 		forEach($driverAccounts as $account){
 			$name = $account['name'];
-			$account = $account['account'];
-			$promises[$name] = $this->controller->client->getBalanceByName($name, $account);			
+			$driver_uid = $account['account'];
+			$promises[$name] = $this->controller->client->getBalanceByName($name, $driver_uid);			
 		}
 		try{
 			$responses = \GuzzleHttp\Promise\settle($promises)->wait();
@@ -29,30 +29,27 @@ class ViewAction extends \yii\rest\ViewAction{
 			$response = $e->getResponse();
 			$responseBodyAsString = $response->getBody()->getContents();
 			$responseStdObj = json_decode($responseBodyAsString);
-			print_r($responseStdObj);
-			die;
+			return $responseBodyAsString;
 		}
 		$balances = [];
 		forEach($driverAccounts as $account){
 			$name = $account['name'];
 			$staticService = $this->controller->factory->getClassByName($name);
 			$statePromise = $responses[$name]['state'];
-			// print_r($statePromise);
-			// die;
+			
 			if($statePromise === 'fulfilled'){
 				$balances[$name] = $staticService::extractBalanceFromResponse($responses[$name]);
 			}else if($statePromise === 'rejected'){
 				$rawReasonBody = $responses[$name]['reason']->getResponse()->getBody()->getContents();
 				$reasonBody = json_decode($rawReasonBody);
-				// print_r($reasonBody);
-				if($reasonBody->code === 401 && $reasonBody->message === 'Invalid JWT Token'){
+				if($reasonBody->code === 401 && $reasonBody->message === 'Expired JWT Token'){
 					$agregator = \app\models\Agregator::find()->getAgregatorByName($name);
 					$agregator->flushToken();
-					$promise = $this->controller->client->getBalanceByName($name, $account);
+					$driver_uid = $account['account'];
+					$promise = $this->controller->client->getBalanceByName($name, $driver_uid);
 					$response = $promise->wait();
 					$body = $response->getBody()->getContents();
 					$balances[$name] = $staticService::extractBalanceFromBody(json_decode($body));
-					echo 'ta da!';
 
 				}
 			}
