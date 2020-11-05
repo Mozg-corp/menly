@@ -303,7 +303,6 @@ export default {
 						method: 'get',
 						url: `/api/v1/transactions/${userId}`
 					})
-					console.log(response)
 					if(response.status === 200){
 						let transactions = response.data;
 						commit('SET_TRANSACTIONS', transactions);
@@ -314,6 +313,26 @@ export default {
 				}catch(e){
 					reject(e.response);
 					return;
+				}
+			}
+		)
+	},
+	transfer: ({}, transfer) => {
+		//console.log(transfer)
+		return new Promise(
+			async (resolve, reject) => {
+				try{
+					let response = await axios({
+						method: 'post',
+						url: '/api/v1/transactions',
+						data: transfer
+					})
+					if(response.status === 200){
+						let result = response.data;
+						resolve(result);
+					}
+				}catch(e){
+					reject(e.response);
 				}
 			}
 		)

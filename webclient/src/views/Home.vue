@@ -91,19 +91,26 @@
 						Ваш баланс
 					</h2>
 					<div v-for="agregator in user.agregators" class="balance_row" >
-						<p>
+						<p class="agregator_col">
 							{{agregator.name}}
 						</p>
 						<p>
 							{{balances[agregator.name]}}
 						</p>
+						<div class="transfer">
+							<input class="transfer_input" type="text" name="agregator.name" v-model="payment[agregator.name]"/>
+							<input type="button" @click.prevent="transferHandler($event, agregator.name)" value="Списать" />
+						</div>
 					</div>
 					<div class="balance_row">
-						<p>
+						<p class="agregator_col">
 							<b>Summ</b>
 						</p>
 						<p>
 							<b>{{summ}}</b>
+						</p>
+						<p class="buffer">
+						
 						</p>
 					</div>
 					<div style="margin-top: 50px">
@@ -123,7 +130,7 @@
 								<div class="table_cell table_cell__center">
 									{{transaction.balance}}
 								</div>
-								</div>
+							</div>
 						</div>
 					</div>
 				</div> <!--right_side-->
@@ -134,7 +141,7 @@
 
 <script>
 // @ is an alias to /src
-import {mapGetters, mapActions, mapState} from 'vuex';
+import {mapGetters, mapActions, mapState, mapMutations} from 'vuex';
 export default {
   name: 'home',
   data: ()=> ({
@@ -165,7 +172,7 @@ export default {
 		color: '',
 		license: '',
 	},
-	
+	payment: {}
   }),
   components: {
   },
@@ -183,11 +190,13 @@ export default {
 			return summ
 		}
 		//*/
-	}
+	},
+	
 	
   },
   methods:{
-	...mapActions(['postAgregators', 'createProfile', 'createCar', 'fetchBalances', 'fetchUserData', 'fetchAgregatorsList', 'fetchTransactions']),
+	...mapMutations(['CHANGE_BALANCE']),
+	...mapActions(['postAgregators', 'createProfile', 'createCar', 'fetchBalances', 'fetchUserData', 'fetchAgregatorsList', 'fetchTransactions', 'transfer']),
 	chooseAgregatorsHandler(){
 		this.postAgregators(this.selectedAgregators)
 	},
@@ -217,6 +226,23 @@ export default {
 	},
 	isSelected(id){
 		return this.selectedAgregators.includes(id)
+	},
+	transferHandler($event, agregatorName){
+		let transfer4 = {
+			agregatorName,
+			balance: this.payment[agregatorName]
+		}
+		this.transfer(transfer4)
+			.then(
+				result => {
+					let newBalance = {
+						agregatorName,
+						balance: transfer4.balance
+					}
+					this.CHANGE_BALANCE(newBalance);
+					delete this.payment[agregatorName];
+				}
+			)
 	}
   },
   
@@ -273,7 +299,11 @@ export default {
 		width: 100%
 		border-bottom: 1px solid black
 		margin: 5px 0
-	
+	.agregator_col
+		flex-basis: 120px
+	.transfer_input
+		width: 70px
+		margin: 0 40px 0 0
 	.agregator_item:hover
 		background-color: grey
 		opacity: 0.3
@@ -289,4 +319,7 @@ export default {
 			border-bottom: 1px solid black
 			&__center
 				text-align: center
+	.buffer
+		width: 240px
+	
 </styles>

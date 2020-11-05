@@ -9,7 +9,7 @@ class CreateAction extends \yii\rest\CreateAction{
 			throw new \yii\web\NotFoundHttpException('Заполните свой профиль');
 		}
         if ($this->checkAccess) {
-            // call_user_func($this->checkAccess, $this->id, $profile);
+            call_user_func($this->checkAccess, $this->id, $profile);
         }
 		$createTransaction = new \app\models\CreateTransaction();
 		$createTransaction->load(\Yii::$app->getRequest()->getBodyParams(), '');
@@ -19,21 +19,31 @@ class CreateAction extends \yii\rest\CreateAction{
 		
 		if($createTransaction->validate()){
 			$driverAccount = \app\models\DriverAccount::find()
-											->where(['id_users' => $user->id])
-											->select('name, account, id_agregator')
-											->joinWith('agregator')
-											->andWhere(['name' => $createTransaction->agregatorName])
-											->asArray()
-											->one();
-			// print_r($driverAccount);die;						
+														->where(['id_users' => $user->id])
+														->select('name, account, id_agregator')
+														->joinWith('agregator')
+														->andWhere(['name' => $createTransaction->agregatorName])
+														->asArray()
+														->one();
 			$name = $driverAccount['name'];
 			$account = $driverAccount['account'];
 			$payload = [];
 			$payload['account'] = $account;
 			$payload['balance'] = $createTransaction->balance;
 			$promise = $this->controller->client->createTransactionByName($name, $payload);
-			$response = $promise->wait();
-			print_r($response->getBody()->getContents());die;
+			try{
+				$response = $promise->wait();
+				return [
+					"code" => 200,
+					"status" => 'OK',
+					"message" => 'Успешно создана заявка на вывод средств.'
+				];
+			}catch(\GuzzleHttp\Exception\ClientException $e){
+				$response = $e->getResponse();
+				$responseBodyAsString = $response->getBody()->getContents();
+				//$responseStdObj = json_decode($responseBodyAsString);
+				return $responseBodyAsString;
+			}
 		}else{
 			return $createTransaction->errors;
 		}

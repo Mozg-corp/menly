@@ -75,5 +75,10 @@ export default {
 	},
 	SET_TRANSACTIONS: (state, transactions) => {
 		state.transactions = transactions
+	},
+	CHANGE_BALANCE: (state, newBalance) => {
+		let oldBalance = parseFloat(state.balances[newBalance.agregatorName]);
+		let updatedBalance = oldBalance + parseFloat(newBalance.balance);
+		state.balances[newBalance.agregatorName] = updatedBalance;
 	}
 }
