@@ -43,7 +43,7 @@ class YandexService{
 		$date = new \DateTime();
 		$date->setTimezone(new \DateTimeZone('Europe/Moscow'));
 		$to = $date->format('c');
-		$date->sub(new \DateInterval("P180D"));
+		$date->sub(new \DateInterval("P35D"));
 		$from = $date->format('c');
 		$payload['to'] = $to;
 		$payload['from'] = $from;
