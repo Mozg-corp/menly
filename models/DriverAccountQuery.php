@@ -34,4 +34,10 @@ class DriverAccountQuery extends DriverAccountBaseQuery
 	public function byAccount($account){
 		return $this->where(['account' => $account]);
 	}
+	public function agregatorsAccountsArray(int $id_user):\yii\db\ActiveQuery{
+		return $this->where(['id_users' => $id_user])
+					->select('name, account, id_agregator')
+					->joinWith('agregator')
+					->asArray();
+	}
 }

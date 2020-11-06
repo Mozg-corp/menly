@@ -10,13 +10,17 @@ class ViewAction extends \yii\rest\ViewAction{
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, $profile);
         }
-		$driverAccounts= \app\models\DriverAccount::find()
-										->where(['id_users' => $id])
-										->select('name, account, id_agregator')
-										->joinWith('agregator')
-										->asArray()
-										->all();
-										
+		$driverAccounts= \app\models\DriverAccount::find()->agregatorsAccountsArray($id)->all();
+		if($driverAccounts){
+			$client = $this->controller->client;
+			$factory = $this->controller->factory;
+			$balance = new \app\models\Balance($driverAccounts, $client, $factory);
+			$balance->requestBalances();
+			return $balance;
+		}else{
+			throw new \yii\web\NotFoundHttpException('Не найдены зарегистрированные аккаунты агрегаторов');
+		}
+		/*								
 		$promises = [];
 		forEach($driverAccounts as $account){
 			$name = $account['name'];
@@ -58,5 +62,6 @@ class ViewAction extends \yii\rest\ViewAction{
 			
 		}
 		return $balances;
+		//*/
 	}
 }
