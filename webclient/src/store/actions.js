@@ -198,7 +198,7 @@ export default {
 						method: 'get',
 						url: `/api/v1/balances/${userId}`
 					})
-					let balances = response.data.balances;
+					let balances = response.data.result;
 					commit('SET_BALANCES', balances);
 					resolve(balances);
 				}catch(e){

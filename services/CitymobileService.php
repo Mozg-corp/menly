@@ -130,7 +130,7 @@ class CitymobileService{
 		$body = $response['value']->getBody()->getContents();
 		return self::extractBalanceFromBody(json_decode($body));
 	}
-	public static function extractTransactionsFromBody	($body){
+	public static function extractTransactionsFromBody($body){
 		// print_r($body);die;
 		$transactions = [];
 		forEach($body->payments as $payment){

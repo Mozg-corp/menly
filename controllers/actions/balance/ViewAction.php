@@ -14,9 +14,9 @@ class ViewAction extends \yii\rest\ViewAction{
 		if($driverAccounts){
 			$client = $this->controller->client;
 			$factory = $this->controller->factory;
-			$balance = new \app\models\Balance($driverAccounts, $client, $factory);
-			$balance->requestBalances();
-			return $balance;
+			$balances = new \app\repositories\DAOBalance($driverAccounts, $client, $factory);
+			$balances->read();
+			return $balances;
 		}else{
 			throw new \yii\web\NotFoundHttpException('Не найдены зарегистрированные аккаунты агрегаторов');
 		}

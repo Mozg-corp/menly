@@ -17,12 +17,6 @@ class Balance extends \yii\base\Model{
 			'balances'
 		];
 	}
-	public function getBalances():array{
-		if(count($this->balances)===0){
-			$this->requestBalances();
-		}
-		return $this->balances;
-	}
 	private function fetchBalances():array{
 		$promises = [];
 		forEach($this->driverAccounts as $account){
