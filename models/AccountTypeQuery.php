@@ -9,5 +9,7 @@ namespace app\models;
  */
 class AccountTypeQuery extends AccountTypeBaseQuery
 {
-   
+   public function byName(string $typeName){
+	   return $this->where(['name' => $typeName]);
+   }
 }

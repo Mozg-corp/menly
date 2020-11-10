@@ -34,6 +34,7 @@ $config = [
 	],
     'components' => [
 		'schedule' => 'omnilight\scheduling\Schedule',
+        'auth' => ['class' => app\components\AuthComponent::class],
         'authManager' => [
             'class' => DbManager::class
         ],

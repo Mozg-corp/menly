@@ -25,4 +25,12 @@ class AccountType extends AccountTypeBase
             
         ], parent::rules());
     }
+	  /**
+     * {@inheritdoc}
+     * @return AccountTypeBaseQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new AccountTypeQuery(get_called_class());
+    }
 }

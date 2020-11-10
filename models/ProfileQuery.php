@@ -31,4 +31,7 @@ class ProfileQuery extends ProfileBaseQuery
     {
         return parent::one($db);
     }
+	public function byUserId(int $userId){
+		return $this->where(['user_id' => $userId]);
+	}
 }

@@ -40,7 +40,7 @@ class DriverAccountQuery extends DriverAccountBaseQuery
 					->joinWith('agregator')
 					->asArray();
 	}
-	public function agregatorAccoutByName(int $id_user, string agregatorName): \yii\db\ActiveQuery{
+	public function agregatorAccoutByName(int $id_user, string $agregatorName): \yii\db\ActiveQuery{
 		return $this->where(['id_users' => $id_user])
 					->select('name, account, id_agregator')
 					->joinWith('agregator')

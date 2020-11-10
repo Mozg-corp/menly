@@ -210,15 +210,15 @@ class SiteController extends Controller
 		}
 		echo "done";
 	}
-	public function actionTransactions(){
-		$payload = [];
-		// $payload['driverId'] = "7eb247e665794fcfba3d2af423e3e85f";
-		// $payload['balance'] = "-1";
-		// $promise = $this->client->createTransactionByName('Яндекс', $payload);
-		$payload['account'] = "aef06760396a302b28504cbc1427157f";
-		$payload['balance'] = -1;
-		$promise = $this->client->createTransactionByName('Ситимобиль', $payload);
-		$response = $promise->wait();
-		print_r($response->getBody()->getContents());
+	public function actionAddUsers(){
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+		$initRepo = new \app\repositories\InitAgregatorsAlreadyExistsUsers();
+		$initRepo->readJson([
+			'Ситимобиль' => '../raw/citymobile driver list.json',
+			'Яндекс' => '../raw/yandex drivers list.json',
+			'Gett' => '../raw/gett drivers list.json'
+		]);
+		$initRepo->saveUsersToDb();
+		return $initRepo->users;
 	}
 }
