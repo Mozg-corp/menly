@@ -49,9 +49,6 @@ class SiteController extends Controller
             ],
         ];
     }
-
-
-	
 	// public function actionAddadmin(){
 		// $admin = new User();
 		// $admin->phone = "79251234567";
@@ -66,19 +63,6 @@ class SiteController extends Controller
 			// print_r($admin->errors);
 		// }
 	// }
-	public function actionGo(){
-		$promise = $this->client->getCityBalance('786565');
-		try{
-			$response = $promise->wait();
-		}catch(\GuzzleHttp\Exception\ClientException $e){
-			$response = $e->getResponse();
-			$responseBodyAsString = $response->getBody()->getContents();
-			$responseStdObj = json_decode($responseBodyAsString);
-			print_r($responseStdObj);
-			die;
-		}
-		return json_encode($promise);
-	}
 	public function actionCityGrow(){
 		$raw_drivers = file_get_contents('../raw/citymobile driver list.json');
 		$drivers = json_decode($raw_drivers);

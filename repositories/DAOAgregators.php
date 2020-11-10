@@ -36,9 +36,30 @@ abstract class DAOAgregators extends \yii\base\Model{
 				if($reasonBody->code === 401 && $reasonBody->message === 'Expired JWT Token'){
 					$this->result[$name] = $this->getWithRefreshToken($name, $payload);
 				}else{
-					throw new \GuzzleHttp\Exception\RequestException(\Psr7\Message::toString($responses[$name]['reason']->getResponse()));
+					return $responses[$name]['reason']->getResponse();
 				}
 			}
+		}
+	}
+	public function create(string $balance){
+		$name = $this->driverAccounts[0]['name'];
+		$account = $this->driverAccounts[0]['account'];
+		$payload = [];
+		$payload['account'] = $account;
+		$payload['balance'] = $balance;
+		$promise = $this->controller->client->createTransactionByName($name, $payload);
+		try{
+			$response = $promise->wait();
+			return $this->result = [
+				"code" => 200,
+				"status" => 'OK',
+				"message" => 'Успешно создана заявка на вывод средств.'
+			];
+		}catch(\GuzzleHttp\Exception\ClientException $e){
+			$response = $e->getResponse();
+			$responseBodyAsString = $response->getBody()->getContents();
+			//$responseStdObj = json_decode($responseBodyAsString);
+			return $responseBodyAsString;
 		}
 	}
 }
