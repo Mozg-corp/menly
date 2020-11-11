@@ -80,7 +80,8 @@ $config = [
 			],
 		],
         'cache' => [
-            'class' => 'yii\caching\FileCache',
+            'class' => 'yii\caching\MemCache',
+			'useMemcached' => true,
         ],
         'user' => [
             'identityClass' => 'app\models\User',
