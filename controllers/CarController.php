@@ -130,6 +130,7 @@ class CarController extends \app\controllers\BaseController{
 				}
 				break;
 			case 'create':
+			//эту проверку надо бы заменить на rbac правило
 				if(\Yii::$app->request->post()['id_users'] !== \Yii::$app->user->id){
 					throw new \yii\web\ForbiddenHttpException('You can create car only for youself');
 				}

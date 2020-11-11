@@ -10,16 +10,33 @@ class ViewAction extends \yii\rest\ViewAction{
         if ($this->checkAccess) {
             call_user_func($this->checkAccess, $this->id, $profile);
         }
-		$driverAccounts= \app\models\DriverAccount::find()->agregatorsAccountsArray($id)->all();
+		$driverAccounts= \app\models\DriverAccount::find()->agregatorsAccountsArray($id)->cache(3600*24*30)->all();
+		$driverAccounts_key = array_map(function($account){
+			return [
+				$account['name'],
+				$account['account'],
+				$account['id_agregator']
+			];
+		}, $driverAccounts);
 		if($driverAccounts){
 			$client = $this->controller->client;
 			$factory = $this->controller->factory;
-			$transactions = new \app\repositories\DAOTransactions($driverAccounts, $client, $factory);
-			$transactions->read();
-			$result = $transactions->sortedByDate;
-			
+			$cache = \Yii::$app->cache;
+			$key = [
+				'transactions',
+				$id,
+				$driverAccounts_key
+			];
+			$transactions = $cache->get($key);
+			if($transactions === false){
+				$repository = new \app\repositories\DAOTransactions($driverAccounts, $client, $factory);
+				$repository->read();
+				$sortedTransactions = $repository->sortedByDate;
+				$transactions = $sortedTransactions;
+				$cache->set($key, $sortedTransactions, 600);
+			}			
 			$dataProvider = new \yii\data\ArrayDataProvider([
-				'allModels' => $result,
+				'allModels' => $transactions,
 			]);
 			return $dataProvider;
 		}else{

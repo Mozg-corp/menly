@@ -21,6 +21,13 @@ class DAOBalance extends DAOAgregators{
 		return $staticService::extractBalanceFromResponse($response);
 	}
 	protected function getWithRefreshToken($name, $payload){
-		
+		$agregator = \app\models\Agregator::find()->byName($name)->cache(600)->one();
+		$agregator->flushToken();
+		$driver_uid = $payload['account'];
+		$promise = $this->client->getBalanceByName($name, $driver_uid);
+		$response = $promise->wait();
+		$body = $response->getBody()->getContents();
+		$balance = $staticService::extractBalanceFromBody(json_decode($body));
+		return $balance;
 	}
 }

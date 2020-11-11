@@ -15,3 +15,5 @@
 	Источник <https://yiiframework.com.ua/ru/doc/guide/2/security-authorization/> 
 Накатить миграции
 	php yii migrate
+Для использования memcached нужно выполнить эти инструкции
+https://github.com/yiisoft/yii2-docker/issues/85#issuecomment-576159527

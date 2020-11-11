@@ -23,7 +23,13 @@ class DAOTransactions extends DAOAgregators{
 		return $staticService::extractTransactionsFromResponse($response);
 	}
 	protected function getWithRefreshToken($name, $payload){
-		
+		$agregator = \app\models\Agregator::find()->byName($name)->cache(600)->one();
+		$agregator->flushToken();
+		$promise = $this->client->getTransactionsByName($name, $payload);
+		$response = $promise->wait();
+		$body = $response->getBody()->getContents();
+		$transaction[$name] = $staticService::extractBalanceFromBody(json_decode($body));
+
 	}
 	public function getAsArray(){
 		$totalTransactions = [];

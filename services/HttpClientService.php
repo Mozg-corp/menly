@@ -103,10 +103,10 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 			case 'Gett': return $this->getGettTransactions($payload);
 		}
 	}
-	public function gettGettTransactions(array $Payload){
+	public function gettGettTransactions(array $payload){
 		$promise = new \GuzzleHttp\Promise\Promise();
 		$transactions = [];
-		$promise->resolve($transeactions);
+		$promise->resolve($transactions);
 		return $promise;
 	}
 	public function getYandexTransactions(array $payload){
