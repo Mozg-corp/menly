@@ -8,6 +8,5 @@ class AddExistingUsersController extends \yii\console\Controller{
 			'Gett' => './raw/gett drivers list.json'
 		]);
 		$initRepo->saveUsersToDb();
-		//print_r($initRepo->users);
 	}
 }
