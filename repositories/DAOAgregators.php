@@ -42,24 +42,50 @@ abstract class DAOAgregators extends \yii\base\Model{
 		}
 	}
 	public function create(string $balance){
+		//здесь подразумевается что в driverAccounts только один аккаунт!
 		$name = $this->driverAccounts[0]['name'];
-		$account = $this->driverAccounts[0]['account'];
-		$payload = [];
-		$payload['account'] = $account;
-		$payload['balance'] = $balance;
-		$promise = $this->controller->client->createTransactionByName($name, $payload);
-		try{
-			$response = $promise->wait();
-			return $this->result = [
-				"code" => 200,
-				"status" => 'OK',
-				"message" => 'Успешно создана заявка на вывод средств.'
-			];
-		}catch(\GuzzleHttp\Exception\ClientException $e){
-			$response = $e->getResponse();
-			$responseBodyAsString = $response->getBody()->getContents();
-			//$responseStdObj = json_decode($responseBodyAsString);
-			return $responseBodyAsString;
+		$id_users = \Yii::$app->user->id;
+		$id_agregators = $this->driverAccounts[0]['id_agregator'];
+		$transferNew = new \app\models\Transfer();
+		$transferNew->scenarioDriverTransfer();
+		$status = \app\models\TransferStatus::find()->byStatus('Создан')->one();
+		$transferArrayData = [
+			'id_users' => $id_users,
+			'id_agregators' => $id_agregators,
+			'id_transfer_statuses' => $status->id,
+			'transfer' => $balance
+		];
+		$transferNew->load($transferArrayData, '');
+		if($transferNew->validate()){
+			if($transferNew->save()){
+				$this->result = $transferNew;
+			}else{
+				throw new ServerErrorHttpException('Failed to create the object for unknown reason.');
+			}
+		}else{
+			$response = \Yii::$app->getResponse();
+            $response->setStatusCode(422);
+			$this->result = $transferNew;
+			
+			//throw new \yii\web\UnprocessableEntityHttpException(json_encode($transferNew->errors), 422);
 		}
+		// $payload = [];
+		// $payload['account'] = $account;
+		// $payload['balance'] = $balance;
+		// $promise = $this->client->createTransactionByName($name, $payload);
+		// try{
+			// $response = $promise->wait();
+			// return $this->result = $response->getBody()->getContents();
+			// return $this->result = [
+				// "code" => 200,
+				// "status" => 'OK',
+				// "message" => 'Успешно создана заявка на вывод средств.'
+			// ];
+		// }catch(\GuzzleHttp\Exception\ClientException $e){
+			// $response = $e->getResponse();
+			// $responseBodyAsString = $response->getBody()->getContents();
+			// $responseStdObj = json_decode($responseBodyAsString);
+			// return $responseBodyAsString;
+		// }
 	}
 }

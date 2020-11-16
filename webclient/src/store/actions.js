@@ -246,8 +246,6 @@ export default {
 		)
 	},
 	changeUserState: ({commit}, {userId, status}) => {
-		console.log({status})
-		console.log(userId)
 		return new Promise(
 			async (resolve, reject) =>{
 				let response = null;

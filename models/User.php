@@ -24,7 +24,7 @@ class User extends UserBase implements IdentityInterface
 	 const STATUS_ACTIVE = 10;
 	 const STATUS_INACTIVE = 9;
 	 const STATUS_CANDIDATE = 1;
-	 const STATUS_PROFILE_FILLEDIN = 2;
+	 const STATUS_USER = 2;
 
     const SCENARIO_SIGNUP = 'signup';
     const SCENARIO_SIGNIN = 'signin';

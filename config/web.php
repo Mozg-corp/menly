@@ -168,6 +168,16 @@ $config = [
 						]
 					
                 ],
+                [
+					'class'=>UrlRule::class,
+                    'controller' => 'transfer',
+					'prefix' => 'api/v1',
+					'except' => ['delete'],
+					'extraPatterns' => [
+						'GET all' => 'alltransfers'
+					]
+					
+                ],
 
             ],
         ],

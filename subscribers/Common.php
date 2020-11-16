@@ -20,4 +20,21 @@ class Common implements \Symfony\Component\EventDispatcher\EventSubscriberInterf
 		// $notifier = \Yii::CreateObject(['class'=>\app\components\NotificationComponent::class, 'mailer' => \Yii::$app->mailer]);
 		\Yii::$app->notifier->sendCarCreatedNotification($event->sender);
 	}
+	public static function updateUser($event){
+		$transformStatusToRole = [
+			\app\models\User::STATUS_CANDIDATE => 'candidate',
+			\app\models\User::STATUS_USER => 'user'
+		];
+		$oldTransformedStatus = $transformStatusToRole[$event->sender->oldAttributes['status']]??null;
+		$newTransformedStatus = $transformStatusToRole[$event->sender->status]??null;
+		$am = \Yii::$app->authManager;
+		if($oldTransformedStatus){
+			$oldRole = $am->getRole($oldTransformedStatus);
+			$am->revoke($oldRole, $event->sender->id);
+		}
+		if($newTransformedStatus){
+			$newRole = $am->getRole($newTransformedStatus);
+			$am->assign($newRole, $event->sender->id);
+		}
+	}
 }
