@@ -14,7 +14,12 @@ class CreateAction extends \yii\rest\CreateAction{
 		$transferNew->description = "Создана заявка на вывод средтсв";
 		if(!$transferNew->save()&&!$transferNew->hasErrors()){
 			throw new \yii\web\ServerErrorHttpException('Failed to create the object for unknown reason.');
+		}else{
+			$response = \Yii::$app->getResponse();
+            $response->setStatusCode(201);
+            $id = implode(',', array_values($transferNew->getPrimaryKey(true)));
+            $response->getHeaders()->set('Location', \yii\helpers\Url::toRoute([$this->viewAction, 'id' => $id], true));
 		}
-		return $transferNew;
+		return;
 	}
 }

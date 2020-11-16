@@ -219,7 +219,18 @@ export default {
   },
   methods:{
 	...mapMutations(['CHANGE_BALANCE']),
-	...mapActions(['postAgregators', 'createProfile', 'createCar', 'fetchBalances', 'fetchUserData', 'fetchAgregatorsList', 'fetchTransactions', 'transfer', 'fetchUserTransfers']),
+	...mapActions([
+		'postAgregators', 
+		'createProfile', 
+		'createCar', 
+		'fetchBalances', 
+		'fetchUserData', 
+		'fetchAgregatorsList', 
+		'fetchTransactions', 
+		'transfer', 
+		'fetchUserTransfers',
+		'createTransfer'
+	]),
 	chooseAgregatorsHandler(){
 		this.postAgregators(this.selectedAgregators)
 	},
@@ -253,17 +264,20 @@ export default {
 	transferHandler($event, agregatorName){
 		let transfer4 = {
 			agregatorName,
-			balance: this.payment[agregatorName]
+			transfer: this.payment[agregatorName]
 		}
-		this.transfer(transfer4)
+		this.createTransfer(transfer4)
 			.then(
 				result => {
+					/*
 					let newBalance = {
 						agregatorName,
 						balance: transfer4.balance
 					}
 					this.CHANGE_BALANCE(newBalance);
+					*/
 					delete this.payment[agregatorName];
+					this.fetchUserTransfers();
 				}
 			)
 	}
