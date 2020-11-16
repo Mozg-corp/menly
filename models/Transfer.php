@@ -31,8 +31,12 @@ class Transfer extends TransferBase
 	const SCENARIO_CREATE = 'create transfer';
 	public function fields(){
 		return array_merge([
-			'agregatorName',
-		], parent::fields());
+			'description',
+			'transfer',
+			'agregators',
+			'transferStatuses',
+			'created_at'
+		]);
 	}
 	public function scenarios()
     {

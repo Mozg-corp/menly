@@ -334,5 +334,24 @@ export default {
 				}
 			}
 		)
+	},
+	fetchUserTransfers: ({commit}) => {
+		return new Promise(
+			async (resolve, reject) => {
+				try{
+					let response = await axios({
+						method: 'get',
+						url: '/api/v1/transfers/all',
+					});
+					if(response.status === 200){
+						let transfers = response.data;
+						commit('SET_USER_TRANSFERS', transfers);
+						resolve(transfers);
+					}
+				}catch(e){
+					reject(e.response);
+				}
+			}
+		)
 	}
 }

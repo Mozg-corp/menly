@@ -8,7 +8,14 @@ let initState = {
 	agregators_list: [],
 	user: [],
 	users: [],
-	balances: []
+	balances: [],
+	userStatuses: [
+		'Not Active',
+		'Candidate',
+		'User'
+	],
+	transactions: [],
+	transfers: []
 }
 export default {
 	AUTH_REQUEST: (state) => {
@@ -80,5 +87,8 @@ export default {
 		let oldBalance = parseFloat(state.balances[newBalance.agregatorName]);
 		let updatedBalance = oldBalance + parseFloat(newBalance.balance);
 		state.balances[newBalance.agregatorName] = updatedBalance;
+	},
+	SET_USER_TRANSFERS: (state, transfers) => {
+		state.transfers = transfers
 	}
 }

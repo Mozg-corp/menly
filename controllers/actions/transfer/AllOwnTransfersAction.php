@@ -4,7 +4,10 @@ class AllOwnTransfersAction extends \yii\rest\Action{
 		$user = \Yii::$app->user->identity;
 		$transfers = $this->modelClass::find()->byUserId($user->id);
 		$dataprovider = new \yii\data\ActiveDataProvider([
-			'query' => $transfers
+			'query' => $transfers,
+			'sort' => [
+				'defaultOrder' => ['created_at' => SORT_DESC]
+			]
 		]);
 		return $dataprovider;
 	}

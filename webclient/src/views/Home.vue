@@ -115,6 +115,29 @@
 					</div>
 					<div style="margin-top: 50px">
 						<h2>
+							Заявки на вывод средств
+						</h2>
+						<div class="table">
+							<div class="table_row"
+								v-for="(transfer, i) in transfers" 
+								:key="i" >
+								<div class="table_cell">
+									{{transfer.created_at}}
+								</div>
+								<div class="table_cell">
+									{{transfer.agregators.name}}
+								</div>
+								<div class="table_cell table_cell__center">
+									<b>{{transfer.transfer}}, руб.</b>
+								</div>
+								<div class="table_cell table_cell__center">
+									{{transfer.description}}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="margin-top: 50px">
+						<h2>
 							Транзакции
 						</h2>
 						<div class="table">
@@ -177,7 +200,7 @@ export default {
   components: {
   },
   computed: {
-	...mapState(['agregators_list', 'user', 'balances', 'userId', 'userStatuses', 'transactions']),
+	...mapState(['agregators_list', 'user', 'balances', 'userId', 'userStatuses', 'transactions', 'transfers']),
 	...mapGetters(['isAuthenticated']),
 	summ(){
 		let summ = 0;
@@ -196,7 +219,7 @@ export default {
   },
   methods:{
 	...mapMutations(['CHANGE_BALANCE']),
-	...mapActions(['postAgregators', 'createProfile', 'createCar', 'fetchBalances', 'fetchUserData', 'fetchAgregatorsList', 'fetchTransactions', 'transfer']),
+	...mapActions(['postAgregators', 'createProfile', 'createCar', 'fetchBalances', 'fetchUserData', 'fetchAgregatorsList', 'fetchTransactions', 'transfer', 'fetchUserTransfers']),
 	chooseAgregatorsHandler(){
 		this.postAgregators(this.selectedAgregators)
 	},
@@ -256,7 +279,8 @@ export default {
 						this.fetchTransactions(this.userId)
 							.then(
 								//transactions => console.log(transactions)
-							)
+							);
+						this.fetchUserTransfers();
 					}else{
 						this.fetchAgregatorsList()
 					}

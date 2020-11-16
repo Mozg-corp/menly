@@ -14,5 +14,6 @@ export default{
 		'Candidate',
 		'User'
 	],
-	transactions: []
+	transactions: [],
+	transfers: []
 }
