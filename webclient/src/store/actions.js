@@ -379,7 +379,7 @@ export default {
 				try{
 					let response = await axios({
 						method: 'get',
-						url: '/api/v1/transfers?expand=users'
+						url: '/api/v1/transfers?expand=users&sort=-created_at'
 					});
 					if(response.status === 200){
 						let transfers = response.data;
