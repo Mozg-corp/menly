@@ -16,6 +16,11 @@
 										Пользователи
 									</li>
 								</router-link>
+								<router-link :to="{name: 'transfers'}" class="agregator_item">
+									<li >
+										Transfers
+									</li>
+								</router-link>
 							</ul>
 						</nav>
 					</div>

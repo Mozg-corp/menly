@@ -15,5 +15,6 @@ export default{
 		'User'
 	],
 	transactions: [],
-	transfers: []
+	transfers: [],
+	allTransfers: []
 }

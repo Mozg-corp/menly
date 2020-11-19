@@ -216,7 +216,6 @@ export default {
 					url: `/api/v1/users?page=${page}`
 				})
 				let users = response.data;
-				console.log(response.headers)
 				let pagination = {
 					current_page: +response.headers['x-pagination-current-page'],
 					page_count: +response.headers['x-pagination-page-count'],
@@ -260,7 +259,6 @@ export default {
 					reject(e.response);
 					return;
 				}
-				console.log(response)
 				if(response && response.status === 200){
 					let updatedUser = response.data;
 					commit("UPDATE_USER_STATUS", updatedUser);
@@ -374,5 +372,50 @@ export default {
 				}
 			}
 		)
+	},
+	fetchAllTransfers: ({commit}) => {
+		return new Promise(
+			async (resolve, reject) => {
+				try{
+					let response = await axios({
+						method: 'get',
+						url: '/api/v1/transfers?expand=users'
+					});
+					if(response.status === 200){
+						let transfers = response.data;
+						commit('SET_TRANSFERS', transfers);
+						
+					}else{
+						reject(response);
+					}
+				}catch(e){
+					reject(e.response);
+				}
+			}
+		);
+	},
+	createAgregatorTransaction: ({}, transfer_id) => {
+		let body = {transfer_id};
+		console.log(body);
+		return new Promise(
+			async (resolve, reject) => {
+				try{
+					let response = await axios({
+						method: 'post',
+						url: `/api/v1/transactions`,
+						data: body
+					});
+					console.log(response);
+					if(response.status === 201){
+						let result = response.data;
+						resolve(result);
+					}else{
+						reject(response);
+					}
+				}catch(e){
+					reject(e.response);
+				}
+			}
+		);
 	}
 }

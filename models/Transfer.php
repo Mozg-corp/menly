@@ -26,17 +26,24 @@ class Transfer extends TransferBase
 {
 	public $agregatorName;
 	const SCENARIO_DRIVER_TRANSFER = 'driver trasfer';
-	const SCENRIO_ADMIN_TRANSFER = 'admin transfer';
+	const SCENARIO_ADMIN_TRANSFER = 'admin transfer';
 	const SCENARIO_UPDATE = 'update transfer';
 	const SCENARIO_CREATE = 'create transfer';
 	public function fields(){
 		return array_merge([
+			'id',
 			'description',
 			'transfer',
 			'agregators',
 			'transferStatuses',
-			'created_at'
+			'created_at',
+			'agregator_transfer_id'
 		]);
+	}
+	public function extraFields(){
+		return [
+			'users'
+		];
 	}
 	public function scenarios()
     {
@@ -52,13 +59,13 @@ class Transfer extends TransferBase
     }
     public function scenarioAdminTransfer():self
     {
-        $this->setScenario(self::SCENRIO_ADMIN_TRANSFER);
+        $this->setScenario(self::SCENARIO_ADMIN_TRANSFER);
         return $this;
     }
 	public function rules(){
 		return array_merge([
 			[['transfer'], 'transferValidator', 'on' => self::SCENARIO_DRIVER_TRANSFER],
-			['agregatorName', 'required'],
+			['agregatorName', 'required', 'on' => self::SCENARIO_DRIVER_TRANSFER],
 			['agregatorName', 'agregatorNameChecker']
 		], parent::rules());
 	}

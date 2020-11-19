@@ -7,6 +7,7 @@ class CreateTransaction extends \yii\base\Model{
 	public function rules(){
 		return [
 			['balance', 'string'],
+			['id_user', integer],
 			['agregatorName', 'agregatorNameChecker']
 		];
 	}

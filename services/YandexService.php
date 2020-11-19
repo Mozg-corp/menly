@@ -162,4 +162,12 @@ class YandexService{
 		$body = $response['value']->getBody()->getContents();
 		return self::extractTransactionsFromBody(json_decode($body));
 	}
+	public static function extractCreateTransactionResultFromResponse($response){
+		$body = $response->getBody()->getContents();
+		return self::extractCreateTransactionResultFromBody(json_decode($body));
+	}
+	public static function extractCreateTransactionResultFromBody($body){
+		$agregator_transfer_id = $body->event_at;
+		return $agregator_transfer_id;
+	}
 }

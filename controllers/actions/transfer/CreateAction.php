@@ -1,7 +1,7 @@
 <?php namespace app\controllers\actions\transfer;
 class CreateAction extends \yii\rest\CreateAction{
 	public function run(){
-		
+		//TODO: Здесь нужно проверять как-то или пользователя или то, что у него есть аккаунты и прочее...
 		$transferNew = new \app\models\Transfer();
 		$transferNew->load(\Yii::$app->getRequest()->getBodyParams(), '');
 		$transferNew->scenarioDriverTransfer();

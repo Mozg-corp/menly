@@ -132,6 +132,9 @@
 								</div>
 								<div class="table_cell table_cell__center">
 									{{transfer.description}}
+									<p v-show="transfer.agregator_transfer_id">
+										id: - "{{transfer.agregator_transfer_id}}"
+									</p>
 								</div>
 							</div>
 						</div>

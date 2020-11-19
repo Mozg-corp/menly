@@ -6,6 +6,12 @@ use Yii;
 
 class TransferStatus extends TransferStatusBase
 {
+	public function fields(){
+		return [
+			'id',
+			'status'
+		];
+	}
 	/**
      * {@inheritdoc}
      * @return TransferStatusQuery the active query used by this AR class.

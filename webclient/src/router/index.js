@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import store from '../store/index';
 import Home from '@/views/Home';
 import Users from '@/views/Users';
+import Transfers from '@/views/Transfers';
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,12 @@ const routes = [
         path: '/users',
         name:'users',
         component: Users
+        // component: ()=>import(/*webpackChunkName: "Users page"*/ '@/views/Users.vue'),
+    },,
+    {
+        path: '/transfers',
+        name:'transfers',
+        component: Transfers
         // component: ()=>import(/*webpackChunkName: "Users page"*/ '@/views/Users.vue'),
     },
     // {

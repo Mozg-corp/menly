@@ -15,7 +15,8 @@ let initState = {
 		'User'
 	],
 	transactions: [],
-	transfers: []
+	transfers: [],
+	allTransfers: []
 }
 export default {
 	AUTH_REQUEST: (state) => {
@@ -90,5 +91,14 @@ export default {
 	},
 	SET_USER_TRANSFERS: (state, transfers) => {
 		state.transfers = transfers
+	},
+	SET_TRANSFERS: (state, transfers) => {
+		state.allTransfers = transfers
+	},
+	SET_TRANSFER_DEBIT: (state, {id, agregator_transfer_id, description}) => {
+		let index = state.allTransfers.findIndex( el => el.id === parseInt(id));
+		state.allTransfers[index].transferStatuses.status = "Списано";
+		state.allTransfers[index].agregator_transfer_id = agregator_transfer_id;
+		state.allTransfers[index].description = description;
 	}
 }

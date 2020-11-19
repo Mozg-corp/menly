@@ -54,8 +54,8 @@ class TransactionController extends BaseController{
 				break;
 			}
 			case 'create': {
-				if(!\Yii::$app->user->can('viewOwnProfile', ['profile' => $model])){
-					throw new \yii\web\ForbiddenHttpException('You can transfer only your own balance');
+				if(!\Yii::$app->user->can('createTransaction')){
+					throw new \yii\web\ForbiddenHttpException('You cann\'t create transactions');
 				}
 				break;
 			}

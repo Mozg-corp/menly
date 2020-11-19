@@ -5,58 +5,68 @@
 				<div class="table">
 					<div class="thead">
 						<div class="cell">
-							user.id
+							дата
 						</div>
 						<div class="cell">
-							user.status
+							Пользователь
 						</div>
 						<div class="cell">
 							login
 						</div>
 						<div class="cell">
-							profile
+							агрегатор
 						</div>
 						<div class="cell">
-							agregators
+							сумма перевода
 						</div>
 						<div class="cell">
-							Создан
+							статус перевода
 						</div>
-						<div class="cell cell_centered">
-							Удалить
+						<div class="cell">
+							комментарий
+						</div>
+						<div class="cell">
+							действия
 						</div>
 					</div>
-					<div class="row" v-for="user in users" :key="user.id">
+					<div class="row" v-for="transfer in allTransfers" :key="transfer.created_at">
 						<div class="cell">
-							{{user.id}}
+							{{transfer.created_at}}
 						</div>
 						<div class="cell">
-							<select @change="changeUserStatusHandler($event, user.id)">
-								<option v-for="status in statuses" :selected="status === statuses[user.status]">
-									{{status}}
-								</option>
-							</select>
+							{{transfer.users.profile.fio}}
 						</div>
 						<div class="cell">
-							{{user.phone}}
+							{{transfer.users.phone}}
 						</div>
 						<div class="cell">
-							{{user.profile && user.profile.lastname}} {{user.profile && user.profile.firstname}} {{user.profile && user.profile.secondname}}
-						</div>
-						<div class="cell">
-							<ul>
-								<li v-for="agregator in user.agregators" :key="agregator.id">
-									{{agregator.name}}
-								</li>
-							</ul>
-						</div>
-						<div class="cell">
-							{{user.create_at}}
+							{{transfer.agregators.name}}
 						</div>
 						<div class="cell cell_centered">
-							<a href="#" @click.prevent="deleteUserHandler(user.id)">
-								<b>[Х]</b>
-							</a>
+							{{transfer.transfer}}
+						</div>
+						<div class="cell">
+							{{transfer.transferStatuses.status}}
+						</div>
+						<div class="cell cell_centered">
+							{{transfer.description}}
+							<p v-show="transfer.agregator_transfer_id && transfer.agregator_transfer_id.length">
+								id: {{transfer.agregator_transfer_id}}
+							</p>
+						</div>
+						<div class="cell cell_centered">
+							<ul>
+								<li class="transfer_action">
+									<a href="#" @click.prevent="createAgregatorTransactionHandler(transfer.id)" >
+										Списать
+									</a>
+								</li>
+								<li class="transfer_action">
+									<a href="#" @click.prevent="cancelAgregatorTransfer()">
+										Отклонить
+									</a>
+								</li>
+							</ul>
 						</div>
 					</div>
 				</div><!--Table-->
@@ -67,7 +77,7 @@
 				Нужно зайти под админом 79251234567
 			</div>
 			<div>
-				<a class="link link__pagination"v-for="link in links" href="#" @click.prevent="paginatorHandler(link)">{{link}}</a>
+				<!--<a class="link link__pagination"v-for="link in links" href="#" @click.prevent="paginatorHandler(link)">{{link}}</a>-->
 			</div>
 		</div><!--container-->
 	</main> <!--main-->
@@ -75,44 +85,43 @@
 
 <script>
 // @ is an alias to /src
-import {mapGetters, mapActions, mapState} from 'vuex';
+import {mapGetters, mapActions, mapState, mapMutations} from 'vuex';
 export default {
-  name: 'users',
+  name: 'transfers',
   data: ()=> ({
-	statuses: [
-		'Not Active',
-		'Candidate',
-		'User'
-	],
 	links: []
   }),
   components: {
   },
   computed: {
-	...mapState(['agregators_list', 'user', 'users', 'balances', 'isAuthenticated']),
+	...mapState(['allTransfers', 'isAuthenticated']),
 	...mapGetters(['isAdmin', 'isAuthenticated']),
   },
   methods:{
-	...mapActions(['fetchAllUsers', 'changeUserState', 'deleteUser', 'fetchUsersPage']),
-	changeUserStatusHandler($event, userId){
-		let statusName = $event.target.value;
-		let status = this.statuses.findIndex( el => el === statusName)
-		
-		this.changeUserState({userId, status});
-	},
-	deleteUserHandler(userId){
-		this.deleteUser(userId)
-	},
+	...mapActions(['fetchAllTransfers', 'createAgregatorTransaction']),
+	...mapMutations(['SET_TRANSFER_DEBIT']),
 	paginatorHandler(link){
-		this.fetchAllUsers(link)
+		//this.fetchAllUsers(link)
+	},
+	createAgregatorTransactionHandler(transferId){
+		this.createAgregatorTransaction(transferId)
+			.then(
+				transferResult=> {
+					this.SET_TRANSFER_DEBIT(transferResult);
+				}
+			)
+	},
+	cancelAgregatorTransfer(){
+	
 	}
   },
   
   mounted(){
-	this.fetchAllUsers(1)
+	this.fetchAllTransfers(1)
 		.then(
 			({pagination}) => {
-				//console.log(pagination)
+				/*
+				console.log(pagination)
 				let {page_count, current_page} = pagination;
 				this.links.push(1)
 				for(let i=2; i<page_count; ++i){
@@ -121,6 +130,7 @@ export default {
 					}
 				}
 				this.links.push(page_count);
+				*/
 			}
 		)
   }
@@ -179,5 +189,8 @@ export default {
 			margin: 3px 2px
 	.link:hover
 		color: blue
+	.transfer_action
+		border: 1px solid black
+		margin: 2px 0
 		
 </styles>
