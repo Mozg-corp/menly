@@ -87,9 +87,15 @@ class AuthController extends \yii\web\Controller
             // }
 			if(\Yii::$app->auth->signIn($model)){
 				
-				return \Yii::$app->user->identity;
+				return [
+					'success' => true,
+					'user' => \Yii::$app->user->identity
+				];
 			}else{
-				return $model->errors;
+				return [
+					'success' => false,
+					'errors' => $model->errors
+				];
 			}
         }
 

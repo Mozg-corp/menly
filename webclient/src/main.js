@@ -3,8 +3,13 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios';
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
 import './assets/css/styles.css';
+
+import './icons.js';
 
 Vue.config.productionTip = true;
 
@@ -21,6 +26,12 @@ store.state.token = localStorage.getItem('user-token');
 store.state.userId= localStorage.getItem('user-id');
 //console.log(store.state)
 axios.defaults.headers.common['Content-Type'] = 'Application/json';
+
+// Install BootstrapVue
+Vue.use(BootstrapVue);
+Vue.use(IconsPlugin);
+
+
 new Vue({
   router,
   store,

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store/index';
-import Home from '@/views/Home';
+import Landing from '@/views/Landing';
 import Users from '@/views/Users';
 import Transfers from '@/views/Transfers';
 
@@ -26,9 +26,9 @@ const ifNotAdmin = (to, from, next) => {
 const routes = [
     {
         path: '/',
-        name: 'home',
+        name: 'landing',
         // component: ()=>import(/*webpackChunkName: "Home page"*/ '@/views/Home')
-        component: Home
+        component: Landing
     },
     {
         path: '/users',

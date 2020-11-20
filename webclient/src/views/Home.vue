@@ -1,3 +1,4 @@
+/*
 <template>
 	<main >
 		<div class="container_my content">
@@ -364,3 +365,4 @@ export default {
 		width: 240px
 	
 </styles>
+*/

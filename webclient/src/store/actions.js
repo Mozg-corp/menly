@@ -3,15 +3,18 @@ import router from "../router";
 export default {
 	signIn: ({commit, dispatch, getters}, bodyFormData)=>{
 		dispatch('logout');
-		return  axios({
-				method: 'post',
-				url: '/auth/sign-in',
-				data: bodyFormData,
-				headers: {'Content-Type': 'multipart/form-data' }
-			}).then(response => {
-				console.log(response);
-				if (response.data !== ''){
-					let data = response.data;
+		return  new Promise(
+			async (resolve, reject) => {
+				try{
+					let response = await axios({
+						method: 'post',
+						url: '/auth/sign-in',
+						data: bodyFormData,
+						headers: {'Content-Type': 'multipart/form-data' }
+					});
+					console.log(response);
+					if (response.data && response.data.success){
+						let data = response.data.user;
 						let token = data.token,
 							username = data.phone,
 							userId = data.id;
@@ -24,14 +27,18 @@ export default {
 						axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 						commit('AUTH_SUCCESS', {token, isAdmin, username, userId});
 						commit('SET_USER', data);
+						resolve();
+					}else{ 
+						reject(response.data);
+					}
+				}catch(e){
+					commit('AUTH_ERROR', ',eh ,eh');
+					localStorage.removeItem('user-token'); // if the request fails, remove any possible user token if possible
+					localStorage.removeItem('user-isAdmin');
+					localStorage.removeItem('user-username');
+					localStorage.removeItem('user-id');
+					reject(e.response);
 				}
-			}).catch(e =>{
-				console.log(e);
-				commit('AUTH_ERROR', ',eh ,eh');
-				localStorage.removeItem('user-token'); // if the request fails, remove any possible user token if possible
-				localStorage.removeItem('user-isAdmin');
-				localStorage.removeItem('user-username');
-				localStorage.removeItem('user-id');
 			});
 	},
 	signUp: ({commit, dispatch, getters}, bodyFormData)=>{
