@@ -14,8 +14,8 @@ class VueAssets extends AssetBundle
     public $css = [
     ];
     public $js = [
-        'js/chunk-vendors.js',
-        'js/app.js',
+			'js/chunk-vendors.js',
+			'js/app.js',
         ];
     public function init()
     {

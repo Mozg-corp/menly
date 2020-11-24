@@ -1,54 +1,64 @@
 <template>
 	<b-container class="pt-3">
-		<h2 class="anketa_heading">
-			Выбери агрегатор такси через который ты работаешь
-		</h2>
-		<b-row align-h="center">
-			<b-col
-				sm="6"
-				class="text-center"
-			>
-				<div v-show="!agregators_list_filledin">
-					<b-spinner
-						v-if="!agregatorsListDownloaded"
-						variant="dark"
-						type="grow"
-					  ></b-spinner>
-					  <ul v-else>
-					</b-img>
-						<li 
-							class="anketa_li"
-							v-for="(agregator, i) in getAgregatorsList"
-							:key="i"
-							@click="toggleAgregatorCheck(i)"
+		<div v-if="loadingUserData"
+			class="spinner"
+		>
+			<b-spinner
+				variant="dark"
+				type="grow"
+			></b-spinner>
+		</div>
+		<div v-else>
+			<div v-if="!agregators_list_filledin">
+				<h2 class="anketa_heading">
+					Выбери агрегатор такси через который ты работаешь
+				</h2>
+				<b-row align-h="center">
+					<b-col
+						sm="6"
+						class="text-center"
+					>
+						<div>
+							<b-spinner
+								v-if="!agregatorsListDownloaded"
+								variant="dark"
+								type="grow"
+							  ></b-spinner>
+							  <ul v-else>
+								<li 
+									class="anketa_li"
+									v-for="(agregator, i) in getAgregatorsList"
+									:key="i"
+									@click="toggleAgregatorCheck(i)"
+								>
+									<b-icon icon="check-circle-fill" :variant="variants[i]"></b-icon>
+									<b-img
+										class="anketa_li__img anketa_li__img__gett"
+										:src="'/img/anketa/' + agregator.logo" 
+										fluid 
+										:alt="agregator.name + ' агрегатор лого'"
+									>
+									</b-img>
+								</li>
+							  </ul>
+						</div>
+					</b-col>
+					<b-col
+						sm="12"
+						class="text-center"
+					>
+						<b-button 
+							size="lg"
+							variant="dark"
+							class="text-center"
+							@click.prevent="postAgregatorsHandler"
 						>
-							<b-icon icon="check-circle-fill" :variant="variants[i]"></b-icon>
-							<b-img
-								class="anketa_li__img anketa_li__img__gett"
-								:src="'/img/anketa/' + agregator.logo" 
-								fluid 
-								:alt="agregator.name + 'агрегатор лого'"
-							>
-							</b-img>
-						</li>
-					  </ul>
-				</div>
-			</b-col>
-			<b-col
-				sm="12"
-				class="text-center"
-			>
-				<b-button 
-					size="lg"
-					variant="dark"
-					class="text-center"
-					v-b-modal.signup
-				>
-					Выбрать
-				</b-button>
-			</b-col>
-		</b-row>
-		  
+							Выбрать
+						</b-button>
+					</b-col>
+				</b-row>
+			 </div>
+		</div>
 	</b-container>
 </template>
 <script>
@@ -66,7 +76,7 @@ export default{
 				]
 	}),
 	computed: {
-		...mapState(['user', 'agregators_list']),
+		...mapState(['user', 'agregators_list', 'loadingUserData']),
 		...mapGetters(['userHasAgregators', 'getAgregatorsList']),
 		agregators_list_filledin(){
 			return this.userHasAgregators
@@ -78,30 +88,46 @@ export default{
 	methods: {
 		...mapActions(['fetchAgregatorsList', 'postAgregators']),
 		toggleAgregatorCheck(i){
-			//console.log(i)
-			//console.log(this.variants[i])
 			let newVariant = this.variants[i] === 'secondary'? 'dark':'secondary';
 			this.variants = [
 				...this.variants.slice(0, i),
 				newVariant,
 				...this.variants.slice(i+1)
 			];
-			console.log(this.variants)
 			
-		},
-		getVariant(i){
-			return this.variants[i];
 		},
 		postAgregatorsHandler(){
-			
-			this.postAgregators(selectedAgregators);
+			let checkedAgregators = this.getAgregatorsList.filter(
+				(agregator, i) => {
+					return this.variants[i] === 'dark';
+				}
+			);
+			if(checkedAgregators.length){
+				this.postAgregators(checkedAgregators)
+					.then(
+						() => {
+							this.$router.push({name: 'personal'});
+						}
+					).catch(
+						(e) => {
+							if(e.data && e.data.message){
+								windows.alert(e.data.message)
+							}else{
+								windows.alert('Что-то пошло не так, попробуйте повторить ещё чуть позже.');
+							}
+						}
+					)
+			}
 		},
-		viewVariant(variant){
-			console.log(variant)
-		}
 	},
 	mounted(){
+		
+	},
+	created(){
 		this.fetchAgregatorsList();
+		if(this.userHasAgregators){
+			this.$router.push({name: 'personal'})
+		}
 	}
 }
 </script>
@@ -127,5 +153,6 @@ export default{
 			&__img__gett
 				height: 69px
 				width: 145px
-
+	.spinner
+		text-align: center
 </style>

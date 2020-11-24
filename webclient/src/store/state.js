@@ -6,7 +6,7 @@ export default{
 	admin: false,
 	username: '',
 	agregators_list: [],
-	user: [],
+	user: {},
 	users: [],
 	balances: [],
 	userStatuses: [
@@ -16,5 +16,6 @@ export default{
 	],
 	transactions: [],
 	transfers: [],
-	allTransfers: []
+	allTransfers: [],
+	loadingUserData: false
 }

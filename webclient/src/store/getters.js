@@ -10,7 +10,7 @@ export default {
 	getNews: state => id => state.news.find((el)=>el.id === id),
 	getClaim: state => id => state.claims.find( el => el.id === id),
 	userHasAgregators: ({user}) => {
-		if(user.length){
+		if(user.agregators){
 			return user.agregators.length > 0;
 		}else{
 			return false;

@@ -100,5 +100,8 @@ export default {
 		state.allTransfers[index].transferStatuses.status = "Списано";
 		state.allTransfers[index].agregator_transfer_id = agregator_transfer_id;
 		state.allTransfers[index].description = description;
+	},
+	SET_LOADING_USER_DATA_STATE: (state, loadingState) => {
+		state.loadingUserData = loadingState
 	}
 }

@@ -160,7 +160,7 @@
 
 <script>
     import store from './store/index';
-	import {mapState, mapGetters, mapActions} from 'vuex';
+	import {mapState, mapGetters, mapActions, mapMutations} from 'vuex';
 	
     export default {
 		name: 'Layout',
@@ -185,6 +185,7 @@
 		},
         methods: {
 			...mapActions(['signIn', 'logout', 'fetchUserData']),
+			...mapMutations(['SET_LOADING_USER_DATA_STATE']),
             logoutHandler(){
               this.logout()
                   .then(()=>{
@@ -231,16 +232,18 @@
         },
         mounted() {
 			if(this.userId){
+				this.SET_LOADING_USER_DATA_STATE(true);
 				this.fetchUserData(this.userId)
 					.then(
-						()=> {/*
+						()=> {
+							this.SET_LOADING_USER_DATA_STATE(false);
 							if(!this.user.profile && !this.user.car){
-								if(window.location.pathname !== '/anketa'){
-									this.$router.push({name: 'anketa'});
+								if(window.location.pathname !== '/personal'){
+									this.$router.push({name: 'personal'});
 								}
 							}else{
 								
-							}*/
+							}
 						}
 					);
 			}

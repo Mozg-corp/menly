@@ -114,7 +114,7 @@ export default {
 		selectedAgregators.forEach( el => {
 			body.push({
 				users_id,
-				agregators_id: +el
+				agregators_id: +el.id
 			})
 		})
 		return new Promise(
@@ -126,15 +126,15 @@ export default {
 						url: '/api/v1/user-agregator/batch',
 						data: body
 					})
+					if(response && response.status === 201){
+						let userAgregators = response.data;
+						commit('SET_USER_AGREGATORS', userAgregators)
+						resolve(userAgregators);
+					}else{
+						reject(response)
+					}
 				}catch(e){
-					console.log(e.response.data.message)
-				}
-				if(response && response.status === 201){
-					let userAgregators = response.data;
-					commit('SET_USER_AGREGATORS', userAgregators)
-					resolve(userAgregators);
-				}else{
-					reject(response?response:'')
+					reject(e.response)
 				}
 			}
 		)
@@ -147,7 +147,6 @@ export default {
 					url: `/api/v1/users/${userId}`
 				})
 				let userData = response.data;
-				//console.log(userData)
 				commit('SET_USER', userData);
 				resolve(userData);
 			}
@@ -175,6 +174,7 @@ export default {
 						url: '/api/v1/profiles',
 						data: newProfile
 					})
+					console.log(response)
 					let profile = response.data;
 					commit('SET_PROFILE', profile);
 					resolve(profile);
@@ -195,9 +195,17 @@ export default {
 						url: '/api/v1/cars',
 						data: newCar
 					})
-					let car = response.data;
-					commit('SET_CAR', car);
-					resolve(car);
+					console.log(response)
+					if(response.status === 201){
+						let car = response.data;
+						commit('SET_CAR', car);
+						resolve(car);
+					}else{
+						reject({
+							succes: false,
+							errors: response.data
+						});
+					}
 				}catch(e){
 					console.log(e.response);
 					reject(e.response)

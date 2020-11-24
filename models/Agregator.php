@@ -39,7 +39,8 @@ class Agregator extends AgregatorBase
 	public function fields(){
 		return [
 			'id',
-			'name'			
+			'name',
+			'logo'
 		];
 	}
 	public function extraFields(){

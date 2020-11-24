@@ -56,7 +56,7 @@ class User extends UserBase implements IdentityInterface
     public function scenarios()
     {
         return array_merge([
-           self::SCENARIO_SIGNUP => ['phone','password'],
+           self::SCENARIO_SIGNUP => ['phone','password', 'password_repeat'],
            self::SCENARIO_SIGNIN => ['phone', 'password'],
 		   self::SCENARIO_UPDATE => ['status'],
 		   self::SCENARIO_CREATE => [],
@@ -77,6 +77,7 @@ class User extends UserBase implements IdentityInterface
 		}
         return array_merge([
             ['password', 'required', 'on' => [self::SCENARIO_SIGNUP, self::SCENARIO_SIGNIN]],
+            ['password_repeat', 'required', 'on' => [self::SCENARIO_SIGNUP]],
             ['password', 'string', 'min' => 8],
 			['status', 'safe'],
 			['password_repeat', 'compare', 'compareAttribute' => 'password'],

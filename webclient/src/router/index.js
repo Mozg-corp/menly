@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import store from '../store/index';
 import Home from '@/views/Home';
 import Anketa from '@/views/Anketa';
+import Personal from '@/views/Personal';
 import Landing from '@/views/Landing';
 import Users from '@/views/Users';
 import Transfers from '@/views/Transfers';
@@ -24,19 +25,25 @@ const ifNotAdmin = (to, from, next) => {
     }
     next('/');
 };
-
 const routes = [
     {
         path: '/',
         name: 'home',
 		beforeEnter: ifNotAuthenticated,
         // component: ()=>import(/*webpackChunkName: "Home page"*/ '@/views/Home')
-        component: Home
+        component: Home,
+		children: [
+			{
+				path: '/personal',
+				name: 'personal',
+				component: Personal
+			}
+		]
     },
     {
         path: '/anketa',
         name: 'anketa',
-		//beforeEnter: ifNotAuthenticated,
+		beforeEnter: ifNotAuthenticated,
         // component: ()=>import(/*webpackChunkName: "Home page"*/ '@/views/Home')
         component: Anketa
     },
