@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store/index';
+import Home from '@/views/Home';
+import Anketa from '@/views/Anketa';
 import Landing from '@/views/Landing';
 import Users from '@/views/Users';
 import Transfers from '@/views/Transfers';
@@ -9,10 +11,10 @@ Vue.use(VueRouter);
 
 const ifNotAuthenticated = (to, from, next) => {
     if (store.getters.isAuthenticated === true) {
-        next();
+		next();
 		return;
     }
-    next('/');
+    next('/landing');
 };
 
 const ifNotAdmin = (to, from, next) => {
@@ -26,10 +28,23 @@ const ifNotAdmin = (to, from, next) => {
 const routes = [
     {
         path: '/',
-        name: 'landing',
+        name: 'home',
+		beforeEnter: ifNotAuthenticated,
         // component: ()=>import(/*webpackChunkName: "Home page"*/ '@/views/Home')
-        component: Landing
+        component: Home
     },
+    {
+        path: '/anketa',
+        name: 'anketa',
+		//beforeEnter: ifNotAuthenticated,
+        // component: ()=>import(/*webpackChunkName: "Home page"*/ '@/views/Home')
+        component: Anketa
+    },
+	{
+		path: '/landing',
+		name: 'landing',
+		component: Landing
+	},
     {
         path: '/users',
         name:'users',

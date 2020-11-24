@@ -42,36 +42,43 @@ export default {
 			});
 	},
 	signUp: ({commit, dispatch, getters}, bodyFormData)=>{
-		return  axios({
-				method: 'post',
-				url: '/auth/sign-up',
-				data: bodyFormData,
-				headers: {'Content-Type': 'multipart/form-data' }
-			}).then(response => {
-				console.log(response);
-				if (response.data !== ''){
-					let data = response.data;
-						let token = data.token,
-							username = data.phone,
-							userId = data.id;
-						localStorage.setItem('user-token', token); // store the token in localstorage
-						localStorage.setItem('user-username', username);
-						localStorage.setItem('user-id', userId);
-						let isAdmin = data.roles.includes('admin');
-						localStorage.setItem('user-isAdmin', isAdmin);
-						//console.log('auth_action',isAdmin);						
-						axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-						commit('AUTH_SUCCESS', {token, isAdmin, username});
-						commit('SET_USER', data);
+		return  new Promise(
+			async (resolve, reject) => {
+				try{
+					let response = await axios({
+						method: 'post',
+						url: '/auth/sign-up',
+						data: bodyFormData,
+						headers: {'Content-Type': 'multipart/form-data' }
+					})
+					if (response.data.success){
+						let data = response.data.user;
+							let token = data.token,
+								username = data.phone,
+								userId = data.id;
+							localStorage.setItem('user-token', token); // store the token in localstorage
+							localStorage.setItem('user-username', username);
+							localStorage.setItem('user-id', userId);
+							let isAdmin = data.roles.includes('admin');
+							localStorage.setItem('user-isAdmin', isAdmin);				
+							axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+							commit('AUTH_SUCCESS', {token, isAdmin, username, userId});
+							commit('SET_USER', data);
+					}else{
+						let data = response.data;
+						reject(data);
+					}
+				}catch(e){
+					console.log(e);
+					commit('AUTH_ERROR', ',eh ,eh');
+					localStorage.removeItem('user-token'); // if the request fails, remove any possible user token if possible
+					localStorage.removeItem('user-isAdmin');
+					localStorage.removeItem('user-username');
+					localStorage.removeItem('user-id');
+					reject(e.response);
 				}
-			}).catch(e =>{
-				console.log(e);
-				commit('AUTH_ERROR', ',eh ,eh');
-				localStorage.removeItem('user-token'); // if the request fails, remove any possible user token if possible
-				localStorage.removeItem('user-isAdmin');
-				localStorage.removeItem('user-username');
-				localStorage.removeItem('user-id');
-			});
+			}
+		);
 	},
 	logout({commit, dispatch}) {
 		return new Promise((resolve, reject)=>{
@@ -92,6 +99,7 @@ export default {
 					method: 'get',
 					url: '/api/v1/agregators'
 				})
+				//console.log(response);
 				if(response && response.status === 200){
 					let agregators_list = response.data;
 					commit('SET_AGREGATORS_LIST', agregators_list);
@@ -146,17 +154,17 @@ export default {
 		)
 	},
 	fetchProfile: ({commit, dispatch,getters}) => {
-			return new Promise(
-				async (resolve, reject) => {
-					let response =  await axios({
-						method: 'get',
-						url: '/api/v1/profiles'
-					})
-					let profile = response.data;
-					commit('SET_PROFILE', profile);
-					resolve(profile);
-				}
-			)
+		return new Promise(
+			async (resolve, reject) => {
+				let response =  await axios({
+					method: 'get',
+					url: '/api/v1/profiles'
+				})
+				let profile = response.data;
+				commit('SET_PROFILE', profile);
+				resolve(profile);
+			}
+		)
 	},
 	createProfile: ({commit}, newProfile) => {
 		return new Promise(

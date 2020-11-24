@@ -11,7 +11,12 @@ module.exports = {
         "target": "http://localhost:8000",
           ws: true,
           changeOrigin: true
-      }
+      },
+	  "^/img*": {
+		"target": "http://localhost:8000",
+		ws: true,
+		changeOrigin: true  
+	  }
 	}
   },
   "transpileDependencies": [

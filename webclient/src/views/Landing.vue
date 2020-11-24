@@ -110,14 +110,13 @@
 					class="text-right landing_header__login"
 					v-b-modal.signup
 				>
-					Попробывать
+					Попробовать
 				</b-button>
-				<b-button 
-					v-if="!isLogined" 
+				<b-button
 					size="sm" 
 					variant="outline-secondary" 
 					class="text-right app_header__login"
-					v-b-modal.signin
+					v-b-modal.signup
 				>
 						Войти
 				</b-button>
@@ -166,7 +165,7 @@
 				>
 					<b-form-input
 						id="password_repeat-input"
-						v-model="password"
+						v-model="password_repeat"
 						:state="valid"
 						required
 						type="password"
@@ -177,6 +176,7 @@
 	</b-container>
 </template>
 <script>
+import {mapActions} from 'vuex';
 export default{
 	name: 'landing',
 	components: {},
@@ -188,12 +188,35 @@ export default{
 		errors: {}
 	}),
 	methods: {
+		...mapActions(['signUp']),
 		OkHandler(bvModalEvt){
 			bvModalEvt.preventDefault();
-			this.signInHandler();
+			this.signUpHandler();
 		},
 		signUpHandler(){
-			
+			let bodyFormData = new FormData();
+			bodyFormData.set('User[phone]', this.login);
+			bodyFormData.set('User[password]', this.password);
+			bodyFormData.set('User[password_repeat]', this.password_repeat);
+			this.signUp(bodyFormData)
+				.then(
+					()=>{
+						this.valid = true;
+						this.$nextTick(() => {
+							this.$bvModal.hide('signup');
+						});
+						this.$router.push({name: 'home'});
+					}
+				).catch(
+					(response)=>{
+						if(response && response.errors){
+							this.valid = false;
+							this.errors = response.errors;
+						}else{
+							console.log(response);
+						}
+					}
+				)
 		}
 	}
 }

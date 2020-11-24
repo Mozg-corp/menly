@@ -8,5 +8,15 @@ export default {
 	getProfile: state => state.profile,
 	getContact: state => state.contact,
 	getNews: state => id => state.news.find((el)=>el.id === id),
-	getClaim: state => id => state.claims.find( el => el.id === id)
+	getClaim: state => id => state.claims.find( el => el.id === id),
+	userHasAgregators: ({user}) => {
+		if(user.length){
+			return user.agregators.length > 0;
+		}else{
+			return false;
+		}
+	},
+	getAgregatorsList: state => {
+		return state.agregators_list;
+	}
 }

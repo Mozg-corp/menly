@@ -288,6 +288,7 @@ export default {
   },
   
   mounted(){
+  /*
 	if(this.userId){
 		this.fetchUserData(this.userId)
 			.then(
@@ -305,7 +306,7 @@ export default {
 				}
 			);
 	}
-		
+	*/	
   }
 }
 </script>

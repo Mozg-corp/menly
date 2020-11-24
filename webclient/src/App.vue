@@ -7,9 +7,12 @@
 						<b-col >
 							<fa-icon 
 								v-if="isLogined"
-								v-b-toggle.menu :icon="['fas', 'bars']" />
+								class="fa-2x"
+								v-b-toggle.menu :icon="['fas', 'bars']" 
+							/>
 						</b-col>
 						<b-col class="d-flex justify-content-center">
+						<router-link :to="{name: 'home'}"
 							<svg width="99" height="38" viewBox="0 0 99 38" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path d="M76.1052 22.4545V0" stroke="#222220" stroke-width="2" stroke-miterlimit="10"/>
 								<path d="M41.7871 22.7013C37.1984 22.7013 33.5371 18.9506 33.5371 14.361C33.5371 9.7714 37.2472 6.02075 41.7871 6.02075C46.327 6.02075 50.0371 9.7714 50.0371 14.361" stroke="#222220" stroke-width="2" stroke-miterlimit="10"/>
@@ -30,7 +33,7 @@
 								<path d="M81.9631 14.4104V5.97144" stroke="#222220" stroke-width="2" stroke-miterlimit="10"/>
 								<path d="M98.512 29.1662V5.97144" stroke="#222220" stroke-width="2" stroke-miterlimit="10"/>
 							</svg>
-
+						</router-link>
 						</b-col>
 						<b-col class="d-flex flex-row-reverse">
 							<div>
@@ -45,6 +48,7 @@
 								</b-button>
 								<fa-icon 
 									v-else
+									class="fa-2x"
 									:icon="['fas', 'sign-out-alt']"
 									@click.prevent="logoutHandler"
 								/>
@@ -91,7 +95,7 @@
 					</b-form-group>
 				</form>
 			</b-modal>
-			<b-sidebar id="menu" title="Меню" shadow>
+			<b-sidebar id="menu" :title="username" shadow>
 			  <nav class="mb-3">
 				<b-nav vertical>
 				  <b-nav-item active >Active</b-nav-item>
@@ -101,7 +105,55 @@
 			  </nav>
 			</b-sidebar>
 		</div> <!--top-->
-		<footer>
+		<footer class="app_footer">
+			<b-container>
+				<b-row 
+					align-v="center" 
+					class="app_footer__row pt-3"
+					cols-sm="3"
+					align-h="center"
+				>
+					<b-col 
+						cols="3"
+						class="text-center"
+					>
+						<span class="telegram_icon">
+							<fa-icon
+								:icon="['fab', 'telegram']"
+								class="fa-3x"
+								@click.prevent="logoutHandler"
+							/>
+						</span>
+					</b-col>
+					<b-col 
+						cols="6"
+						class="text-center"
+					>
+						<b-button 
+							size="sm" 
+							variant="outline-secondary" 
+							class="text-center app_footer__feedback"
+							v-b-modal.signin
+						>
+								Обратная связь
+						</b-button>
+					</b-col>
+					<b-col 
+						cols="3"
+						class="text-center"
+					>
+						<span 
+							class="app_footer__double_arrow_up"
+						>
+							<fa-icon
+								:icon="['fas', 'angle-double-up']"
+								class="fa-3x"
+								@click.prevent="logoutHandler"
+							/>
+						</span>
+					</b-col>
+				</b-row>
+			</b-container>
 		</footer> <!--footer-->
 	</div> <!--wrapper-->
 </template>
@@ -132,11 +184,11 @@
 			
 		},
         methods: {
-			...mapActions(['signIn', 'logout']),
+			...mapActions(['signIn', 'logout', 'fetchUserData']),
             logoutHandler(){
               this.logout()
                   .then(()=>{
-					if(window.location.pathname !== '/') this.$router.push('/');
+					if(window.location.pathname !== '/landing') this.$router.push({name:'landing'});
                   })
             },
             OkHandler(bvModalEvt){
@@ -153,7 +205,8 @@
 							this.valid = true;
 							this.$nextTick(() => {
 								this.$bvModal.hide('signin');
-							})
+							});
+							this.$router.push({name: 'home'});
 						}
 					)
 					.catch(
@@ -177,16 +230,20 @@
 
         },
         mounted() {
-		/*
 			if(this.userId){
 				this.fetchUserData(this.userId)
 					.then(
-						()=> {
-							
+						()=> {/*
+							if(!this.user.profile && !this.user.car){
+								if(window.location.pathname !== '/anketa'){
+									this.$router.push({name: 'anketa'});
+								}
+							}else{
+								
+							}*/
 						}
 					);
 			}
-			*/
 			//this.fetchAgregatorsList()
 				
 			//this.username = this.$store.getters.getUsername;
@@ -199,13 +256,30 @@
     };
 </script>
 <style scoped lang="sass">
-	.app_header
-		box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.05)
-		&__login
-			font-weight: 300
-			font-size: 12px
-			line-height: 15px
-			color: #000
+	.app
+		&_header
+			box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.05)
+			height: 60px
+			display: flex
+			align-items: center
+			&__login
+				font-weight: 300
+				font-size: 12px
+				line-height: 15px
+				color: #000
+		&_footer
+			background-color: #000
+			min-height: 5rem
+			&__feedback
+				background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0.4) 100%), #FFFFFF
+				background-blend-mode: soft-light, normal
+				border-radius: 8px
+				font-weight: normal
+				font-size: 14px
+				line-height: 17px
+				padding: 8px 29px
+			&__double_arrow_up
+				color: white
 	.login_active
 		display: block
 		pointer-events: auto
@@ -213,5 +287,7 @@
 		font-size: 14px
 		line-height: 17px
 		display: block
+	.telegram_icon
+		color: white
 
 </style>
