@@ -76,7 +76,7 @@ export default{
 				]
 	}),
 	computed: {
-		...mapState(['user', 'agregators_list', 'loadingUserData']),
+		...mapState(['user', 'agregators_list', 'loadingUserData', 'userChooseAgregator']),
 		...mapGetters(['userHasAgregators', 'getAgregatorsList']),
 		agregators_list_filledin(){
 			return this.userHasAgregators
@@ -125,7 +125,7 @@ export default{
 	},
 	created(){
 		this.fetchAgregatorsList();
-		if(this.userHasAgregators){
+		if(this.userChooseAgregator){
 			this.$router.push({name: 'personal'})
 		}
 	}

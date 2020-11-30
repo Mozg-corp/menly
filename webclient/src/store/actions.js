@@ -23,6 +23,21 @@ export default {
 						localStorage.setItem('user-id', userId);
 						let isAdmin = data.roles.includes('admin');
 						localStorage.setItem('user-isAdmin', isAdmin);
+						if(data.car){
+							localStorage.setItem('userHasCarData', true);
+						}else{
+							localStorage.setItem('userHasCarData', false);
+						}
+						if(data.profile){
+							localStorage.setItem('userHasProfileData', true);
+						}else{
+							localStorage.setItem('userHasProfileData', false);
+						}
+						if(data.profile){
+							localStorage.setItem('userChooseAgregator', true);
+						}else{
+							localStorage.setItem('userChooseAgregator', false);
+						}
 						//console.log('auth_action',isAdmin);						
 						axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 						commit('AUTH_SUCCESS', {token, isAdmin, username, userId});
@@ -37,6 +52,10 @@ export default {
 					localStorage.removeItem('user-isAdmin');
 					localStorage.removeItem('user-username');
 					localStorage.removeItem('user-id');
+					localStorage.removeItem('userHasCarData');
+					localStorage.removeItem('userHasProfileData');
+					localStorage.removeItem('userChooseAgregator');
+					console.log(e);
 					reject(e.response);
 				}
 			});
@@ -175,9 +194,16 @@ export default {
 						data: newProfile
 					})
 					console.log(response)
-					let profile = response.data;
-					commit('SET_PROFILE', profile);
-					resolve(profile);
+					if(response.status === 201){
+						let profile = response.data;
+						commit('SET_PROFILE', profile);
+						resolve(profile);
+					}else{
+						reject({
+							succes: false,
+							errors: response.data
+						});
+					}
 				}catch(e){
 					console.log(e.response.data.message)
 					console.log(e.response);
@@ -217,15 +243,18 @@ export default {
 		return new Promise(
 			async (resolve, reject) => {
 				try{
+					commit('SET_LOADING_BALANCE_STATE', true);
 					let response = await axios({
 						method: 'get',
 						url: `/api/v1/balances/${userId}`
 					})
 					let balances = response.data;
 					commit('SET_BALANCES', balances);
+					commit('SET_LOADING_BALANCE_STATE', false);
 					resolve(balances);
 				}catch(e){
 					console.log(e.response);
+					commit('SET_LOADING_BALANCE_STATE', false);
 					reject(e.response)
 				}
 			}

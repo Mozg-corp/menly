@@ -33,13 +33,15 @@ const routes = [
         // component: ()=>import(/*webpackChunkName: "Home page"*/ '@/views/Home')
         component: Home,
 		children: [
-			{
-				path: '/personal',
-				name: 'personal',
-				component: Personal
-			}
+			
 		]
     },
+	{
+		path: '/personal',
+		name: 'personal',
+		component: Personal,
+		beforeEnter: ifNotAuthenticated
+	},
     {
         path: '/anketa',
         name: 'anketa',

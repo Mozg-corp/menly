@@ -116,7 +116,7 @@
 					size="sm" 
 					variant="outline-secondary" 
 					class="text-right app_header__login"
-					v-b-modal.signup
+					v-b-modal.signin
 				>
 						Войти
 				</b-button>

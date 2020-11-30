@@ -184,7 +184,13 @@
 			
 		},
         methods: {
-			...mapActions(['signIn', 'logout', 'fetchUserData']),
+			...mapActions([
+				'signIn', 
+				'logout', 
+				'fetchUserData', 
+				'fetchBalances', 
+				'fetchAgregatorsList'
+			]),
 			...mapMutations(['SET_LOADING_USER_DATA_STATE']),
             logoutHandler(){
               this.logout()
@@ -242,7 +248,8 @@
 									this.$router.push({name: 'personal'});
 								}
 							}else{
-								
+								this.fetchBalances(this.userId);
+								this.fetchAgregatorsList();
 							}
 						}
 					);

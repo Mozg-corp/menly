@@ -17,5 +17,9 @@ export default{
 	transactions: [],
 	transfers: [],
 	allTransfers: [],
-	loadingUserData: false
+	loadingUserData: false,
+	loadingBalances: false,
+	userHasCarData: localStorage.getItem('userHasCarData')||null,
+	userHasProfileData: localStorage.getItem('userHasProfileData')||null,
+	userChooseAgregator: localStorage.getItem('userChooseAgregator')||null
 }

@@ -103,5 +103,8 @@ export default {
 	},
 	SET_LOADING_USER_DATA_STATE: (state, loadingState) => {
 		state.loadingUserData = loadingState
+	},
+	SET_LOADING_BALANCE_STATE: (state, loadingState) => {
+		state.loadingState = loadingState
 	}
 }
