@@ -1,7 +1,7 @@
 <template>
 <div>
 	<div class="home_top">
-		<b-container class="text-center">
+		<b-container>
 			<h2 class="home_top_heading">
 				Кабинет
 			</h2>
@@ -21,9 +21,9 @@
 					</div>
 				</b-col>
 			</b-row>
-			<b-row>
+			<b-row class="pt-3">
 				<b-col>
-					<h5 class="banner_founds__orders">
+					<h5 class="banner_founds__orders mb-3">
 							Ваши заявки
 					</h5>
 					<div class="table_trandfers">
@@ -61,12 +61,6 @@ import {mapGetters, mapActions, mapState, mapMutations} from 'vuex';
 export default {
   name: 'home',
   data: ()=> ({
-	transferStatuses: [
-		'Создано',
-		'Списано',
-		'Переведено',
-		'Отклонено'
-	]
   }),
   components: {
   },
@@ -93,13 +87,12 @@ export default {
 			let agregator = this.agregators_list.filter((agregator) =>{
 				return agregator.name === transfer.agregators.name
 			});
-			//console.log(agregator[0].logo);
-				return {
-					date: (new Date(transfer.created_at)).toLocaleDateString(),
-					logo: agregator[0].logo,
-					transfer: transfer.transfer,
-					status: transfer.transferStatuses.status
-				}
+			return {
+				date: (new Date(transfer.created_at)).toLocaleDateString(),
+				logo: agregator[0].logo,
+				transfer: transfer.transfer,
+				status: transfer.transferStatuses.status
+			}
 			}
 		);
 	},
@@ -118,7 +111,7 @@ export default {
 	...mapActions([
 		'fetchUserTransfers',
 		'fetchAgregatorsList'
-	]),
+	])
   },
   
   mounted(){

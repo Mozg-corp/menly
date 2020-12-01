@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper">
 		<div class="top">
+			<div id="top"></div>
 			<header class="app_header">
 				<b-container class="pt-1">
 					<b-row align-v="center">
@@ -117,13 +118,15 @@
 						cols="3"
 						class="text-center"
 					>
-						<span class="telegram_icon">
+						<a 
+							class="telegram_icon"
+							href="https://t.me/menly_news"
+						>
 							<fa-icon
 								:icon="['fab', 'telegram']"
 								class="fa-3x"
-								@click.prevent="logoutHandler"
 							/>
-						</span>
+						</a>
 					</b-col>
 					<b-col 
 						cols="6"
@@ -142,15 +145,15 @@
 						cols="3"
 						class="text-center"
 					>
-						<span 
+						<a 
 							class="app_footer__double_arrow_up"
+							href="#top"
 						>
 							<fa-icon
 								:icon="['fas', 'angle-double-up']"
 								class="fa-3x"
-								@click.prevent="logoutHandler"
 							/>
-						</span>
+						</a>
 					</b-col>
 				</b-row>
 			</b-container>

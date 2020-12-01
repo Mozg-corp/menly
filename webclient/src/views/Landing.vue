@@ -122,6 +122,84 @@
 				</b-button>
 			</b-col>
 		</b-row>
+		<b-row align-h="center" class="pt-5">
+			<b-col >
+				<h3 class="sub_header">
+					Почему menly?
+				</h3>
+				<ul class="ul_answer pt-4">
+					<li v-for="(answer, i) in why" :key="i"
+						class="li_answer d-flex"
+					>
+						<div class="d-flex align-items-center">
+							<div class="list_circle"></div>
+						</div>
+						<div class="d-flex align-items-center">
+							<p class="reason_why">
+								{{answer}}
+							</p>
+						</div>
+					</li>
+				</ul>
+			</b-col>
+
+		</b-row>
+		<b-row align-h="center" class="pt-5">
+			<b-col lg="12" class="pb-5">
+				<h3 class="sub_header">
+					Наши партнеры
+				</h3>
+			</b-col>
+			<b-col class="d-flex justify-content-center">
+				<img 
+					class="partner_img"
+					alt="Изображение партнёра партнёров"
+					src="/img/agregators/logoes/gett_logo.png"
+				/>
+			</b-col>
+			<b-col class="d-flex justify-content-center">
+				<img 
+					class="partner_img"
+					alt="Изображение партнёра партнёров"
+					src="/img/agregators/logoes/citymobil_logo.png"
+				/>
+			</b-col>
+			<b-col class="d-flex justify-content-center">
+				<img 
+					class="partner_img"
+					alt="Изображение партнёра партнёров"
+					src="/img/agregators/logoes/yandex_logo.png"
+				/>
+			</b-col>
+		</b-row>
+		<b-row class="pt-5 d-flex justify-content-center">
+			<b-col lg="12" class="d-flex justify-content-center">
+				<div class="handshake">
+					<h3 class="handshake_header">
+						Выбери тариф и начни зарабатывать
+					</h3>
+						
+					<div class="handshake_control d-flex justify-content-center">
+						<b-button 
+							size="sm"
+							variant="dark"
+							class="text-right landing_header__login"
+							v-b-modal.signup
+						>
+							Попробовать
+						</b-button>
+						<b-button
+							size="sm" 
+							variant="outline-secondary" 
+							class="text-right app_header__login"
+							v-b-modal.signin
+						>
+								Войти
+						</b-button>
+					</div>
+				</div>
+			</b-col>
+		</b-row>
 		<b-modal 
 			centered 
 			id="signup" 
@@ -185,7 +263,14 @@ export default{
 		password: '',
 		login: '',
 		password_repeat: '',
-		errors: {}
+		errors: {},
+		why: [
+			"Никаких процентов от заказа - только абонентская плата",
+			"Моментальные выплаты без комиссий",
+			"Отсутствие скрытых платежей",
+			"Защита личных данных",
+			"Прямое подключение водителей к агрегаторам такси"
+		]
 	}),
 	methods: {
 		...mapActions(['signUp']),
@@ -239,4 +324,46 @@ export default{
 		&__promo
 			margin-top: 1rem
 		&__controls
+	.sub_header	
+		font-weight: bold
+		font-size: 24px
+		line-height: 31px
+	.ul_answer
+		margin-left: 5%
+	.li_answer
+		font-weight: 350
+		font-size: 14px
+		line-height: 18px
+		margin-bottom: 10px
+	.list_circle
+		width: 12px
+		height: 12px
+		border-radius: 6px
+		background-color: #02BAE8
+		margin-right: 18px
+		min
+	.reason_why
+		margin-bottom: 0
+	.partner_img
+		display: block
+		width: 270px
+		margin-bottom: 40px
+		margin-right: 20px
+	.handshake
+		position: relative
+		background: center no-repeat url('/img/landing/handshake.png')
+		background-size: contain
+		height: 378px
+		width: 100%
+		max-width: 400px
+		&_header
+			position: absolute
+			font-weight: bold
+			font-size: 24px
+			line-height: 31px
+			text-align: center
+		&_control
+			position: absolute
+			bottom: 0
+			width: 100%
 </style>
