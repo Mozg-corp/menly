@@ -7,6 +7,8 @@ import Personal from '@/views/Personal';
 import Landing from '@/views/Landing';
 import Users from '@/views/Users';
 import Transfers from '@/views/Transfers';
+import Profile from '@/views/Profile.vue';
+import Car from '@/views/Car.vue';
 
 Vue.use(VueRouter);
 
@@ -57,15 +59,29 @@ const routes = [
     {
         path: '/users',
         name:'users',
+		beforeEnter: ifNotAuthenticated,
         component: Users
         // component: ()=>import(/*webpackChunkName: "Users page"*/ '@/views/Users.vue'),
     },,
     {
         path: '/transfers',
         name:'transfers',
+		beforeEnter: ifNotAuthenticated,
         component: Transfers
         // component: ()=>import(/*webpackChunkName: "Users page"*/ '@/views/Users.vue'),
     },
+	{
+		path: '/profile',
+		name: 'profile',
+		beforeEnter: ifNotAuthenticated,
+		component: Profile
+	},
+	{
+		path: '/car',
+		name: 'car',
+		beforeEnter: ifNotAuthenticated,
+		component: Car
+	}
     // {
         // path: '/profile',
         // name:'profile',

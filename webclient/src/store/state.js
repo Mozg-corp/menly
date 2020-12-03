@@ -19,7 +19,5 @@ export default{
 	allTransfers: [],
 	loadingUserData: false,
 	loadingBalances: false,
-	userHasCarData: localStorage.getItem('userHasCarData')||null,
-	userHasProfileData: localStorage.getItem('userHasProfileData')||null,
-	userChooseAgregator: localStorage.getItem('userChooseAgregator')||null
+	loadingTransfers: false
 }

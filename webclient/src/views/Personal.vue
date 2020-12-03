@@ -323,7 +323,7 @@
 					</b-col>
 				</b-row>
 			</div>
-			<div v-show="!user.car">
+			<div v-show="user.profile&&!user.car">
 				<b-row align-h="center">
 					<b-col 
 						cols="10"
@@ -530,7 +530,7 @@ export default{
 		validProfile: null
 	}),
 	computed: {
-		...mapState(['user', 'loadingUserData', 'userHasProfileData', 'userHasCarData']),
+		...mapState(['user', 'loadingUserData', 'userHasProfileData', 'userHasCarData', 'userChooseAgregator']),
 		...mapGetters([])
 	},
 	methods: {
@@ -591,9 +591,7 @@ export default{
 	mounted(){
 	},
 	created(){
-		if(this.userHasProfileData||this.userHasCarData){
-			this.$router.push({name: 'home'});
-		}
+		
 	}
 }
 </script>

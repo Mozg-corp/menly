@@ -287,10 +287,11 @@ export default{
 				.then(
 					()=>{
 						this.valid = true;
+						this.errors = [];
 						this.$nextTick(() => {
-							this.$bvModal.hide('signup');
+							this.$bvModal.hide("signup");
 						});
-						this.$router.push({name: 'home'});
+						this.$router.push({name: 'anketa'});
 					}
 				).catch(
 					(response)=>{

@@ -99,9 +99,11 @@
 			<b-sidebar id="menu" :title="username" shadow>
 			  <nav class="mb-3">
 				<b-nav vertical>
-				  <b-nav-item active >Active</b-nav-item>
-				  <b-nav-item href="#link-1">Link</b-nav-item>
-				  <b-nav-item href="#link-2">Another Link</b-nav-item>
+				  <b-nav-item :to="{name: 'home'}">Главная</b-nav-item>
+				  <b-nav-item :to="{name: 'profile'}">Профиль</b-nav-item>
+				  <b-nav-item :to="{name: 'car'}">Машина</b-nav-item>
+				  <b-nav-item >Баланс и переводы</b-nav-item>
+				  <b-nav-item >История тразакций</b-nav-item>
 				</b-nav>
 			  </nav>
 			</b-sidebar>
@@ -182,7 +184,7 @@
 			isLogined(){
 				return this.$store.getters.isAuthenticated;
 			},
-			...mapState(['username', 'userId', 'user']),
+			...mapState(['username', 'userId', 'user', 'userChooseAgregator']),
 			...mapGetters(['isAdmin', 'isAuthenticated']),
 			
 		},
@@ -213,10 +215,11 @@
 					.then(
 						()=>{
 							this.valid = true;
+							this.errors = [];
 							this.$nextTick(() => {
 								this.$bvModal.hide('signin');
 							});
-							this.$router.push({name: 'home'});
+							this.rules();
 						}
 					)
 					.catch(
@@ -226,42 +229,60 @@
 						}
 					);
             },
-            signUp(){
-                let bodyFormData = new FormData();
-                    bodyFormData.set('User[phone]', this.reg_login);
-                    bodyFormData.set('User[password]', this.reg_password);
-                    bodyFormData.set('User[password_repeat]', this.reg_password_repeat);
-                    this.$store.dispatch('signUp', bodyFormData)
-                        .then(()=>{
-							this.showRegistrationModal = !this.showRegistrationModal
-                        })
-                        .catch();
-            }
-
+			rules(){
+				console.log(!this.userChooseAgregator);
+				if(!this.userChooseAgregator){
+					this.$router.push({name: 'anketa'});
+				}else if(!this.userHasProfileData||!this.userHasCarData){
+					this.$router.push({name: 'personal'});
+				}
+				if(this.user.roles&&this.user.roles.includes('user')){
+					this.fetchBalances(this.userId);
+				}
+				if(this.userChooseAgregator&&this.userHasProfileData&&this.userHasCarData){
+					this.$router.push({name: 'home'});
+				}
+			}
         },
         mounted() {
+			/*if(this.userId){
+				this.SET_LOADING_USER_DATA_STATE(true);
+				this.fetchUserData(this.userId)
+					.then(
+						()=> {
+							this.SET_LOADING_USER_DATA_STATE(false);
+							if(!this.userChooseAgregator){
+								this.$router.push({name: 'anketa'});
+							}else if(!this.userHasProfileData||!this.userHasCarData){
+								this.$router.push({name: 'personal'});
+							}
+							if(this.user.roles&&this.user.role.includes('user')){
+								this.fetchBalances(this.userId);
+							}
+							this.fetchAgregatorsList();
+						}
+					);
+				//this.fetchBalances(this.userId);
+			}*/
+			//this.fetchAgregatorsList()
+				
+			//this.username = this.$store.getters.getUsername;
+			//this.isLogined = this.$store.getters.isAuthenticated;
+        },
+		created(){
 			if(this.userId){
 				this.SET_LOADING_USER_DATA_STATE(true);
 				this.fetchUserData(this.userId)
 					.then(
 						()=> {
 							this.SET_LOADING_USER_DATA_STATE(false);
-							if(!this.user.profile && !this.user.car){
-								if(window.location.pathname !== '/personal'){
-									this.$router.push({name: 'personal'});
-								}
-							}else{
-								this.fetchBalances(this.userId);
-								this.fetchAgregatorsList();
-							}
+							this.rules();
+							this.fetchAgregatorsList();
 						}
 					);
+				//this.fetchBalances(this.userId);
 			}
-			//this.fetchAgregatorsList()
-				
-			//this.username = this.$store.getters.getUsername;
-			//this.isLogined = this.$store.getters.isAuthenticated;
-        },
+		},
 		updated(){
 		
 		}

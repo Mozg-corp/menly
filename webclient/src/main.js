@@ -21,6 +21,9 @@ if (token) {
 
 }
 store.state.admin = localStorage.getItem('user-isAdmin') === "true"? true : false;
+store.state.userChooseAgregator = localStorage.getItem('userChooseAgregator') === "true"? true : false;
+store.state.userHasProfileData = localStorage.getItem('userHasProfileData') === "true"? true : false;
+store.state.userHasCarData = localStorage.getItem('userHasCarData') === "true"? true : false;
 store.state.username = localStorage.getItem('user-username');
 store.state.token = localStorage.getItem('user-token');
 store.state.userId= localStorage.getItem('user-id');

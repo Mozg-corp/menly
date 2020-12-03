@@ -15,7 +15,11 @@
 						<h4 class="banner_founds__header">
 							Личные средства
 						</h4>
-						<h2 class="banner_found__content">
+						<h2 v-if="loadingBalances">
+							<b> --.-- </b>
+						</h2>
+						<h2 v-else
+							class="banner_found__content">
 							{{totalBalance}}
 						</h2>
 					</div>
@@ -26,7 +30,14 @@
 					<h5 class="banner_founds__orders mb-3">
 							Ваши заявки
 					</h5>
-					<div class="table_trandfers">
+					<b-spinner
+						v-if="loadingTransfers"
+						variant="dark"
+						type="grow"
+					  ></b-spinner>
+					<div v-else
+						class="table_trandfers"
+					>
 						<div class="row_transfers"
 							v-for="transfer in items"
 						>
@@ -70,7 +81,9 @@ export default {
 		'loadingBalances', 
 		'balances', 
 		'agregators_list',
-		'transfers'
+		'transfers',
+		'userId',
+		'loadingTransfers'
 	]),
 	...mapGetters([]),
 	totalBalance(){
@@ -95,22 +108,14 @@ export default {
 			}
 			}
 		);
-	},
-	transferStatus: function () {
-		return {
-		  created: this.claim.status === 'Направлено',
-		  inwork: this.claim.status === 'В работе',
-		  canceled: this.claim.status === 'Отменено',
-		  done: this.claim.status === 'Выполнено',
-		  recieved: this.claim.status === 'Получено'
-		}
 	}
   },
   methods:{
 	...mapMutations([]),
 	...mapActions([
 		'fetchUserTransfers',
-		'fetchAgregatorsList'
+		'fetchAgregatorsList',
+		'fetchBalances'
 	])
   },
   
@@ -122,16 +127,11 @@ export default {
 	this.fetchUserTransfers()
 		.then(
 			(transfers) => {
-				/*this.transfers = transfers.map(
-					(transfer) => {
-						return {
-							"Дата" => transfer.created_at,
-							"Агрегатор" => transfer.agregators.name,
-							"Сумма" => transfer.transfer,
-							"Статус" => transfer.statuses.status
-						}
-					}
-				);*/
+				//console.log(transfers)
+			}
+		).catch(
+			(e) => {
+				console.log(e);
 			}
 		);
   }

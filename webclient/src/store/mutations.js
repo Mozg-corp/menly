@@ -16,7 +16,10 @@ let initState = {
 	],
 	transactions: [],
 	transfers: [],
-	allTransfers: []
+	allTransfers: [],
+	userChooseAgregator: false,
+	userHasCarData: false,
+	userHasProfileData: false
 }
 export default {
 	AUTH_REQUEST: (state) => {
@@ -60,12 +63,15 @@ export default {
 	},
 	SET_USER_AGREGATORS: (state, userAgregators) => {
 		state.user.agregators = userAgregators
+		state.userChooseAgregator = true
 	},
 	SET_PROFILE: (state, profile) => {
 		state.user.profile = profile;
+		state.userHasProfileData = true;
 	},
 	SET_CAR: (state, car) => {
 		state.car = car
+		state.userHasCarData = true;
 	},
 	SET_BALANCES: (state, balances) => {
 		state.balances = balances
@@ -105,6 +111,18 @@ export default {
 		state.loadingUserData = loadingState
 	},
 	SET_LOADING_BALANCE_STATE: (state, loadingState) => {
-		state.loadingState = loadingState
+		state.loadingBalances = loadingState
+	},
+	SET_LOADING_TRANSFERS_STATE: (state, loadingState) => {
+		state.loadingTransfers = loadingState
+	},
+	SET_USER_CHOOSE_AGREGATOR: (state, stateValue) => {
+		state.userChooseAgregator = stateValue
+	},
+	SET_USER_HAS_PROFILE_DATA: (state, stateValue) => {
+		state.userHasProfileData = stateValue
+	},
+	SET_USER_HAS_CAR_DATA: (state, stateValue) => {
+		state.userHasCarData = stateValue
 	}
 }

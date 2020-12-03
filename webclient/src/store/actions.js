@@ -25,20 +25,24 @@ export default {
 						localStorage.setItem('user-isAdmin', isAdmin);
 						if(data.car){
 							localStorage.setItem('userHasCarData', true);
+							commit('SET_USER_HAS_CAR_DATA', true);
 						}else{
 							localStorage.setItem('userHasCarData', false);
 						}
 						if(data.profile){
 							localStorage.setItem('userHasProfileData', true);
+							commit('SET_USER_HAS_PROFILE_DATA', true);
 						}else{
 							localStorage.setItem('userHasProfileData', false);
 						}
-						if(data.profile){
+						console.log('gggg',data.agregators.length);
+						if(data.agregators.length){
 							localStorage.setItem('userChooseAgregator', true);
+							commit('SET_USER_CHOOSE_AGREGATOR', true);
 						}else{
 							localStorage.setItem('userChooseAgregator', false);
 						}
-						//console.log('auth_action',isAdmin);						
+						console.log('auth_action',isAdmin);						
 						axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 						commit('AUTH_SUCCESS', {token, isAdmin, username, userId});
 						commit('SET_USER', data);
@@ -83,6 +87,7 @@ export default {
 							axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 							commit('AUTH_SUCCESS', {token, isAdmin, username, userId});
 							commit('SET_USER', data);
+							resolve(data);
 					}else{
 						let data = response.data;
 						reject(data);
@@ -90,10 +95,6 @@ export default {
 				}catch(e){
 					console.log(e);
 					commit('AUTH_ERROR', ',eh ,eh');
-					localStorage.removeItem('user-token'); // if the request fails, remove any possible user token if possible
-					localStorage.removeItem('user-isAdmin');
-					localStorage.removeItem('user-username');
-					localStorage.removeItem('user-id');
 					reject(e.response);
 				}
 			}
@@ -105,6 +106,9 @@ export default {
 			localStorage.removeItem('user-token');
 			localStorage.removeItem('user-isAdmin');
 			localStorage.removeItem('user-username');
+			localStorage.removeItem('userChooseAgregator')
+			localStorage.removeItem('userHasProfileData')
+			localStorage.removeItem('userHasCarData')
 			localStorage.removeItem('user-id');
 			// remove the axios default header;
 			delete axios.defaults.headers.common['Authorization'];
@@ -148,6 +152,7 @@ export default {
 					if(response && response.status === 201){
 						let userAgregators = response.data;
 						commit('SET_USER_AGREGATORS', userAgregators)
+						localStorage.setItem('userChooseAgregator', true);
 						resolve(userAgregators);
 					}else{
 						reject(response)
@@ -197,6 +202,7 @@ export default {
 					if(response.status === 201){
 						let profile = response.data;
 						commit('SET_PROFILE', profile);
+						localStorage.setItem('userHasProfileData', true);
 						resolve(profile);
 					}else{
 						reject({
@@ -225,6 +231,7 @@ export default {
 					if(response.status === 201){
 						let car = response.data;
 						commit('SET_CAR', car);
+						localStorage.setItem('userHasCarData', true);
 						resolve(car);
 					}else{
 						reject({
@@ -409,6 +416,7 @@ export default {
 	fetchUserTransfers: ({commit}) => {
 		return new Promise(
 			async (resolve, reject) => {
+				commit('SET_LOADING_TRANSFERS_STATE', true);
 				try{
 					let response = await axios({
 						method: 'get',
@@ -417,10 +425,12 @@ export default {
 					if(response.status === 200){
 						let transfers = response.data;
 						commit('SET_USER_TRANSFERS', transfers);
+						commit('SET_LOADING_TRANSFERS_STATE', false);
 						resolve(transfers);
 					}
 				}catch(e){
-					reject(e.response);
+					commit('SET_LOADING_TRANSFERS_STATE', false);
+					reject(e);
 				}
 			}
 		)
