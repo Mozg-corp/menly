@@ -479,5 +479,19 @@ export default {
 				}
 			}
 		);
+	},
+	postTransfers: ({}, transfers) => {
+		console.log(transfers)
+		return new Promise(
+			async (resolve, reject) => {
+				let response = await axios({
+					method: 'post',
+					url: '/api/v1/transfers/batch',
+					data: transfers
+				});
+				console.log(response);
+				resolve();
+			}
+		);
 	}
 }

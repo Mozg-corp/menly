@@ -16,6 +16,11 @@ class TransferController extends \app\controllers\BaseController{
 				'class' => \app\controllers\actions\transfer\AllOwnTransfersAction::class,
 				'modelClass' => $this->modelClass,
 				'checkAccess' => [$this, 'checkAccess']
+			],
+			'batch' => [
+				'class' => \app\controllers\actions\transfer\BatchAction::class,
+				'modelClass' => $this->modelClass,
+				'checkAccess' => [$this, 'checkAccess']
 			]
 		], $actions);
 	}

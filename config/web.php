@@ -174,7 +174,8 @@ $config = [
 					'prefix' => 'api/v1',
 					'except' => ['delete'],
 					'extraPatterns' => [
-						'GET all' => 'alltransfers'
+						'GET all' => 'alltransfers',
+						'POST batch' => 'batch'
 					]
 					
                 ],

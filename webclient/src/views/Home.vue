@@ -13,22 +13,79 @@
 				<b-col class="pt-3">
 					<div class="banner_founds">
 						<h4 class="banner_founds__header">
-							Личные средства
+							На балансе
 						</h4>
 						<h2 v-if="loadingBalances">
-							<b> --.-- </b>
+							<b> --.-- ₽</b> 
 						</h2>
 						<h2 v-else
 							class="banner_found__content">
-							{{totalBalance}}
+							{{totalBalance | fix2Number}} ₽
 						</h2>
 					</div>
 				</b-col>
 			</b-row>
-			<b-row class="pt-3">
+			<b-row v-if="loadingBalances" align-h="center" class="pt-4">
+				<b-spinner
+					variant="dark"
+					type="grow"
+				  ></b-spinner>
+			</b-row>
+			<div v-else>
+				<div v-if="done" class="transfer_done align-items-center text-center">
+					<p>
+						Перевод успешно создан
+					</p>
+				</div>
+				<b-row v-else align-h="center" class="pt-3">
+					<b-col sm="12" 
+						v-for="[name, balance] in Object.entries(balances)" 
+						:key="name"
+						class="pb-2"
+					>
+						<div class="agregator_transfer d-flex justify-content-center">
+							<div class="agregator_box d-flex align-items-center justify-content-around">
+								<div class="agregator_box__left">
+									<p class="agregator_name">
+										{{name}}
+									</p>
+									<p class="agregator_balance">
+										{{balance | fix2Number}} ₽
+									</p>
+								</div>
+								<b-form class="agregator_box_right">
+									<b-form-group 
+									:id="name" 
+									:label-for="'input-'+name"
+									@submit.prevent="transferHandler"
+								  >
+									<b-form-input
+									  id="input-49"
+									  v-model="createTransfers[name]"
+									  required
+									  type="number"
+									></b-form-input>
+								  </b-form-group>
+								</b-form>
+							</div>
+						</div>
+					</b-col>
+					<b-col sm="12" class="d-flex justify-content-center pt-4">
+						<b-button 
+							size="sm"
+							variant="dark"
+							class="text-center"
+							@click.prevent="transferHandler"
+						>
+							Вывести деньги
+						</b-button>
+					</b-col>
+				</b-row>
+			</div>
+			<b-row class="pt-5">
 				<b-col>
 					<h5 class="banner_founds__orders mb-3">
-							Ваши заявки
+							История переводов
 					</h5>
 					<b-spinner
 						v-if="loadingTransfers"
@@ -38,8 +95,11 @@
 					<div v-else
 						class="table_trandfers"
 					>
+						<p v-show="transferedItems.length===0">
+							У вас пока нет переводов
+						</p>
 						<div class="row_transfers"
-							v-for="transfer in items"
+							v-for="transfer in transferedItems"
 						>
 							<div class="cell_transfers">
 								{{transfer.date}}
@@ -72,9 +132,19 @@ import {mapGetters, mapActions, mapState, mapMutations} from 'vuex';
 export default {
   name: 'home',
   data: ()=> ({
+	createTransfers: {},
+	errors: {
+		
+	},
+	done: false
   }),
   components: {
   },
+  filters: {
+	  fix2Number: function (value) {
+		return parseFloat(value).toFixed(2);
+	  }
+	},
   computed: {
 	...mapState([
 		'loadingUserData', 
@@ -90,24 +160,28 @@ export default {
 		let allBalances = this.balances;
 		let sum = 0.0;
 		for(let agregator in allBalances){
-			sum += allBalances[agregator];
+			sum += parseFloat(allBalances[agregator]);
 		}
-		return parseFloat(sum).toFixed(2);
+		return sum;
 	},
 	items(){
 		return this.transfers.map(
 			(transfer) => {
-			let agregator = this.agregators_list.filter((agregator) =>{
-				return agregator.name === transfer.agregators.name
-			});
-			return {
-				date: (new Date(transfer.created_at)).toLocaleDateString(),
-				logo: agregator[0].logo,
-				transfer: transfer.transfer,
-				status: transfer.transferStatuses.status
-			}
+				let agregator = this.agregators_list.filter((agregator) =>{
+					return agregator.name === transfer.agregators.name
+				});
+				return {
+					date: (new Date(transfer.created_at)).toLocaleDateString(),
+					logo: agregator[0].logo,
+					transfer: transfer.transfer,
+					status: transfer.transferStatuses.status
+				}
 			}
 		);
+	},
+	transferedItems(){
+		return this.items;
+		//return this.items.filter(transfer=>transfer.status === 'Переведено');
 	}
   },
   methods:{
@@ -115,15 +189,56 @@ export default {
 	...mapActions([
 		'fetchUserTransfers',
 		'fetchAgregatorsList',
-		'fetchBalances'
-	])
+		'fetchBalances',
+		'postTransfers'
+	]),
+	transferHandler(){
+		let transfers = [];
+		for(let agregatorName in this.createTransfers){
+			let transfer = parseFloat(this.createTransfers[agregatorName])
+			
+			if(transfer !== '' && transfer > 0){
+				transfer = '-' + transfer;
+				transfers.push(
+					{
+						agregatorName,
+						transfer
+					}
+				);
+			}
+		}
+		this.postTransfers(transfers)
+			.then(
+				()=>{
+					this.agregators_list.forEach(
+						(agregator) => {
+							this.createTransfers[agregator.name] = ''
+						}
+					);
+					this.done = true;
+					this.fetchUserTransfers();
+				}
+			);
+	},
+	validateTransfers(){
+	
+	}
   },
   
   mounted(){
   
   },
   created(){
-	this.fetchAgregatorsList();
+	this.fetchAgregatorsList()
+		.then(
+			(agregatorsList) => {
+				agregatorsList.forEach(
+					(agregator) => {
+						this.createTransfers[agregator.name] = ''
+					}
+				);
+			}
+		)
 	this.fetchUserTransfers()
 		.then(
 			(transfers) => {
@@ -196,4 +311,32 @@ export default {
 		color: green
 	.Отклонено
 		color: red
+	.agregator_transfer
+		border: 1px solid #01B6E7
+		border-radius: 10px
+	.agregator
+		&_box
+			padding: 4px
+			font-weight: 500
+			font-size: 14px
+			line-height: 18px
+			width: 100%
+			&__left
+				width: 50%
+			&__right
+				width: 50%
+		&_balance
+			color: #01B6E7
+	.transfer_done
+		width: 100%
+		height: 50px
+		background-color: orange
+		color: blue
+		font-size: 18px
+		font-weight: 600
+		margin: 20px 0 0 0
+		display: flex
+		&>p
+			margin: 0 auto
+		
 </styles>

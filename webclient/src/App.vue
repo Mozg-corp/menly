@@ -184,7 +184,7 @@
 			isLogined(){
 				return this.$store.getters.isAuthenticated;
 			},
-			...mapState(['username', 'userId', 'user', 'userChooseAgregator']),
+			...mapState(['username', 'userId', 'user', 'userChooseAgregator', 'userHasProfileData', 'userHasCarData']),
 			...mapGetters(['isAdmin', 'isAuthenticated']),
 			
 		},
@@ -230,7 +230,7 @@
 					);
             },
 			rules(){
-				console.log(!this.userChooseAgregator);
+				console.log(this.userChooseAgregator&&this.userHasProfileData&&this.userHasCarData);
 				if(!this.userChooseAgregator){
 					this.$router.push({name: 'anketa'});
 				}else if(!this.userHasProfileData||!this.userHasCarData){
