@@ -22,37 +22,37 @@
 				<b-col v-else>
 					<div >
 						<h2 class="fio pb-3">
-							
+							Сведения о машине
 						</h2>
 						<div class="d-flex justify-content-between">
-							<p>
+							<p class="car_property">
 								<b>Марка</b>
 							</p>
-							<p>
+							<p class="car_value">
 								{{user.car&&user.car.brand}}
 							</p>
 						</div>
 						<div class="d-flex justify-content-between">
-							<p>
+							<p class="car_property">
 								<b>Модель</b>
 							</p>
-							<p>
+							<p class="car_value">
 								{{user.car&&user.car.model}}
 							</p>
 						</div>
 						<div class="d-flex justify-content-between">
-							<p>
+							<p class="car_property">
 								<b>Цвет</b>
 							</p>
-							<p>
+							<p class="car_value">
 								{{user.car&&user.car.color}}
 							</p>
 						</div>
 						<div class="d-flex justify-content-between">
-							<p>
+							<p class="car_property">
 								<b>Год</b>
 							</p>
-							<p>
+							<p class="car_value">
 								{{user.car&&user.car.year}}
 							</p>
 						</div>
@@ -84,4 +84,6 @@ export default{
 .row_car
 	max-width: 400px
 	margin: 0 auto
+.car_property, .car_value
+	width: 50%
 </style>
