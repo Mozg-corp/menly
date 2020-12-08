@@ -59,14 +59,14 @@ const routes = [
     {
         path: '/users',
         name:'users',
-		beforeEnter: ifNotAuthenticated,
+		beforeEnter: ifNotAdmin,
         component: Users
         // component: ()=>import(/*webpackChunkName: "Users page"*/ '@/views/Users.vue'),
     },,
     {
         path: '/transfers',
         name:'transfers',
-		beforeEnter: ifNotAuthenticated,
+		beforeEnter: ifNotAdmin,
         component: Transfers
         // component: ()=>import(/*webpackChunkName: "Users page"*/ '@/views/Users.vue'),
     },

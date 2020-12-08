@@ -19,7 +19,11 @@ let initState = {
 	allTransfers: [],
 	userChooseAgregator: false,
 	userHasCarData: false,
-	userHasProfileData: false
+	userHasProfileData: false,
+	loadingUserData: false,
+	loadingBalances: false,
+	loadingTransfers: false,
+	loadingAllUsers: false
 }
 export default {
 	AUTH_REQUEST: (state) => {
@@ -124,5 +128,8 @@ export default {
 	},
 	SET_USER_HAS_CAR_DATA: (state, stateValue) => {
 		state.userHasCarData = stateValue
+	},
+	SET_ALL_USERS_LOADING_STATE: (state, stateValue) => {
+		state.loadingAllUsers = stateValue
 	}
 }

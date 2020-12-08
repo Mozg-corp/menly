@@ -63,4 +63,28 @@ class SiteController extends Controller
 			// print_r($admin->errors);
 		// }
 	// }
+	public function actionChangeRole(){
+		$transformStatusToRole = [
+			\app\models\User::STATUS_CANDIDATE => 'candidate',
+			\app\models\User::STATUS_USER => 'user'
+		];
+		$user = \app\models\User::findOne(33);
+		$am = \Yii::$app->authManager;
+		file_get_contents(@webroot.'/output.txt');
+		// $oldRole = $am->getRole($transformStatusToRole[2]);
+		// $am->revoke($oldRole, 33);
+		/*
+		$oldTransformedStatus = $transformStatusToRole[$event->sender->oldAttributes['status']]??null;
+		$newTransformedStatus = $transformStatusToRole[$event->sender->status]??null;
+		$am = \Yii::$app->authManager;
+		if($oldTransformedStatus){
+			$oldRole = $am->getRole($oldTransformedStatus);
+			$am->revoke($oldRole, $event->sender->id);
+		}
+		if($newTransformedStatus){
+			$newRole = $am->getRole($newTransformedStatus);
+			$am->assign($newRole, $event->sender->id);
+		}
+		*/
+	}
 }

@@ -267,22 +267,42 @@ export default {
 			}
 		)
 	},
-	fetchAllUsers: ({commit}, page) => {
+	fetchAllUsers: ({commit}, {status, login, fio, sort, page=1}) => {
+		let url = `/api/v1/users?page=${page}`;
+		url = status == null||login == undefined?url:url+`&status=${status}`;
+		url = login == ''?url:url+`&phone=${login}`;
+		url = fio == ''?url:url+`&lastname=${fio}`;
+		url = sort == null||sort == undefined?url:url+`&sort=${sort}`;
+		console.log(login);
+		console.log(fio);
+		console.log(url);
+		commit('SET_ALL_USERS_LOADING_STATE', true);
 		return new Promise(
 			async (resolve, reject) => {
-				let response = await axios({
-					method: 'get',
-					url: `/api/v1/users?page=${page}`
-				})
-				let users = response.data;
-				let pagination = {
-					current_page: +response.headers['x-pagination-current-page'],
-					page_count: +response.headers['x-pagination-page-count'],
-					per_page: +response.headers['x-pagination-per-page'],
-					total_count: +response.headers['x-pagination-total-count']
+				try{
+					let response = await axios({
+						method: 'get',
+						url
+					})
+					if(response.status === 200){
+						let users = response.data;
+						let pagination = {
+							current_page: +response.headers['x-pagination-current-page'],
+							page_count: +response.headers['x-pagination-page-count'],
+							per_page: +response.headers['x-pagination-per-page'],
+							total_count: +response.headers['x-pagination-total-count']
+						}
+						commit('SET_USERS', users);
+						commit('SET_ALL_USERS_LOADING_STATE', false);
+						resolve({users, pagination});
+					}else{
+						commit('SET_ALL_USERS_LOADING_STATE', false);
+						reject(response)
+					}
+				}catch(e){
+					commit('SET_ALL_USERS_LOADING_STATE', false);
+					reject(e.response);
 				}
-				commit('SET_USERS', users);
-				resolve({users, pagination});
 			}
 		)
 	},

@@ -49,7 +49,8 @@ class UserSearch extends User
 					'lastname',
 					'firstname',
 					'secondname',
-					'status'
+					'status',
+					'create_at'
 				],
 				'defaultOrder' => [
 					'status' => SORT_ASC,

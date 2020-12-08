@@ -220,6 +220,7 @@
 								this.$bvModal.hide('signin');
 							});
 							this.rules();
+							this.$router.push({name: 'home'});
 						}
 					)
 					.catch(
@@ -230,44 +231,25 @@
 					);
             },
 			rules(){
-				console.log(this.userChooseAgregator&&this.userHasProfileData&&this.userHasCarData);
-				if(!this.userChooseAgregator){
-					this.$router.push({name: 'anketa'});
-				}else if(!this.userHasProfileData||!this.userHasCarData){
-					this.$router.push({name: 'personal'});
-				}
-				if(this.user.roles&&this.user.roles.includes('user')){
-					this.fetchBalances(this.userId);
-				}
-				if(this.userChooseAgregator&&this.userHasProfileData&&this.userHasCarData){
-					this.$router.push({name: 'home'});
+				if(!this.isAdmin){
+					if(!this.userChooseAgregator){
+						this.$router.push({name: 'anketa'});
+					}else if(!this.userHasProfileData||!this.userHasCarData){
+						this.$router.push({name: 'personal'});
+					}
+					//Скачиваем баланс, если есть роль 'user'
+					if(this.user.roles&&this.user.roles.includes('user')){
+						this.fetchBalances(this.userId);
+					}
+					/*
+					if(this.userChooseAgregator&&this.userHasProfileData&&this.userHasCarData){
+						this.$router.push({name: 'home'});
+					}
+					*/
 				}
 			}
         },
         mounted() {
-			/*if(this.userId){
-				this.SET_LOADING_USER_DATA_STATE(true);
-				this.fetchUserData(this.userId)
-					.then(
-						()=> {
-							this.SET_LOADING_USER_DATA_STATE(false);
-							if(!this.userChooseAgregator){
-								this.$router.push({name: 'anketa'});
-							}else if(!this.userHasProfileData||!this.userHasCarData){
-								this.$router.push({name: 'personal'});
-							}
-							if(this.user.roles&&this.user.role.includes('user')){
-								this.fetchBalances(this.userId);
-							}
-							this.fetchAgregatorsList();
-						}
-					);
-				//this.fetchBalances(this.userId);
-			}*/
-			//this.fetchAgregatorsList()
-				
-			//this.username = this.$store.getters.getUsername;
-			//this.isLogined = this.$store.getters.isAuthenticated;
         },
 		created(){
 			if(this.userId){
@@ -280,7 +262,6 @@
 							this.fetchAgregatorsList();
 						}
 					);
-				//this.fetchBalances(this.userId);
 			}
 		},
 		updated(){

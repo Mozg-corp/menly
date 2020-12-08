@@ -79,6 +79,7 @@ class User extends UserBase implements IdentityInterface
             ['password', 'required', 'on' => [self::SCENARIO_SIGNUP, self::SCENARIO_SIGNIN]],
             ['password_repeat', 'required', 'on' => [self::SCENARIO_SIGNUP]],
             ['password', 'string', 'min' => 8],
+			[['phone'], 'string', 'max' => 11],
 			['status', 'safe'],
 			['password_repeat', 'compare', 'compareAttribute' => 'password'],
 			['phone', 'match', 'pattern' => '/^[8,7]\d{3}\d{3}\d{2}\d{2}/', 'message' => 'Телефон, должен быть в формате 8XXXXXXXXXX или 7XXXXXXXXXX'],

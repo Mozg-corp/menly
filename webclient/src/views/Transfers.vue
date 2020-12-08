@@ -1,6 +1,5 @@
 <template>
-	<main >
-		<div class="container_my content">
+	<b-container>
 			<div v-if="isAuthenticated && isAdmin" class="main_box">
 				<div class="table">
 					<div class="thead">
@@ -29,7 +28,7 @@
 							действия
 						</div>
 					</div>
-					<div class="row" v-for="transfer in allTransfers" :key="transfer.created_at">
+					<div class="row_r" v-for="transfer in allTransfers" :key="transfer.created_at">
 						<div class="cell">
 							{{transfer.created_at}}
 						</div>
@@ -79,8 +78,7 @@
 			<div>
 				<!--<a class="link link__pagination"v-for="link in links" href="#" @click.prevent="paginatorHandler(link)">{{link}}</a>-->
 			</div>
-		</div><!--container-->
-	</main> <!--main-->
+	</b-container>
 </template>
 
 <script>
@@ -170,7 +168,7 @@ export default {
 		display: table
 		width: 100%
 		margin: 0 auto
-	.row
+	.row_r
 		display: table-row
 	.cell
 		display: table-cell

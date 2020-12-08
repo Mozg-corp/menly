@@ -17,7 +17,11 @@ export default{
 	transactions: [],
 	transfers: [],
 	allTransfers: [],
+	userChooseAgregator: false,
+	userHasCarData: false,
+	userHasProfileData: false,
 	loadingUserData: false,
 	loadingBalances: false,
-	loadingTransfers: false
+	loadingTransfers: false,
+	loadingAllUsers: false
 }

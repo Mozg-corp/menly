@@ -25,16 +25,11 @@ class Common implements \Symfony\Component\EventDispatcher\EventSubscriberInterf
 			\app\models\User::STATUS_CANDIDATE => 'candidate',
 			\app\models\User::STATUS_USER => 'user'
 		];
-		$oldTransformedStatus = $transformStatusToRole[$event->sender->oldAttributes['status']]??null;
-		$newTransformedStatus = $transformStatusToRole[$event->sender->status]??null;
+		$newTransformedStatus = $transformStatusToRole[$event->sender->status];
+		
 		$am = \Yii::$app->authManager;
-		if($oldTransformedStatus){
-			$oldRole = $am->getRole($oldTransformedStatus);
-			$am->revoke($oldRole, $event->sender->id);
-		}
-		if($newTransformedStatus){
-			$newRole = $am->getRole($newTransformedStatus);
-			$am->assign($newRole, $event->sender->id);
-		}
+		$am->revokeAll($event->sender->id);
+		$newRole = $am->getRole($newTransformedStatus);
+		$am->assign($newRole, $event->sender->id);
 	}
 }
