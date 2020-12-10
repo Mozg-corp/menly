@@ -8,6 +8,7 @@ export default{
 	agregators_list: [],
 	user: {},
 	users: [],
+	singleUser: {},
 	balances: [],
 	userStatuses: [
 		'Not Active',
@@ -23,5 +24,8 @@ export default{
 	loadingUserData: false,
 	loadingBalances: false,
 	loadingTransfers: false,
-	loadingAllUsers: false
+	loadingAllUsers: false,
+	loadingUser: false,
+	loadingDriverAccounts: false
+	
 }

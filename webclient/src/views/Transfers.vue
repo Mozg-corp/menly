@@ -55,12 +55,26 @@
 						</div>
 						<div class="cell cell_centered">
 							<ul>
-								<li class="transfer_action">
+								<li 
+									v-if="transfer.transferStatuses.status === 'Создан'"
+									class="transfer_action"
+								>
 									<a href="#" @click.prevent="createAgregatorTransactionHandler(transfer.id)" >
 										Списать
 									</a>
 								</li>
-								<li class="transfer_action">
+								<li 
+									v-if="transfer.transferStatuses.status === 'Списано'"
+									class="transfer_action"
+								>
+									<a href="#" @click.prevent="createBankTransferHandler(transfer.id)" >
+										Перевести
+									</a>
+								</li>
+								<li 
+									v-if="transfer.transferStatuses.status !== 'Переведено'"
+									class="transfer_action"
+								>
 									<a href="#" @click.prevent="cancelAgregatorTransfer()">
 										Отклонить
 									</a>
@@ -96,7 +110,11 @@ export default {
 	...mapGetters(['isAdmin', 'isAuthenticated']),
   },
   methods:{
-	...mapActions(['fetchAllTransfers', 'createAgregatorTransaction']),
+	...mapActions([
+		'fetchAllTransfers', 
+		'createAgregatorTransaction',
+		'createBankTransfer'
+	]),
 	...mapMutations(['SET_TRANSFER_DEBIT']),
 	paginatorHandler(link){
 		//this.fetchAllUsers(link)
@@ -106,6 +124,14 @@ export default {
 			.then(
 				transferResult=> {
 					this.SET_TRANSFER_DEBIT(transferResult);
+				}
+			)
+	},
+	createBankTransferHandler(transferId){
+		this.createBankTransfer(transferId)
+			.then(
+				() => {
+					this.fetchAllTransfers();
 				}
 			)
 	},

@@ -164,15 +164,50 @@ export default {
 		)
 	},
 	fetchUserData: ({commit}, userId) =>{
+		commit('SET_USER_LOADING_STATE', true);
 		return new Promise(
 			async (resolve, reject) => {
-				let response = await axios({
-					method: 'get',
-					url: `/api/v1/users/${userId}`
-				})
-				let userData = response.data;
-				commit('SET_USER', userData);
-				resolve(userData);
+				try{
+					let response = await axios({
+						method: 'get',
+						url: `/api/v1/users/${userId}`
+					})
+					commit('SET_USER_LOADING_STATE', false);
+					if(response.status === 200){
+						let userData = response.data;
+						commit('SET_USER', userData);
+						resolve(userData);
+					}else{
+						reject(response);
+					}
+				}catch(e){
+					commit('SET_USER_LOADING_STATE', false);
+					reject(e.response);
+				}
+			}
+		)
+	},
+	fetchSingleUser: ({commit}, userId) =>{
+		commit('SET_USER_LOADING_STATE', true);
+		return new Promise(
+			async (resolve, reject) => {
+				try{
+					let response = await axios({
+						method: 'get',
+						url: `/api/v1/users/${userId}`
+					})
+					commit('SET_USER_LOADING_STATE', false);
+					if(response.status === 200){
+						let userData = response.data;
+						commit('SET_SINGLE_USER', userData);
+						resolve(userData);
+					}else{
+						reject(response);
+					}
+				}catch(e){
+					commit('SET_USER_LOADING_STATE', false);
+					reject(e.response);
+				}
 			}
 		)
 	},
@@ -511,6 +546,48 @@ export default {
 				});
 				console.log(response);
 				resolve();
+			}
+		);
+	},
+	createDriverAccount: ({}, driverAccount) => {
+		return new Promise(
+			async (resolve, reject) => {
+				try{
+					let response = await axios({
+						method: 'post',
+						url: '/api/v1/accounts',
+						data: driverAccount
+					});
+					console.log(response);
+					if(response.status === 201){
+						resolve();
+					}else{
+						reject(response);
+					}
+				}catch(e){
+					reject(e.response);
+				}
+			}
+		);
+	},
+	createBankTransfer: ({}, transfer_id) => {
+		return new Promise(
+			async (resolve, reject) => {
+				try{
+					let response = await axios({
+						method: 'post',
+						url: '/api/v1/bank-transfer/do',
+						data: {transfer_id}
+					});
+					console.log(response);
+					if(response.status === 201){
+						resolve()
+					}else{
+						reject();
+					}
+				}catch(e){
+					reject();
+				}
 			}
 		);
 	}

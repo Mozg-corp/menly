@@ -7,6 +7,7 @@ let initState = {
 	username: '',
 	agregators_list: [],
 	user: [],
+	singleUser: {},
 	users: [],
 	balances: [],
 	userStatuses: [
@@ -23,7 +24,9 @@ let initState = {
 	loadingUserData: false,
 	loadingBalances: false,
 	loadingTransfers: false,
-	loadingAllUsers: false
+	loadingAllUsers: false,
+	loadingUser: false,
+	loadingDriverAccounts: false
 }
 export default {
 	AUTH_REQUEST: (state) => {
@@ -131,5 +134,14 @@ export default {
 	},
 	SET_ALL_USERS_LOADING_STATE: (state, stateValue) => {
 		state.loadingAllUsers = stateValue
+	},
+	SET_USER_LOADING_STATE: (state, stateValue) => {
+		state.loadingUser = stateValue
+	},
+	SET_DRIVER_ACCOUNTS_LOADING_STATE: (state, stateValue) => {
+		state.loadingDriverAccounts = stateValue
+	},
+	SET_SINGLE_USER: (state, user) => {
+		state.singleUser = user
 	}
 }

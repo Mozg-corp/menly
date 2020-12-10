@@ -179,7 +179,22 @@ $config = [
 					]
 					
                 ],
-
+				[
+					'class' => UrlRule::class,
+					'controller' => 'account',
+					'prefix' => 'api/v1',
+					'except' => ['delete'],
+				],
+				[
+					'class' => UrlRule::class,
+					'controller' => 'bank-transfer',
+					'prefix' => 'api/v1',
+					'pluralize' =>false,
+					'except' => ['delete'],
+					'extraPatterns' => [
+						'POST do' => 'do',
+					]
+				]
             ],
         ],
     ],

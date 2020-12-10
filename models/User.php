@@ -104,7 +104,8 @@ class User extends UserBase implements IdentityInterface
 			},
 			'car',
 			'profile',
-			'agregators'
+			'agregators',
+			'driverAccounts'
 		];
 	}
 	public function  extraFields(){

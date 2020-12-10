@@ -9,6 +9,7 @@ import Users from '@/views/Users';
 import Transfers from '@/views/Transfers';
 import Profile from '@/views/Profile.vue';
 import Car from '@/views/Car.vue';
+import User from '@/views/User.vue';
 
 Vue.use(VueRouter);
 
@@ -81,6 +82,13 @@ const routes = [
 		name: 'car',
 		beforeEnter: ifNotAuthenticated,
 		component: Car
+	},
+	{
+		path: '/users/:id',
+		name: 'user',
+		props: true,
+		beforeEnter: ifNotAdmin,
+		component: User
 	}
     // {
         // path: '/profile',

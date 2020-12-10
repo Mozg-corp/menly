@@ -18,10 +18,20 @@ use Yii;
  */
 class DriverAccount extends DriverAccountBase
 {
-    /**
-     * {@inheritdoc}
-     * @return DriverAccountQuery the active query used by this AR class.
-     */
+	const SCENARIO_CREATE = 'create driver account';
+	const SCENARIO_UPDATE = 'update driver account';
+	public function fields(){
+		return [
+			'account',
+			'agregator'
+		];
+	}
+	public function scenarios(){
+		return [
+			self::SCENARIO_UPDATE => ['account'],
+		    self::SCENARIO_CREATE => ['account', 'id_agregator', 'id_users', 'id_account_types'],
+		];
+	}
     public static function find()
     {
         return new DriverAccountQuery(get_called_class());

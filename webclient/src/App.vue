@@ -98,12 +98,22 @@
 			</b-modal>
 			<b-sidebar id="menu" :title="username" shadow>
 			  <nav class="mb-3">
-				<b-nav vertical>
+				<b-nav 
+					v-if="!isAdmin"
+					vertical
+				>
 				  <b-nav-item :to="{name: 'home'}">Главная</b-nav-item>
 				  <b-nav-item :to="{name: 'profile'}">Профиль</b-nav-item>
 				  <b-nav-item :to="{name: 'car'}">Машина</b-nav-item>
 				  <b-nav-item >Баланс и переводы</b-nav-item>
 				  <b-nav-item >История тразакций</b-nav-item>
+				</b-nav>
+				<b-nav 
+					v-else
+					vertical
+				>
+				  <b-nav-item :to="{name: 'users'}">Пользователи</b-nav-item>
+				  <b-nav-item :to="{name: 'transfers'}">Переводы</b-nav-item>
 				</b-nav>
 			  </nav>
 			</b-sidebar>
@@ -219,8 +229,8 @@
 							this.$nextTick(() => {
 								this.$bvModal.hide('signin');
 							});
+							this.valid = null;
 							this.rules();
-							this.$router.push({name: 'home'});
 						}
 					)
 					.catch(
@@ -234,18 +244,17 @@
 				if(!this.isAdmin){
 					if(!this.userChooseAgregator){
 						this.$router.push({name: 'anketa'});
-					}else if(!this.userHasProfileData||!this.userHasCarData){
+					}
+					if(!this.userHasProfileData||!this.userHasCarData){
 						this.$router.push({name: 'personal'});
 					}
 					//Скачиваем баланс, если есть роль 'user'
 					if(this.user.roles&&this.user.roles.includes('user')){
 						this.fetchBalances(this.userId);
 					}
-					/*
 					if(this.userChooseAgregator&&this.userHasProfileData&&this.userHasCarData){
 						this.$router.push({name: 'home'});
 					}
-					*/
 				}
 			}
         },
@@ -258,8 +267,8 @@
 					.then(
 						()=> {
 							this.SET_LOADING_USER_DATA_STATE(false);
-							this.rules();
 							this.fetchAgregatorsList();
+							this.rules();
 						}
 					);
 			}

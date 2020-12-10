@@ -1,9 +1,10 @@
 <template>
-	<b-container class="pt-4">
+	<b-container>
 		<div v-if="isAuthenticated && isAdmin" class="main_box">
 			<b-row 
 				v-if="loadingAllUsers"
 				align-h="center"
+				 class="pt-4"
 			>
 				<b-spinner
 					variant="dark"
@@ -66,7 +67,9 @@
 					:key="user.id"
 				>
 					<div class="cell">
-						{{user.id}}
+						<router-link :to="{name: 'user', params: {id:user.id}}">
+							{{user.id}}
+						</router-link>
 					</div>
 					<div class="cell">
 						<select @change="changeUserStatusHandler($event, user.id)">
@@ -83,8 +86,12 @@
 					</div>
 					<div class="cell">
 						<ul>
-							<li v-for="agregator in user.agregators" :key="agregator.id">
-								{{agregator.name}}
+							<li 
+								v-for="agregator in user.agregators" 
+								:key="agregator.id"
+								class="user_agregator_li"
+							>
+								{{agregator.name}} <br/>
 							</li>
 						</ul>
 					</div>
@@ -144,7 +151,8 @@ export default {
 	currentPage: 1,
 	loginFilter: '',
 	fioFilter: '',
-	sort: null
+	sort: null,
+	driverAccounts: {}
   }),
   components: {
   },
@@ -172,7 +180,8 @@ export default {
 		'fetchAllUsers', 
 		'changeUserState', 
 		'deleteUser', 
-		'fetchUsersPage'
+		'fetchUsersPage',
+		'createDriverAccount'
 	]),
 	changeUserStatusHandler($event, userId){
 		let statusName = $event.target.value;
@@ -264,9 +273,13 @@ export default {
 			}
 		}
 		this.links.push(page_count);
+	},
+	createDriverAccountHandler($event, agregatorId, agregatorName){
+		console.log(agregatorId);
+		console.log(agregatorName);
+		console.log($event);
 	}
   },
-  
   mounted(){
 	this.fetchAllUsers(this.filterOptions)
 		.then(
@@ -341,8 +354,14 @@ export default {
 		font-weight: 600
 	.input_loginFilter
 		width: 80px
-	.input_fioFilter
+	.input_fioFilter,
+	.input_driver_account
 		width: 120px
-	.sortAsc:hover, .sortDesc:hover, .undoSort:hover
+	.sortAsc:hover, 
+	.sortDesc:hover, 
+	.undoSort:hover,
+	.create_driver_account_button:hover
 		background-color: #01B6E7
+	.user_agregator_li
+		min-width: 150px
 </styles>
