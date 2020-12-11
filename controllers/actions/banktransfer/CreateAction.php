@@ -11,6 +11,7 @@ class CreateAction extends \yii\rest\Action{
 		}
 		$transferStatuse = \app\models\TransferStatus::find()->byStatus('Переведено')->one();
 		$transfer->id_transfer_statuses = $transferStatuse->id;
+		$transfer->description = 'Перевод осуществлён';
 		if(!$transfer->save()&&!$transfer->hasErrors()){
 			throw new \yii\web\ServerErrorHttpException('Failed to create the object for unknown reason.');
 		}else{

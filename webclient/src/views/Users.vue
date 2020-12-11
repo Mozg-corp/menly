@@ -273,11 +273,6 @@ export default {
 			}
 		}
 		this.links.push(page_count);
-	},
-	createDriverAccountHandler($event, agregatorId, agregatorName){
-		console.log(agregatorId);
-		console.log(agregatorName);
-		console.log($event);
 	}
   },
   mounted(){

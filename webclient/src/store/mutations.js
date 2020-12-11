@@ -26,7 +26,8 @@ let initState = {
 	loadingTransfers: false,
 	loadingAllUsers: false,
 	loadingUser: false,
-	loadingDriverAccounts: false
+	loadingDriverAccounts: false,
+	loadingAllTransfers: false
 }
 export default {
 	AUTH_REQUEST: (state) => {
@@ -143,5 +144,8 @@ export default {
 	},
 	SET_SINGLE_USER: (state, user) => {
 		state.singleUser = user
+	},
+	SET_ALL_TRANSFERS_LOADING_STATE: (state, stateValue) => {
+		state.loadingAllTransfers = stateValue
 	}
 }

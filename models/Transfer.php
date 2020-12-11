@@ -83,6 +83,11 @@ class Transfer extends TransferBase
 		}
 		//тут нужно реализовать ещё ситуацию, когда у пользователя нет такого агрегатора, а он пытается списать...
 	}
+	
+	public function getProfiles(){
+		return $this->hasMany(\app\models\Profile::className(),['user_id' => 'id'])
+					->via('users');
+	}
     /**
      * {@inheritdoc}
      * @return TransferQuery the active query used by this AR class.

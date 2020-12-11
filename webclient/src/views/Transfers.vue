@@ -4,6 +4,9 @@
 				<div class="table">
 					<div class="thead">
 						<div class="cell">
+							id
+						</div>
+						<div class="cell">
 							дата
 						</div>
 						<div class="cell">
@@ -19,7 +22,12 @@
 							сумма перевода
 						</div>
 						<div class="cell">
-							статус перевода
+							статус перевода <br/>
+							<select @change="changeTransferStatusFilterHandler($event)">
+								<option v-for="(status, i) in filterStatuses" :selected="selectedFilterStatus === status? 'selected':''">
+									{{status}}
+								</option>
+							</select>
 						</div>
 						<div class="cell">
 							комментарий
@@ -28,7 +36,13 @@
 							действия
 						</div>
 					</div>
-					<div class="row_r" v-for="transfer in allTransfers" :key="transfer.created_at">
+					<div 
+						:class="[{row_r: true}, transfer.transferStatuses.status]"
+						v-for="transfer in allTransfers" 
+						:key="transfer.id">
+						<div class="cell">
+							{{transfer.id}}
+						</div>
 						<div class="cell">
 							{{transfer.created_at}}
 						</div>
@@ -44,11 +58,10 @@
 						<div class="cell cell_centered">
 							{{transfer.transfer}}
 						</div>
-						<div class="cell">
+						<div :class="[{cell: true}, transfer.transferStatuses.status]">
 							{{transfer.transferStatuses.status}}
 						</div>
 						<div class="cell cell_centered">
-							{{transfer.description}}
 							<p v-show="transfer.agregator_transfer_id && transfer.agregator_transfer_id.length">
 								id: {{transfer.agregator_transfer_id}}
 							</p>
@@ -90,7 +103,7 @@
 				Нужно зайти под админом 79251234567
 			</div>
 			<div>
-				<!--<a class="link link__pagination"v-for="link in links" href="#" @click.prevent="paginatorHandler(link)">{{link}}</a>-->
+				<a class="link link__pagination"v-for="link in links" href="#" @click.prevent="paginatorHandler(link)">{{link}}</a>
 			</div>
 	</b-container>
 </template>
@@ -101,13 +114,47 @@ import {mapGetters, mapActions, mapState, mapMutations} from 'vuex';
 export default {
   name: 'transfers',
   data: ()=> ({
-	links: []
+	links: [],
+	filterStatuses: [
+		'Все',
+		'Создан',
+		'Списано',
+		'Переведено',
+		'Отклонено',
+		'Ошибка'
+	],
+	filterStatusDecoder: {
+		'Все': null,
+		'Создан': 1,
+		'Списано': 2,
+		'Переведено': 3,
+		'Отклонено': 4,
+		'Ошибка': 5
+	},
+	selectedFilterStatus: 'Все',
+	links: [],
+	currentPage: 1,
+	loginFilter: '',
+	fioFilter: '',
+	sort: null,
   }),
   components: {
   },
   computed: {
-	...mapState(['allTransfers', 'isAuthenticated']),
+	...mapState([
+		'allTransfers', 
+		'isAuthenticated',
+		'loadingAllTransfers'
+	]),
 	...mapGetters(['isAdmin', 'isAuthenticated']),
+	filterOptions(){
+		return {
+			status: this.filterStatusDecoder[this.selectedFilterStatus],
+			login: this.loginFilter,
+			fio: this.fioFilter,
+			sort: this.sort
+		};
+	}
   },
   methods:{
 	...mapActions([
@@ -137,24 +184,45 @@ export default {
 	},
 	cancelAgregatorTransfer(){
 	
+	},
+	changeTransferStatusFilterHandler($event){
+		this.selectedFilterStatus = $event.target.value;
+		this.fetchAllTransfers(this.filterOptions)
+			.then(
+				({pagination}) => {
+					this.makePaginationLinks(pagination);
+				}
+			)
+	},
+	makePaginationLinks(pagination){
+		let {page_count, current_page} = pagination;
+		this.links = [];
+		this.links.push(1)
+		for(let i=2; i<page_count; ++i){
+			if(i<current_page+2 || i > current_page-2 || i>page_count-4){
+				this.links.push(i)
+			}
+		}
+		this.links.push(page_count);
+	},
+	paginatorHandler(link){
+		if(link !== this.currentPage){
+			this.fetchAllTransfers({
+				...this.filterOptions, 
+				page:link
+			}).then( 
+					({pagination}) => {
+						this.makePaginationLinks(pagination);
+					}
+				)
+		}
 	}
   },
-  
-  mounted(){
-	this.fetchAllTransfers(1)
-		.then(
+  created(){
+	this.fetchAllTransfers(this.filterOptions)
+		.then( 
 			({pagination}) => {
-				/*
-				console.log(pagination)
-				let {page_count, current_page} = pagination;
-				this.links.push(1)
-				for(let i=2; i<page_count; ++i){
-					if(i<current_page+2 || i > current_page-2 || i>page_count-4){
-						this.links.push(i)
-					}
-				}
-				this.links.push(page_count);
-				*/
+				this.makePaginationLinks(pagination);
 			}
 		)
   }
@@ -216,5 +284,14 @@ export default {
 	.transfer_action
 		border: 1px solid black
 		margin: 2px 0
-		
+	.Списано
+		color: orange
+	.Создан	
+		color: blue
+	.Переведено
+		color: green
+	.Ошибка
+		color: red
+	.Отклонено
+		color: darkbrown
 </styles>

@@ -308,9 +308,6 @@ export default {
 		url = login == ''?url:url+`&phone=${login}`;
 		url = fio == ''?url:url+`&lastname=${fio}`;
 		url = sort == null||sort == undefined?url:url+`&sort=${sort}`;
-		console.log(login);
-		console.log(fio);
-		console.log(url);
 		commit('SET_ALL_USERS_LOADING_STATE', true);
 		return new Promise(
 			async (resolve, reject) => {
@@ -490,22 +487,40 @@ export default {
 			}
 		)
 	},
-	fetchAllTransfers: ({commit}) => {
+	fetchAllTransfers: ({commit}, {status, login, fio, sort, page=1}) => {
+		let url = `/api/v1/transfers?expand=users&page=${page}`;
+		url = status == null||login == undefined?url:url+`&id_transfer_statuses=${status}`;
+		url = login == ''?url:url+`&phone=${login}`;
+		url = fio == ''?url:url+`&lastname=${fio}`;
+		url = sort == null||sort == undefined?url:url+`&sort=${sort}`;
+		//console.log(url);
 		return new Promise(
 			async (resolve, reject) => {
 				try{
+					commit('SET_ALL_TRANSFERS_LOADING_STATE', true);
 					let response = await axios({
 						method: 'get',
-						url: '/api/v1/transfers?expand=users&sort=-created_at'
+						url
 					});
+					// console.log(response);
 					if(response.status === 200){
 						let transfers = response.data;
+						let pagination = {
+							current_page: +response.headers['x-pagination-current-page'],
+							page_count: +response.headers['x-pagination-page-count'],
+							per_page: +response.headers['x-pagination-per-page'],
+							total_count: +response.headers['x-pagination-total-count']
+						}
 						commit('SET_TRANSFERS', transfers);
+						commit('SET_ALL_TRANSFERS_LOADING_STATE', false);
+						resolve({transfers, pagination});
 						
 					}else{
+						commit('SET_ALL_TRANSFERS_LOADING_STATE', false);
 						reject(response);
 					}
 				}catch(e){
+					commit('SET_ALL_TRANSFERS_LOADING_STATE', false);
 					reject(e.response);
 				}
 			}

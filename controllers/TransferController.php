@@ -11,6 +11,7 @@ class TransferController extends \app\controllers\BaseController{
 			'modelClass' => $this->modelClass,
 			'checkAccess' => [$this, 'checkAccess']
 		];
+		$actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
 		return array_merge([
 			'alltransfers' => [
 				'class' => \app\controllers\actions\transfer\AllOwnTransfersAction::class,
@@ -23,6 +24,10 @@ class TransferController extends \app\controllers\BaseController{
 				'checkAccess' => [$this, 'checkAccess']
 			]
 		], $actions);
+	}
+	public function prepareDataProvider() {
+		$searchModel = new \app\models\searchmodels\TransferSearch();    
+		return $searchModel->search(\Yii::$app->request->queryParams);
 	}
 	public function checkAccess($action, $model = null, $params = []){
 		// if(\Yii::$app->rbac->canAdmin())return true;

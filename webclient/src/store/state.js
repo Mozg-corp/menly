@@ -26,6 +26,7 @@ export default{
 	loadingTransfers: false,
 	loadingAllUsers: false,
 	loadingUser: false,
-	loadingDriverAccounts: false
+	loadingDriverAccounts: false,
+	loadingAllTransfers: false
 	
 }
