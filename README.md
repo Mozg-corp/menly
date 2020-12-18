@@ -1,2 +1,2 @@
 
-клиент на Vue.js находится в папке webclient
+**Рабочая ветка сейчас landing** клиент на vue.js там в папке webclient
