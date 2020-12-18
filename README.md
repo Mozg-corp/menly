@@ -1,3 +1,5 @@
+**Рабочая ветка сейчас landing** клиент на vue.js там в папке webclient
+
 Создать файл db_local.php с данными для подключения к БД
 В console папке проекта:
 	Docker-compose up
