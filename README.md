@@ -18,4 +18,7 @@
 Накатить миграции
 	php yii migrate
 Для использования memcached нужно выполнить эти инструкции
+apt update
+apt install memcached libmemcached-tools
+и далее
 https://github.com/yiisoft/yii2-docker/issues/85#issuecomment-576159527
