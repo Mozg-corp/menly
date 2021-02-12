@@ -8,7 +8,7 @@ class BatchAction extends \yii\rest\Action{
 		if(!count($userAgregators)){
 			forEach($relations as $uaRelation){
 				
-					$model = new $this->controller->modelClass();
+					$model = new $this->controller->modelClass(); //можно просто $this->modelClass()
 					$model->load($uaRelation, '');
 					if(!$model->save()){
 						return $model->errors;
@@ -16,7 +16,7 @@ class BatchAction extends \yii\rest\Action{
 			}
 			$response = \Yii::$app->getResponse();
 			$response->setStatusCode(201);
-			$updated = \app\models\User::findOne($user->id);
+			$updated = \app\models\User::findOne($user->id); //Почему-то в сохранённой модели $model, не обновляется связь agregators и там не появляются сохранённые агрегаторы
 			return $updated->agregators;
 		}else{
 			throw new \yii\web\BadRequestHttpException('relations already exists');

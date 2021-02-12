@@ -17,7 +17,7 @@ class UserAgregator extends \app\models\UserAgregatorBase
 {
 	const SCENARIO_UPDATE = 'update user agregator relation';
 	const SCENARIO_CREATE = 'create user agregator relation';
-	const SCENARIO_BATCH_CREATE = 'create User';
+	const SCENARIO_BATCH_CREATE = 'create User'; //Это надо заменить на "batch creation of user-agregator relations"
 	
 	public function scenarioBatchCreate():self
     {

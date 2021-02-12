@@ -38,12 +38,44 @@
 					</p>
 				</div>
 				<b-row v-else align-h="center" class="pt-3">
+					<b-col>
+						<h5
+							v-if="hasProccessingTransfers"
+							class="banner_founds__orders mb-3"
+						>
+							Переводы в процессе обработки (дождитесь их завершения)
+						</h5>
+						<div v-if="hasProccessingTransfers"
+							class="table_trandfers"
+						>
+							<div class="row_transfers"
+								v-for="transfer in proccessingItems"
+							>
+								<div class="cell_transfers">
+									{{transfer.date}}
+								</div>
+								<div class="cell_transfers">
+									<img 
+										:src="`./img/agregators/logoes/sm/${transfer.logo}`" 
+										alt="Логитип агрегатора"
+										class="logo_img"
+									/>
+								</div>
+								<div class="cell_transfers">
+									<b>{{transfer.transfer}}</b>
+								</div>
+							</div>
+						</div>
+					</b-col>
 					<b-col sm="12" 
 						v-for="[name, balance] in Object.entries(balances)" 
 						:key="name"
 						class="pb-2"
 					>
-						<div class="agregator_transfer d-flex justify-content-center">
+						<div 
+							v-if="!hasAgregatorsTransfers(name)"
+							class="agregator_transfer d-flex justify-content-center"
+						>
 							<div class="agregator_box d-flex align-items-center justify-content-around">
 								<div class="agregator_box__left">
 									<p class="agregator_name">
@@ -68,6 +100,11 @@
 								  </b-form-group>
 								</b-form>
 							</div>
+						</div>
+						<div
+							v-else
+						>
+							У вас уже есть не завершённый перевод у {{name}}. Дождитесь его завершения.
 						</div>
 					</b-col>
 					<b-col sm="12" class="d-flex justify-content-center pt-4">
@@ -113,9 +150,6 @@
 							</div>
 							<div class="cell_transfers">
 								<b>{{transfer.transfer}}</b>
-							</div>
-							<div :class="[{cell_transfers: true}, transfer.status]">
-								{{transfer.status}}
 							</div>
 						</div>
 					</div>
@@ -180,8 +214,14 @@ export default {
 		);
 	},
 	transferedItems(){
-		return this.items;
-		//return this.items.filter(transfer=>transfer.status === 'Переведено');
+		//return this.items;
+		return this.items.filter(transfer=>transfer.status === 'Переведено');
+	},
+	proccessingItems(){
+		return this.items.filter(transfer=>transfer.status === 'Создан' || transfer.status === 'Списано');
+	},
+	hasProccessingTransfers(){
+		return this.proccessingItems.length > 0;
 	}
   },
   methods:{
@@ -219,6 +259,21 @@ export default {
 					this.fetchUserTransfers();
 				}
 			);
+	},
+	hasAgregatorsTransfers(name){
+		for(let i=0; i<this.transfers.length; i++){
+			if(this.transfers[i].agregators.name === name 
+				&& 
+					(
+						this.transfers[i].transferStatuses.status === 'Создан'
+						||
+						this.transfers[i].transferStatuses.status === 'Списано'
+					)
+			){
+				return true;		
+			}
+		}
+		return false;
 	},
 	validateTransfers(){
 	
