@@ -5,7 +5,7 @@ class AddExistingUsersController extends \yii\console\Controller{
 		$initRepo->readJson([
 			'Ситимобиль' => './raw/citymobile driver list.json',
 			'Яндекс' => './raw/yandex drivers list.json',
-			'Gett' => './raw/gett drivers list.json'
+			//'Gett' => './raw/gett drivers list.json'
 		]);
 		$initRepo->saveUsersToDb();
 	}

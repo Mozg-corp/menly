@@ -27,10 +27,10 @@ class DriverAccount extends DriverAccountBase
 		];
 	}
 	public function scenarios(){
-		return [
+		return array_merge([
 			self::SCENARIO_UPDATE => ['account'],
 		    self::SCENARIO_CREATE => ['account', 'id_agregator', 'id_users', 'id_account_types'],
-		];
+		],parent::scenarios());
 	}
     public static function find()
     {

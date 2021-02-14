@@ -12,6 +12,8 @@ class VueAssets extends AssetBundle
     public $baseUrl = '@web';
 
     public $css = [
+	'css/chunk-vendors.css',
+	'css/app.css'
     ];
     public $js = [
 			'js/chunk-vendors.js',

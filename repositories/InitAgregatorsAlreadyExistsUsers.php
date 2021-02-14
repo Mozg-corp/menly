@@ -75,11 +75,12 @@ class InitAgregatorsAlreadyExistsUsers{
 	public function readJson(array $paths){
 		$this->readCityUsers($paths['Ситимобиль']);
 		$this->readYaUsers($paths['Яндекс']);
-		$this->readGettUsers($paths['Gett']);
+		//$this->readGettUsers($paths['Gett']);
 	}
 	public function readGettUsers(string $path){
 		$drivers = $this->readFromFile($path);
 		forEach($drivers->data as $driver){
+
 			$phone = $driver->phone;
 			$fio = explode(' ', $driver->name);
 			if(array_key_exists($phone, $this->users)){

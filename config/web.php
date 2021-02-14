@@ -45,6 +45,11 @@ $config = [
 		]
 	],
 	'defaultRoute' => 'index/vue',
+    'modules' => [
+        'admin' => [
+            'class' => 'app\modules\admin\CMS',
+        ]
+    ],
     'components' => [
 		// 'schedule' => 'omnilight\scheduling\Schedule',
         'authManager' => [
@@ -80,13 +85,13 @@ $config = [
 			],
 		],
         'cache' => [
-            'class' => 'yii\caching\MemCache',
-			'useMemcached' => true,
+            'class' => 'yii\caching\FileCache',
+			//'useMemcached' => true,
         ],
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => false,
-			'enableSession' => false
+			'enableSession' => true
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -115,6 +120,8 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+				'<controller:\w+>' => 'index/vue',
+                '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
 				[
 					'class'=>\yii\rest\UrlRule::class,
 					'controller'=>['profile'],

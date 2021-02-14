@@ -12,8 +12,8 @@ use Yii;
  * @property string $password_hash
  * @property string|null $token
  * @property string|null $auth_key
- * @property string|null $create_at
- * @property string|null $updated_at
+ * @property string $create_at
+ * @property string $updated_at
  * @property int|null $status
  *
  * @property Car[] $cars
@@ -67,7 +67,7 @@ class UserBase extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Cars]].
      *
-     * @return \yii\db\ActiveQuery|CarBaseQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getCars()
     {
@@ -77,7 +77,7 @@ class UserBase extends \yii\db\ActiveRecord
     /**
      * Gets query for [[DriverAccounts]].
      *
-     * @return \yii\db\ActiveQuery|DriverAccountQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getDriverAccounts()
     {
@@ -87,7 +87,7 @@ class UserBase extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Profiles]].
      *
-     * @return \yii\db\ActiveQuery|ProfileQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getProfiles()
     {
@@ -97,19 +97,10 @@ class UserBase extends \yii\db\ActiveRecord
     /**
      * Gets query for [[UsersAgregators]].
      *
-     * @return \yii\db\ActiveQuery|UsersAgregatorQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getUsersAgregators()
     {
         return $this->hasMany(UsersAgregator::className(), ['users_id' => 'id']);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return UserBaseQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new UserBaseQuery(get_called_class());
     }
 }

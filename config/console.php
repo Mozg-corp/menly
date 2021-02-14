@@ -39,14 +39,14 @@ $config = [
             'class' => DbManager::class
         ],
         'cache' => [
-            'class' => 'yii\caching\MemCache',
-			'useMemcached' => true,
-			'servers' => [
-				[
-					'host' => '127.0.0.1',
-					'port' => 11211
-				],
-			],
+            'class' => 'yii\caching\FileCache',
+			//'useMemcached' => true,
+			//'servers' => [
+			//	[
+			//		'host' => '127.0.0.1',
+			//		'port' => 11211
+			//	],
+			//],
         ],
         'log' => [
             'targets' => [

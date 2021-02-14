@@ -39,7 +39,7 @@ class OpenAPIRenderer extends Action
     public $cache = 'cache';
 
     /**
-     * @var int default duration in seconds before the cache will expire
+     * @var int dashboard duration in seconds before the cache will expire
      */
     public $cacheDuration = 360;
 

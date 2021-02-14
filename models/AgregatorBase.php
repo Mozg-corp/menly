@@ -14,10 +14,8 @@ use Yii;
  * @property string|null $token
  * @property int|null $expire
  * @property string|null $refresh_token
- * @property string|null $logo
  *
  * @property DriverAccount[] $driverAccounts
- * @property Transfer[] $transfers
  * @property UsersAgregator[] $usersAgregators
  */
 class AgregatorBase extends \yii\db\ActiveRecord
@@ -40,7 +38,7 @@ class AgregatorBase extends \yii\db\ActiveRecord
             [['token'], 'string'],
             [['expire'], 'integer'],
             [['name'], 'string', 'max' => 50],
-            [['apiv1', 'apiv2', 'refresh_token', 'logo'], 'string', 'max' => 255],
+            [['apiv1', 'apiv2', 'refresh_token'], 'string', 'max' => 255],
             [['name'], 'unique'],
         ];
     }
@@ -58,14 +56,13 @@ class AgregatorBase extends \yii\db\ActiveRecord
             'token' => 'Token',
             'expire' => 'Expire',
             'refresh_token' => 'Refresh Token',
-            'logo' => 'Logo',
         ];
     }
 
     /**
      * Gets query for [[DriverAccounts]].
      *
-     * @return \yii\db\ActiveQuery|DriverAccountQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getDriverAccounts()
     {
@@ -73,31 +70,12 @@ class AgregatorBase extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Transfers]].
-     *
-     * @return \yii\db\ActiveQuery|TransferQuery
-     */
-    public function getTransfers()
-    {
-        return $this->hasMany(Transfer::className(), ['id_agregators' => 'id']);
-    }
-
-    /**
      * Gets query for [[UsersAgregators]].
      *
-     * @return \yii\db\ActiveQuery|UsersAgregatorQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getUsersAgregators()
     {
         return $this->hasMany(UsersAgregator::className(), ['agregators_id' => 'id']);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return AgregatorBaseQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new AgregatorBaseQuery(get_called_class());
     }
 }
