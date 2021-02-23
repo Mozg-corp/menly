@@ -12,8 +12,8 @@ use Yii;
  * @property string $password_hash
  * @property string|null $token
  * @property string|null $auth_key
- * @property string $create_at
- * @property string $updated_at
+ * @property string|null $create_at
+ * @property string|null $updated_at
  * @property int|null $status
  *
  * @property Car[] $cars

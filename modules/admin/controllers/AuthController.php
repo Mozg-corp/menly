@@ -18,10 +18,12 @@ class AuthController extends \yii\web\Controller
         $model = new User();
         if (\Yii::$app->request->isPost){
             $model->load(\Yii::$app->request->post());
-			
+
             $model->scenarioSignIn();
             //\Yii::$app->response->format = Response::FORMAT_JSON;
-			if(\Yii::$app->auth->signIn($model)) {
+
+            if(\Yii::$app->auth->signIn($model)) {
+
                 return $this->redirect('/admin/dashboard');
             }
         }

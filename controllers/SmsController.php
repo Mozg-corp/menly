@@ -102,19 +102,21 @@ class SmsController extends Controller
     public  function actionInit()
     {
         if( \Yii::$app->request->isPost ) {
-            if( !isset( \Yii::$app->request->post()['phone'] )) {
-                return json_encode([
-                    'success' => 'Поле телефон обязательно'
-                ]);
-            }
-            $this->session->set('codeRequestTime', time());
-            $codeStdObj = $this->requestCode();
-            $this->session->set('code', $codeStdObj->code);
-            $this->session->set('phone', \Yii::$app->request->post()['phone']);
-
+//            if( !isset( \Yii::$app->request->post()['phone'] )) {
+//                return json_encode([
+//                    'success' => 'Поле телефон обязательно'
+//                ]);
+//            }
+//            $this->session->set('codeRequestTime', time());
+//            $codeStdObj = $this->requestCode();
+//            $this->session->set('code', $codeStdObj->code);
+//            $this->session->set('phone', \Yii::$app->request->post()['phone']);
+//            \Yii::$app->response->format = Response::FORMAT_JSON;
+//            \Yii::$app->response->statusCode = 200;
             return json_encode([
                 'success' => true,
-                'codeRequestTime' =>  $this->session->get( 'codeRequestTime' ),
+//                'codeRequestTime' =>  $this->session->get( 'codeRequestTime' ),
+                'fhdh' => 'gerhehfd'
             ]);
         }
     }

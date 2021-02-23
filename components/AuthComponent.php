@@ -23,7 +23,7 @@ class AuthComponent extends Component
             $model->addError('password', 'Wrong password');
             return false;
         }
-		
+
         return \Yii::$app->user->login($user, 3600);
     }
     public function signUp(User &$model):bool
@@ -31,7 +31,10 @@ class AuthComponent extends Component
         if(!$model->validate(['phone', 'password', 'password_repeat'])){
             return false;
         }
-
+        echo '<pre>';
+        var_dump($model->errors);
+        var_dump($model);
+        echo '</pre>';
         $model->password_hash = $this->generateHashPassword($model->password);
         $model->auth_key = $this->generateAuthKey();
         $model->token = $this->generateToken();

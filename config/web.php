@@ -20,7 +20,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => [
-		'log', 
+		'log',
 		\app\bootstrap\EventsSubscriber::class,
 		\app\bootstrap\DependencyInjector::class,
 		// \app\bootstrap\SchedulerSetup::class
@@ -44,7 +44,7 @@ $config = [
 			]
 		]
 	],
-	'defaultRoute' => 'index/vue',
+//	'defaultRoute' => 'index/vue',
     'modules' => [
         'admin' => [
             'class' => 'app\modules\admin\CMS',
@@ -164,7 +164,7 @@ $config = [
 					'extraPatterns' => [
 							'GET citymobile' => 'citymobile',
 						]
-					
+
                 ],
                 [
 					'class'=>UrlRule::class,
@@ -173,7 +173,7 @@ $config = [
 					'except' => ['delete', 'put', 'patch'],
 					'extraPatterns' => [
 						]
-					
+
                 ],
                 [
 					'class'=>UrlRule::class,
@@ -184,7 +184,7 @@ $config = [
 						'GET all' => 'alltransfers',
 						'POST batch' => 'batch'
 					]
-					
+
                 ],
 				[
 					'class' => UrlRule::class,
