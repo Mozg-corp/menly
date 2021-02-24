@@ -1,5 +1,5 @@
-<?php 
-namespace app\subscribers; 
+<?php
+namespace app\subscribers;
 class Common implements \Symfony\Component\EventDispatcher\EventSubscriberInterface{
 	public static function getSubscribedEvents(){
 		return [
@@ -25,11 +25,13 @@ class Common implements \Symfony\Component\EventDispatcher\EventSubscriberInterf
 			\app\models\User::STATUS_CANDIDATE => 'candidate',
 			\app\models\User::STATUS_USER => 'user'
 		];
-		$newTransformedStatus = $transformStatusToRole[$event->sender->status];
-		
-		$am = \Yii::$app->authManager;
-		$am->revokeAll($event->sender->id);
-		$newRole = $am->getRole($newTransformedStatus);
-		$am->assign($newRole, $event->sender->id);
+		if (isset($event->sender->status)) {
+            $newTransformedStatus = $transformStatusToRole[$event->sender->status];
+
+            $am = \Yii::$app->authManager;
+            $am->revokeAll($event->sender->id);
+            $newRole = $am->getRole($newTransformedStatus);
+            $am->assign($newRole, $event->sender->id);
+        }
 	}
 }

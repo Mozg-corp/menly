@@ -6,10 +6,9 @@ use Yii;
 use yii\web\IdentityInterface;
 
 /**
-
  * @OA\Component(),
  * @OA\Schema(
-	required={"phone", "password", "password_repeat"},
+required={"phone", "password", "password_repeat"},
  * @OA\Property(property="User[phone]", type="string", example="7991234567"),
  * @OA\Property(property="User[password]", type="string"),
  * @OA\Property(property="User[password_repeat]", type="string"),
@@ -18,29 +17,29 @@ use yii\web\IdentityInterface;
 
 class User extends UserBase implements IdentityInterface
 {
-     public $password;
-	 public $password_repeat;
-	 const STATUS_DELETED = 0;
-	 const STATUS_ACTIVE = 10;
-	 const STATUS_INACTIVE = 9;
-	 const STATUS_CANDIDATE = 1;
-	 const STATUS_USER = 2;
+    public $password;
+    public $password_repeat;
+    const STATUS_DELETED = 0;
+    const STATUS_ACTIVE = 10;
+    const STATUS_INACTIVE = 9;
+    const STATUS_CANDIDATE = 1;
+    const STATUS_USER = 2;
 
     const SCENARIO_SIGNUP = 'signup';
     const SCENARIO_SIGNIN = 'signin';
     const SCENARIO_UPDATE = 'update User';
     const SCENARIO_CREATE = 'create User';
-	public function behaviors(){
-		$behaviors = parent::behaviors();
-		$behaviors['timestamp'] = [
-                'class' => \yii\behaviors\TimestampBehavior::className(),
-                'attributes' => [
-                    \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
-                ],
-                'value' => new \yii\db\Expression('NOW()'),
-            ];
-			return $behaviors;
-	}
+    public function behaviors(){
+        $behaviors = parent::behaviors();
+        $behaviors['timestamp'] = [
+            'class' => \yii\behaviors\TimestampBehavior::className(),
+            'attributes' => [
+                \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+            ],
+            'value' => new \yii\db\Expression('NOW()'),
+        ];
+        return $behaviors;
+    }
     public function scenarioSignUp():self
     {
         $this->setScenario(self::SCENARIO_SIGNUP);
@@ -56,10 +55,10 @@ class User extends UserBase implements IdentityInterface
     public function scenarios()
     {
         return array_merge([
-           self::SCENARIO_SIGNUP => ['phone','password', 'password_repeat'],
-           self::SCENARIO_SIGNIN => ['phone', 'password'],
-		   self::SCENARIO_UPDATE => ['status'],
-		   self::SCENARIO_CREATE => [],
+            self::SCENARIO_SIGNUP => ['phone','password', 'password_repeat'],
+            self::SCENARIO_SIGNIN => ['phone', 'password'],
+            self::SCENARIO_UPDATE => ['status'],
+            self::SCENARIO_CREATE => [],
         ],parent::scenarios());
     }
 
@@ -68,52 +67,52 @@ class User extends UserBase implements IdentityInterface
      */
     public function rules()
     {
-		$rules = parent::rules();
-		for($i=0;$i<count($rules);$i++){
-			if($rules[$i][0][0] === 'phone' && $rules[$i][1] === 'unique'){
-				unset($rules[$i]);
-				break;
-			}
-		}
+        $rules = parent::rules();
+        for($i=0;$i<count($rules);$i++){
+            if($rules[$i][0][0] === 'phone' && $rules[$i][1] === 'unique'){
+                unset($rules[$i]);
+                break;
+            }
+        }
         return array_merge([
             ['password', 'required', 'on' => [self::SCENARIO_SIGNUP, self::SCENARIO_SIGNIN]],
             ['password_repeat', 'required', 'on' => [self::SCENARIO_SIGNUP]],
             ['password', 'string', 'min' => 8],
-			[['phone'], 'string', 'max' => 11],
-			['status', 'safe'],
-			['password_repeat', 'compare', 'compareAttribute' => 'password'],
-			['phone', 'match', 'pattern' => '/^[8,7]\d{3}\d{3}\d{2}\d{2}/', 'message' => 'Телефон, должен быть в формате 8XXXXXXXXXX или 7XXXXXXXXXX'],
+            [['phone'], 'string', 'max' => 11],
+            ['status', 'safe'],
+            ['password_repeat', 'compare', 'compareAttribute' => 'password'],
+            ['phone', 'match', 'pattern' => '/^[8,7]\d{3}\d{3}\d{2}\d{2}/', 'message' => 'Телефон, должен быть в формате 8XXXXXXXXXX или 7XXXXXXXXXX'],
             [['phone'], 'unique', 'on' => self::SCENARIO_SIGNUP],
             [['phone'], 'exist', 'on' => self::SCENARIO_SIGNIN],
-         ],$rules);
+        ],$rules);
     }
-	public function fields(){
-		return [
-			'id',
-			'phone',
-			'token',
-			'status',
-			'create_at',
-			'permissions' => function(){
-				$p = \Yii::$app->authManager->getPermissionsByUser($this->id);
-				return array_keys($p);
-			},
-			'roles' => function(){
-				$r = \Yii::$app->authManager->getRolesByUser($this->id);
-				return array_keys($r);
-			},
-			'car',
-			'profile',
-			'agregators',
-			'driverAccounts'
-		];
-	}
-	public function  extraFields(){
-		return [
-		
-		];
-	}
-	
+    public function fields(){
+        return [
+            'id',
+            'phone',
+            'token',
+            'status',
+            'create_at',
+            'permissions' => function(){
+                $p = \Yii::$app->authManager->getPermissionsByUser($this->id);
+                return array_keys($p);
+            },
+            'roles' => function(){
+                $r = \Yii::$app->authManager->getRolesByUser($this->id);
+                return array_keys($r);
+            },
+            'car',
+            'profile',
+            'agregators',
+            'driverAccounts'
+        ];
+    }
+    public function  extraFields(){
+        return [
+
+        ];
+    }
+
     /**
      * Gets query for [[Cars]].
      *
@@ -152,7 +151,7 @@ class User extends UserBase implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-       return User::find()->andWhere(['id' => $id])->one();
+        return User::find()->andWhere(['id' => $id])->one();
     }
 
     /**
@@ -212,14 +211,14 @@ class User extends UserBase implements IdentityInterface
     {
         return $this->auth_key === $authKey;
     }
-	public function getAgregators(){
-		return $this->hasMany(\app\models\Agregator::className(),['id' => 'agregators_id'])
-					->via('usersAgregators');
-	}
-	public function getAgregatorsNames(){
-		return array_map(function($el){return $el->name;},$this->agregators);
-	}
-	/**
+    public function getAgregators(){
+        return $this->hasMany(\app\models\Agregator::className(),['id' => 'agregators_id'])
+            ->via('usersAgregators');
+    }
+    public function getAgregatorsNames(){
+        return array_map(function($el){return $el->name;},$this->agregators);
+    }
+    /**
      * {@inheritdoc}
      * @return UserBaseQuery the active query used by this AR class.
      */

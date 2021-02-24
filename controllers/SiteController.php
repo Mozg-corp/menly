@@ -49,20 +49,20 @@ class SiteController extends Controller
             ],
         ];
     }
-//	 public function actionAddadmin(){
-//		 $admin = new User();
-//		 $admin->phone = "79251234567";
-//		 $admin->password = 'menly_4ever';
-//		 $admin->password_hash = \Yii::$app->getSecurity()->generatePasswordHash($admin->password);
-    //     $admin->auth_key = \Yii::$app->getSecurity()->generateRandomString();
-  //       $admin->token = \Yii::$app->getSecurity()->generateRandomString();
-//
-//         if($admin->save()){
-           // return true;
-         //}else{
-	//		 print_r($admin->errors);
-	//	}
-	// }
+	 public function actionAddadmin(){
+		 $admin = new User();
+		 $admin->phone = "79251234567";
+		 $admin->password = 'menly_4ever';
+		 $admin->password_hash = \Yii::$app->getSecurity()->generatePasswordHash($admin->password);
+         $admin->auth_key = \Yii::$app->getSecurity()->generateRandomString();
+         $admin->token = \Yii::$app->getSecurity()->generateRandomString();
+
+         if($admin->save()){
+            return true;
+         }else{
+			 print_r($admin->errors);
+		}
+	 }
 	public function actionChangeRole(){
 		$transformStatusToRole = [
 			\app\models\User::STATUS_CANDIDATE => 'candidate',
