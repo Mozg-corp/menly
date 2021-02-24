@@ -53,19 +53,23 @@ class SmsController extends Controller
                 $this->session->remove('phone');
                 return [
                    'success' => false,
-                   'errors' => 'Время действия кода истекло'
+                   'errors' => [
+                       'expire' => 'Время действия кода истекло'
+                   ]
                 ];
             }else {
                 if ( !isset(\Yii::$app->request->post()['code'])) {
                     return json_encode([
                         'success' => false,
-                        'errors' => 'Отсутствует обязятельное поле code в запросе'
+                        'errors' => [
+                            'code' =>'Отсутствует обязятельное поле code в запросе'
+                        ]
                     ]);
                 }
                 $incomeCode = \Yii::$app->request->post()['code'];
                 if ( $incomeCode == $this->session->get('code')) {
                     $userFound = User::find()->byPhone($this->session->get( 'phone' ))->one();
-                    if ( $userFound ) {
+                    if ($userFound) {
                         return [
                             'success' => true,
                             'user' => $userFound
@@ -104,7 +108,10 @@ class SmsController extends Controller
         if( \Yii::$app->request->isPost ) {
             if( !isset( \Yii::$app->request->post()['phone'] )) {
                 return json_encode([
-                    'success' => 'Поле телефон обязательно'
+                    'success' => false,
+                    'errors' => [
+                        'phone' => 'Поле телефон обязательно'
+                    ]
                 ]);
             }
             $this->session->set('codeRequestTime', time());
