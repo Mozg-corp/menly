@@ -107,12 +107,12 @@ class SmsController extends Controller
     {
         if( \Yii::$app->request->isPost ) {
             if( !isset( \Yii::$app->request->post()['phone'] )) {
-                return json_encode([
+                return [
                     'success' => false,
                     'errors' => [
                         'phone' => 'Поле телефон обязательно'
                     ]
-                ]);
+                ];
             }
             $this->session->set('codeRequestTime', time());
             $codeStdObj = $this->requestCode();
@@ -120,10 +120,10 @@ class SmsController extends Controller
             $this->session->set('phone', \Yii::$app->request->post()['phone']);
 //            \Yii::$app->response->format = Response::FORMAT_JSON;
 //            \Yii::$app->response->statusCode = 200;
-            return json_encode([
+            return [
                 'success' => true,
                 'codeRequestTime' =>  $this->session->get( 'codeRequestTime' ),
-            ]);
+            ];
         }
     }
 
