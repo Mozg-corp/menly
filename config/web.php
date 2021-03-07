@@ -44,7 +44,7 @@ $config = [
 			]
 		]
 	],
-//	'defaultRoute' => 'index/vue',
+	'defaultRoute' => 'index/vue',
     'modules' => [
         'admin' => [
             'class' => 'app\modules\admin\CMS',
@@ -137,6 +137,12 @@ $config = [
                 [
 					'class'=>UrlRule::class,
                     'controller' => 'agregator',
+					'prefix' => 'api/v1',
+					'except' => ['delete']
+                ],
+                [
+					'class'=>UrlRule::class,
+                    'controller' => 'tariff',
 					'prefix' => 'api/v1',
 					'except' => ['delete']
                 ],

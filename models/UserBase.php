@@ -19,9 +19,11 @@ use Yii;
  * @property Car[] $cars
  * @property DriverAccount[] $driverAccounts
  * @property Profile[] $profiles
+ * @property Subscription[] $subscriptions
+ * @property Transfer[] $transfers
  * @property UsersAgregator[] $usersAgregators
  */
-class UserBase extends \yii\db\ActiveRecord
+class UserBase extends BaseModel
 {
     /**
      * {@inheritdoc}
@@ -92,6 +94,26 @@ class UserBase extends \yii\db\ActiveRecord
     public function getProfiles()
     {
         return $this->hasMany(Profile::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Subscriptions]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSubscriptions()
+    {
+        return $this->hasMany(Subscription::className(), ['id_users' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Transfers]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTransfers()
+    {
+        return $this->hasMany(Transfer::className(), ['id_users' => 'id']);
     }
 
     /**

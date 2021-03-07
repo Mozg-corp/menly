@@ -106,24 +106,37 @@ class SmsController extends Controller
     public  function actionInit()
     {
         if( \Yii::$app->request->isPost ) {
-            if( !isset( \Yii::$app->request->post()['phone'] )) {
+            $lastRequesteTime = $this->session->get('codeRequestTime');
+            $now = time();
+            if ($now - $lastRequesteTime > 90) {
+                if( !isset( \Yii::$app->request->post()['phone'] )) {
+                    return [
+                        'success' => false,
+                        'errors' => [
+                            'phone' => 'Поле телефон обязательно'
+                        ]
+                    ];
+                }
+                $this->session->set('codeRequestTime', time());
+                $codeStdObj = $this->requestCode();
+                $this->session->set('code', $codeStdObj->code);
+                $this->session->set('phone', \Yii::$app->request->post()['phone']);
+                $codeRequestTime = $this->session->get( 'codeRequestTime' );
+                return [
+                    'success' => true,
+                    'requestTime' =>  $codeRequestTime,
+                    'resubmitTime' => $codeRequestTime + 90,
+                    'deadline' => $codeRequestTime + 60
+                ];
+            } else {
+                $restTime = $lastRequesteTime + 90 - $now;
                 return [
                     'success' => false,
                     'errors' => [
-                        'phone' => 'Поле телефон обязательно'
+                        'toManyRequests' => "Сделайте запрос через $restTime сек."
                     ]
                 ];
             }
-            $this->session->set('codeRequestTime', time());
-            $codeStdObj = $this->requestCode();
-            $this->session->set('code', $codeStdObj->code);
-            $this->session->set('phone', \Yii::$app->request->post()['phone']);
-//            \Yii::$app->response->format = Response::FORMAT_JSON;
-//            \Yii::$app->response->statusCode = 200;
-            return [
-                'success' => true,
-                'codeRequestTime' =>  $this->session->get( 'codeRequestTime' ),
-            ];
         }
     }
 

@@ -76,6 +76,6 @@ class AgregatorBase extends \yii\db\ActiveRecord
      */
     public function getUsersAgregators()
     {
-        return $this->hasMany(UserAgregator::className(), ['agregators_id' => 'id']);
+        return $this->hasMany(UsersAgregator::className(), ['agregators_id' => 'id']);
     }
 }
