@@ -120,8 +120,6 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-//				'<controller:\w+>' => 'index/vue',
-//                '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
 				[
 					'class'=>\yii\rest\UrlRule::class,
 					'controller'=>['profile'],
@@ -207,7 +205,11 @@ $config = [
 					'extraPatterns' => [
 						'POST do' => 'do',
 					]
-				]
+				],
+                '<controller:\w+>' => 'index/vue',
+                'admin/<controller:\w+>' => 'admin/<controller>/index',
+                'admin/<controller:\w+>/<action:\w+>' => 'admin/<controller>/<action>',
+
             ],
         ],
     ],

@@ -29,22 +29,22 @@ class SmsController extends Controller
     public function actionLogin()
     {
         if ( !$this->session->has('codeRequestTime') ) {
-            return json_encode([
+            return [
                 'success' => false,
                 'errors' => 'Нужно сперва запросить код'
-            ]);
+            ];
         }
         if ( !$this->session->has( 'code' )) {
-            return json_encode([
+            return [
                 'success' => false,
                 'errors' => 'Какая-то ошибка с получением code, попробуте повторно запросить код'
-            ]);
+            ];
         }
         if (!$this->session->has( 'phone' )) {
-            return json_encode([
+            return [
                 'success' => false,
                 'errors' => 'Какая-то ошибка с получением phone, попробуте повторно запросить код'
-            ]);
+            ];
         }
         if ( \Yii::$app->request->isPost ) {
             if ( time() - $this->session->get( 'codeRequestTime' ) > static::DURATION ) {
@@ -59,12 +59,12 @@ class SmsController extends Controller
                 ];
             }else {
                 if ( !isset(\Yii::$app->request->post()['code'])) {
-                    return json_encode([
+                    return [
                         'success' => false,
                         'errors' => [
                             'code' =>'Отсутствует обязятельное поле code в запросе'
                         ]
-                    ]);
+                    ];
                 }
                 $incomeCode = \Yii::$app->request->post()['code'];
                 if ( $incomeCode == $this->session->get('code')) {
@@ -137,6 +137,13 @@ class SmsController extends Controller
                     ]
                 ];
             }
+        } else {
+            return [
+              'success' => false,
+              'errors' => [
+                  'wrongRequestType' => 'Запрос должен быть типа POST'
+              ]
+            ];
         }
     }
 

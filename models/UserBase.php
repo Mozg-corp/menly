@@ -23,7 +23,7 @@ use Yii;
  * @property Transfer[] $transfers
  * @property UsersAgregator[] $usersAgregators
  */
-class UserBase extends BaseModel
+class UserBase extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
