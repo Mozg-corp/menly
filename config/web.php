@@ -146,6 +146,12 @@ $config = [
                 ],
                 [
 					'class'=>UrlRule::class,
+                    'controller' => 'subscription',
+					'prefix' => 'api/v1',
+					'except' => ['delete']
+                ],
+                [
+					'class'=>UrlRule::class,
                     'controller' => 'user-agregator',
 					'prefix' => 'api/v1',
 					'pluralize' =>false,

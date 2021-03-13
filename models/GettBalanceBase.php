@@ -12,6 +12,9 @@ use Yii;
  * @property float|null $balance
  * @property float|null $tips
  * @property float|null $parking_cost
+ * @property string|null $updated_at
+ * @property string|null $created_at
+ * @property float|null $debit
  *
  * @property DriverAccount $driver
  */
@@ -32,7 +35,8 @@ class GettBalanceBase extends \yii\db\ActiveRecord
     {
         return [
             [['id_driver'], 'required'],
-            [['balance', 'tips', 'parking_cost'], 'number'],
+            [['balance', 'tips', 'parking_cost', 'debit'], 'number'],
+            [['updated_at', 'created_at'], 'safe'],
             [['id_driver'], 'string', 'max' => 32],
             [['id_driver'], 'exist', 'skipOnError' => true, 'targetClass' => DriverAccount::className(), 'targetAttribute' => ['id_driver' => 'account']],
         ];
@@ -49,25 +53,19 @@ class GettBalanceBase extends \yii\db\ActiveRecord
             'balance' => 'Balance',
             'tips' => 'Tips',
             'parking_cost' => 'Parking Cost',
+            'updated_at' => 'Updated At',
+            'created_at' => 'Created At',
+            'debit' => 'Debit',
         ];
     }
 
     /**
      * Gets query for [[Driver]].
      *
-     * @return \yii\db\ActiveQuery|DriverAccountQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getDriver()
     {
         return $this->hasOne(DriverAccount::className(), ['account' => 'id_driver']);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return GettBalanceBaseQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new GettBalanceBaseQuery(get_called_class());
     }
 }

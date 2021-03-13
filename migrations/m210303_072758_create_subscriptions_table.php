@@ -18,9 +18,9 @@ class m210303_072758_create_subscriptions_table extends Migration
     {
         $this->createTable('{{%subscriptions}}', [
             'id' => $this->primaryKey(),
-            'id_users' => $this->integer()->notNull(),
+            'id_users' => $this->integer()->notNull()->unique(),
             'id_tariffs' => $this->integer()->notNull(),
-            'status' => $this->smallInteger(),
+            'status' => $this->smallInteger()->defaultValue(0),
             'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
             'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
         ]);
@@ -65,6 +65,11 @@ class m210303_072758_create_subscriptions_table extends Migration
      */
     public function safeDown()
     {
+        // drops index for column `id_users`
+        $this->dropIndex(
+            '{{%id_users}}',
+            '{{%subscriptions}}'
+        );
         // drops foreign key for table `{{%users}}`
         $this->dropForeignKey(
             '{{%fk-subscriptions-id_users}}',

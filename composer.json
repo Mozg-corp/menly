@@ -28,7 +28,12 @@
         "vxm/yii2-async": "^1.0",
         "omnilight/yii2-scheduling": "*",
         "yiisoft/yii2-redis": "^2.0",
-        "dmstr/yii2-adminlte-asset": "^2.4"
+        "dmstr/yii2-adminlte-asset": "^2.4",
+        "kartik-v/yii2-widget-datetimepicker": "*",
+        "kartik-v/yii2-grid": "dev-master",
+        "kartik-v/yii2-widgets": "@dev",
+        "vova07/yii2-imperavi-widget": "*",
+        "kartik-v/yii2-widget-select2": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

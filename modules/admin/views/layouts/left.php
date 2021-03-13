@@ -30,7 +30,27 @@
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => [
-                    ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
+                    ['label' => 'Управление', 'options' => ['class' => 'header']],
+                    [
+                        'label' => 'Системные данные',
+                        'icon' => 'share',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => 'Агрегаторы', 'url' => ['/admin/agregators'],],
+                            ['label' => 'Тарифы', 'url' => ['/admin/tariffs'],],
+                        ],
+                    ],
+                    [
+                        'label' => 'Пользовательские данные',
+                        'icon' => 'share',
+                        'url' => '#',
+                        'items' => [
+                            ['label' => 'Пользователи', 'url' => ['/admin/users'],],
+                            ['label' => 'Профили', 'url' => ['/admin/profiles'],],
+                            ['label' => 'Подписки', 'url' => ['/admin/subscriptions'],],
+                            ['label' => 'Переводы', 'url' => ['/admin/transfers'],],
+                        ],
+                    ],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],

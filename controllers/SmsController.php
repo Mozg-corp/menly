@@ -97,6 +97,13 @@ class SmsController extends Controller
                     $this->session->remove('code');
                     $this->session->remove('codeRequestTime');
                     $this->session->remove('phone');
+                } else {
+                    return [
+                      'status' => false,
+                      'errors' => [
+                          'code' => 'Введённый код не верен'
+                      ]
+                    ];
                 }
             }
         }

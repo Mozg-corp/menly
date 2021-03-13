@@ -14,7 +14,7 @@ class DashboardController extends Controller
     public $enableCsrfValidation = true;
     public $enableSession = true;
     public $layout = 'main';
-    //public $viewPath = '@app/moduls/admin/views';
+    //public $viewPath = '@app/modules/admin/views';
     /**
      * Renders the index view for the module
      * @return string

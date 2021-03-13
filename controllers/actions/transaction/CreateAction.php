@@ -7,7 +7,7 @@ class CreateAction extends \yii\rest\CreateAction{
 		$id = \Yii::$app->request->post()['transfer_id'];
 		$client = $this->controller->client;
 		$factory = $this->controller->factory;
-		//здесь нужна проверка, что трансфер найден!
+		// TODO здесь нужна проверка, что трансфер найден!
 		$transfer = \app\models\Transfer::findOne($id);
 		$transferCreatedStatus = \app\models\TransferStatus::find()->byStatus('Создан')->one();
 		if($transfer->id_transfer_statuses !== $transferCreatedStatus->id){
@@ -35,13 +35,13 @@ class CreateAction extends \yii\rest\CreateAction{
 				$response->setStatusCode(201);
 				$id = implode(',', array_values($transfer->getPrimaryKey(true)));
 				$response->getHeaders()->set('Location', \yii\helpers\Url::toRoute([$this->viewAction, 'id' => $id], true));
-				return [	
+				return [
 					'id' => $transfer->id,
 					'agregator_transfer_id' => $transfer->agregator_transfer_id,
 					'description' => $transfer->description
 				];
 			}
-			
+
 		}catch(\Trowable $e){
 			//print_r('fdds');
 			return $e;

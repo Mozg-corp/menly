@@ -1,5 +1,6 @@
 <?php
 namespace app\services;
+use app\models\DriverAccount;
 use GuzzleHttp\Psr7;
 
 class HttpClientService implements \app\interfaces\ClientInterface{
@@ -27,8 +28,8 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		$agregator->refresh_token = isset($body->refresh_token)?$body->refresh_token:null;
 		$agregator->expire = time() + 7200;
 		$agregator->save();
-		
-		return [ 
+
+		return [
 				'value' => $agregator->token,
 				'expire' => $agregator->expire
 			];
@@ -53,7 +54,7 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 	public function createGettReport($from, $to){
 		$service = $this->serviceFactory::getServiceFactory('Gett');
 		$token = $this->obtainToken($service);
-		
+
 		return $this->fetch($service,'reportCreate', [
 			"token" => $token,
 			"from" => $from,
@@ -89,11 +90,11 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 			case 'Яндекс': return $this->getYandexBalance($account);
 			case 'Gett': return $this->getGettBalance($account);
 		}
-	}	
+	}
 	public function getGettBalance($id_driver){
 		$promise =  new \GuzzleHttp\Promise\Promise();
 		$balance = \app\models\GettBalance::find()->byDriverId($id_driver)->one();
-		$promise->resolve($balance);
+		$promise->resolve($balance->balance);
 		return $promise;
 	}
 	public function getTransactionsByName(string $name, array $payload){
@@ -123,6 +124,7 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		switch($name){
 			case 'Яндекс': return $this->createTransactionYandex($payload);
 			case 'Ситимобиль': return $this->createTransactionCitymobile($payload);
+            case 'Gett': return $this->createTransactionGett($payload);
 		}
 	}
 	public function createTransactionYandex($payload){
@@ -135,4 +137,17 @@ class HttpClientService implements \app\interfaces\ClientInterface{
 		$payload['token'] = $token;
 		return $this->fetch($service, 'transfer', $payload);
 	}
+	public function createTransactionGett($payload){
+        $promise =  new \GuzzleHttp\Promise\Promise();
+        $account = $payload['account'];
+        $transferBalance = $payload['balance'];
+        $driverAccount = DriverAccount::find()->byAccount($account);
+        $balance = \app\models\GettBalance::find()->byDriverId($driverAccount->id_agregator)->one();
+        if ($balance->transfer($transferBalance)) {
+            $promise->resolve($balance->balance);
+        } else {
+            $promise->reject($balance->errors);
+        }
+        return $promise;
+    }
 }

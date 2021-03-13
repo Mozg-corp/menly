@@ -17,7 +17,7 @@ use Yii;
  * @property Tariff $tariffs
  * @property User $users
  */
-class SubscriptionBase extends BaseModel
+class SubscriptionBase extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -36,6 +36,7 @@ class SubscriptionBase extends BaseModel
             [['id_users', 'id_tariffs'], 'required'],
             [['id_users', 'id_tariffs', 'status'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
+            [['id_users'], 'unique'],
             [['id_tariffs'], 'exist', 'skipOnError' => true, 'targetClass' => Tariff::className(), 'targetAttribute' => ['id_tariffs' => 'id']],
             [['id_users'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['id_users' => 'id']],
         ];
@@ -59,7 +60,7 @@ class SubscriptionBase extends BaseModel
     /**
      * Gets query for [[Tariffs]].
      *
-     * @return \yii\db\ActiveQuery|TariffQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getTariffs()
     {
@@ -69,19 +70,10 @@ class SubscriptionBase extends BaseModel
     /**
      * Gets query for [[Users]].
      *
-     * @return \yii\db\ActiveQuery|UserQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getUsers()
     {
         return $this->hasOne(User::className(), ['id' => 'id_users']);
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return SubscriptionBaseQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new SubscriptionBaseQuery(get_called_class());
     }
 }
