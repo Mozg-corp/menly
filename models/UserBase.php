@@ -125,4 +125,5 @@ class UserBase extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UsersAgregator::className(), ['users_id' => 'id']);
     }
+
 }

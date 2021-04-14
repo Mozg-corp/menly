@@ -104,7 +104,8 @@ class User extends UserBase implements IdentityInterface
             'car',
             'profile',
             'agregators',
-            'driverAccounts'
+            'driverAccounts',
+            'tariff'
         ];
     }
     public function  extraFields(){
@@ -225,5 +226,10 @@ class User extends UserBase implements IdentityInterface
     public static function find()
     {
         return new UserQuery(get_called_class());
+    }
+
+    public function getTariff()
+    {
+        return $this->hasOne(Tariff::class, ['id' => 'id_tariffs'])->via('subscriptions');
     }
 }
