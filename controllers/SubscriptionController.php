@@ -4,18 +4,24 @@
 namespace app\controllers;
 
 
+use app\models\Subscription;
+use yii\web\BadRequestHttpException;
+
 class SubscriptionController extends BaseController
 {
     public $modelClass = \app\models\Subscription::class;
 
 
     public function checkAccess($action, $model = null, $param = []){
+        $postData = \Yii::$app->request->post();
         switch($action){
             case 'create':
-                if(array_key_exists('id_users', \Yii::$app->request->post()) && \Yii::$app->request->post()['id_users'] !== \Yii::$app->user->id){
-                    throw new \yii\web\ForbiddenHttpException('You can create subscription only for yourself');
+                if(array_key_exists('id_users', \Yii::$app->request->post())){
+                    if ($postData['id_users'] !==   \Yii::$app->user->id) {
+                        throw new \yii\web\ForbiddenHttpException('You can create subscription only for yourself');
+                    }
                 }else{
-                    throw new \yii\web\BadRequestHttpException('wrong request body');
+                    throw new BadRequestHttpException('Check if request has id_users and id_tariffs field');
                 }
                 break;
             case 'view':
