@@ -19,6 +19,9 @@ Thumbs.db
 # composer itself is not needed
 composer.phar
 
+# test Json
+/web/TEST.json
+
 # Mac DS_Store Files
 .DS_Store
 
