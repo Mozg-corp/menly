@@ -9,6 +9,7 @@ use yii\web\Response;
 
 class LoginController extends \yii\web\Controller
 {
+    private const DURATION = 30;
     private $session = null;
 
     /**
@@ -36,7 +37,7 @@ class LoginController extends \yii\web\Controller
             $phone = \Yii::$app->request->post()['phone'];
             $lastRequesteTime = $this->session->get($phone . 'codeRequestTime');
             $now = time();
-            if ($now - $lastRequesteTime > 90) {
+            if (true && $now - $lastRequesteTime > 90) {
                 $this->session->set($phone . 'codeRequestTime', time());
                 $codeStdObj = $this->requestCode();
                 $this->session->set($phone . 'code', $codeStdObj->code);
@@ -66,7 +67,7 @@ class LoginController extends \yii\web\Controller
         }
     }
 
-    public function actionLogin()
+    public function actionAuth()
     {
         if(!\Yii::$app->request->isPost) {
             return [
@@ -85,7 +86,6 @@ class LoginController extends \yii\web\Controller
             ];
         }
         $phone = \Yii::$app->request->post()['phone'];
-
         if (!$this->session->has($phone . 'codeRequestTime') ) {
             return [
                 'success' => false,
