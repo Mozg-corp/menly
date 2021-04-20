@@ -128,7 +128,7 @@ class LoginController extends \yii\web\Controller
                     ];
                 } else {
                     $model = new User();
-                    $model->phone = $this->session->get('phone');
+                    $model->phone = \Yii::$app->request->post()['phone'];
                     $model->password = \Yii::$app->security->generateRandomString(8);
                     $model->password_repeat = $model->password;
                     $model->scenarioSignUp();
