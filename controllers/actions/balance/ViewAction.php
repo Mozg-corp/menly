@@ -1,6 +1,11 @@
 <?php namespace app\controllers\actions\balance;
 class ViewAction extends \yii\rest\ViewAction{
 	public function run($id){
+	    return [
+	        'Яндекс' => 554,
+            'Ситимобиль' => 432,
+            'Gett' => 542
+        ];
 		$user = $this->findModel($id);
 		try{
 			$profile = $user->profiles[0];

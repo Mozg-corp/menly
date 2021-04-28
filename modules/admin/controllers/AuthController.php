@@ -23,7 +23,6 @@ class AuthController extends \yii\web\Controller
             //\Yii::$app->response->format = Response::FORMAT_JSON;
 
             if(\Yii::$app->auth->signIn($model)) {
-
                 return $this->redirect('/admin/dashboard');
             }
         }
