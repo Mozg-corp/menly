@@ -115,7 +115,7 @@ class ProfileController extends \app\controllers\BaseController
 		return $actions;
 	}
 
-	public function prepareDataProvider() {
+    public function prepareDataProvider() {
 
 		$searchModel = new \app\models\searchmodels\ProfileSearch();    
 		return $searchModel->search(\Yii::$app->request->queryParams);

@@ -31,10 +31,6 @@ class AuthComponent extends Component
         if(!$model->validate(['phone', 'password', 'password_repeat'])){
             return false;
         }
-        echo '<pre>';
-        var_dump($model->errors);
-        var_dump($model);
-        echo '</pre>';
         $model->password_hash = $this->generateHashPassword($model->password);
         $model->auth_key = $this->generateAuthKey();
         $model->token = $this->generateToken();
@@ -42,7 +38,6 @@ class AuthComponent extends Component
         if($model->save()){
             $role = \Yii::$app->authManager->getRole('candidate');
             \Yii::$app->authManager->assign($role, $model->getId());
-			// echo '_____'.$model->phone.'____________';
             return true;
         }else{
 			// echo '========='.$model->phone.'==============';

@@ -128,11 +128,10 @@ class LoginController extends \yii\web\Controller
                     ];
                 } else {
                     $model = new User();
-                    $model->phone = $this->session->get('phone');
+                    $model->phone = $phone;
                     $model->password = \Yii::$app->security->generateRandomString(8);
                     $model->password_repeat = $model->password;
                     $model->scenarioSignUp();
-                    \Yii::$app->auth->signUp($model);
                     if (\Yii::$app->auth->signUp($model)) {
                         $user = \app\models\User::find()->where(['phone' => $model->phone])->one();
                         return [
