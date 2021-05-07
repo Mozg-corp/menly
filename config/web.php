@@ -210,6 +210,13 @@ $config = [
 				],
 				[
 					'class' => UrlRule::class,
+					'controller' => 'users-fotos',
+					'prefix' => 'api/v1',
+                    'pluralize' =>false,
+					'except' => ['delete'],
+				],
+				[
+					'class' => UrlRule::class,
 					'controller' => 'bank-transfer',
 					'prefix' => 'api/v1',
 					'pluralize' =>false,
@@ -218,7 +225,7 @@ $config = [
 						'POST do' => 'do',
 					]
 				],
-                '<controller:\w+>' => 'index/vue',
+//                '<controller:\w+>' => 'index/vue',
                 'admin/<controller:\w+>' => 'admin/<controller>/index',
                 'admin/<controller:\w+>/<action:\w+>' => 'admin/<controller>/<action>',
 
